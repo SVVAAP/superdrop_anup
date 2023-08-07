@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/icon_home"
+        android:title="HOME" />
+    <item
+        android:id="@+id/nav_menu"
+        android:icon="?android:attr/actionModeFindDrawable"
+        android:title="MENU" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/btn4"
+        android:title="SETTINGS" />
+</menu>
