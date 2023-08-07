@@ -12,7 +12,7 @@
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="textInputLayout">#96ffffff</color>
-     <color name="orange">#FF5900</color>
-     <color name="light_orange">#FD8646</color>
-    <color name="dark_orange">#D54300</color>
+    <color name="orange">#FD5800</color>
+    <color name="light_orange">#FD8646</color>
+    <color name="dark_orange">#FF5722</color>
 </resources>

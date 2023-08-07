@@ -14,7 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="MENU"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,8 +33,10 @@
         <SearchView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:autofillHints="pizza"
             android:backgroundTint="#000000"
-            android:backgroundTintMode="add"
+            android:backgroundTintMode="src_over"
+            android:searchHintIcon="@drawable/search"
             app:circularflow_radiusInDP="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/filter"
@@ -42,10 +47,13 @@
             android:id="@+id/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/curved_shape"
             android:text="filter"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -100,6 +108,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"/>
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

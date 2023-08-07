@@ -6,29 +6,122 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".navigation.ProfileFragment">
 
-    <Button
-        android:id="@+id/adminbt"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="center"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:text="Admin" />
 
-    <Button
-        android:id="@+id/logout"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="center"
-        android:layout_marginStart="-3dp"
-        android:layout_marginTop="73dp"
-        android:text="Logout" />
 
+    <!-- res/layout/customer_profile.xml -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Profile Image -->
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/anup" />
+
+            <!-- Full Name -->
+            <EditText
+                android:id="@+id/edit_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Full Name"
+                android:inputType="text"
+                android:maxLength="50"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Phone Number -->
+            <EditText
+                android:id="@+id/edit_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:text="+91"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Delivery Address Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delivery Address"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Street Address -->
+            <EditText
+                android:id="@+id/edit_street_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Street Address"
+                android:inputType="text"
+                android:layout_marginTop="8dp"/>
+
+            <!-- City/Town -->
+            <EditText
+                android:id="@+id/edit_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="City/Town"
+                android:inputType="text"
+                android:layout_marginTop="8dp"/>
+
+
+
+            <!-- Emergency Contact Section -->
+            <!-- Emergency Contact -->
+            <EditText
+                android:id="@+id/edit_emergency_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Emergency Contact number"
+                android:inputType="phone"
+                android:layout_marginTop="16dp"/>
+
+
+            <!-- Feedback or Rating Section -->
+            <!-- Feedback/Rating -->
+            <RatingBar
+                android:id="@+id/rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"/>
+
+            <Button
+                android:id="@+id/Submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Submit" />
+
+            <Button
+                android:id="@+id/edit_Profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Edit Profile" />
+
+            <Button
+                android:id="@+id/adminbt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Admin"
+                android:layout_marginTop="16dp"/>
+
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

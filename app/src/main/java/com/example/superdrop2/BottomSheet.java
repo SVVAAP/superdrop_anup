@@ -1,22 +1,29 @@
 package com.example.superdrop2;
 
+import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.CartItem;
+import com.example.superdrop2.upload.BunOnTopAdd_Activity;
 import com.example.superdrop2.upload.Upload;
+import com.example.superdrop2.upload.rest_add_Activity;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +31,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -39,6 +48,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
     String priceWithSymbol,imageUrl;
     Bitmap imageBitmap;
     byte[] data;
+    private StorageReference mStorageRef;
+    private DatabaseReference mDatabaseRef;
+    private StorageTask mUploadTask;
 
 
     public BottomSheet() {
@@ -49,15 +61,17 @@ public class BottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bottom_sheet, container, false);
 
-        item_name=view.findViewById(R.id.sheet_name);
-        item_price=view.findViewById(R.id.sheet_price);
-        total_price=view.findViewById(R.id.sheet_totalprice);
-        item_quantity=view.findViewById(R.id.sheet_quantity);
-        item_img=view.findViewById(R.id.sheet_img);
-        bt_cart=view.findViewById(R.id.sheet_addtocart_bt);
-        bt_order=view.findViewById(R.id.sheet_order_bt);
-        plus_img=view.findViewById(R.id.sheet_plus_bt);
-        minus_img=view.findViewById(R.id.sheet_minus_bt);
+        item_name = view.findViewById(R.id.sheet_name);
+        item_price = view.findViewById(R.id.sheet_price);
+        total_price = view.findViewById(R.id.sheet_totalprice);
+        item_quantity = view.findViewById(R.id.sheet_quantity);
+        item_img = view.findViewById(R.id.sheet_img);
+        bt_cart = view.findViewById(R.id.sheet_addtocart_bt);
+        bt_order = view.findViewById(R.id.sheet_order_bt);
+        plus_img = view.findViewById(R.id.sheet_plus_bt);
+        minus_img = view.findViewById(R.id.sheet_minus_bt);
+        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
 
         // Retrieve item details from arguments
         Bundle args = getArguments();
@@ -81,7 +95,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 i++;
                 item_quantity.setText(String.valueOf(i));
-                String withsymboltprice="₹" +String.valueOf(price*i);
+                String withsymboltprice = "₹" + String.valueOf(price * i);
                 total_price.setText(withsymboltprice);
             }
         });
@@ -91,10 +105,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 if (i > 1) {
                     i--;
                     item_quantity.setText(String.valueOf(i));
-                    String withsymboltprice="₹" +String.valueOf(price*i);
+                    String withsymboltprice = "₹" + String.valueOf(price * i);
                     total_price.setText(withsymboltprice);
-                }
-                else {
+                } else {
                     total_price.setText(priceWithSymbol);
                 }
             }
@@ -112,69 +125,63 @@ public class BottomSheet extends BottomSheetDialogFragment {
             }
         });
         // Inside BottomSheet.java
-        bt_cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                if (currentUser != null) {
-                    String userId = currentUser.getUid();
-                    DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference("carts").child(userId);
-                    String cartItemId = cartRef.push().getKey();
-
-                    // Create a new Upload object to store item details
-                    Upload upload = new Upload();
-                    upload.setName(item_name.getText().toString());
-                    upload.setPrice(price);
-
-                    // Upload the image to Firebase Storage and get the download URL
-                    // Replace 'your_storage_reference' with your actual storage reference
-                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                    StorageReference imageRef = storageRef.child("images/" + cartItemId + ".jpg");
-
-                    // Assuming 'imageBitmap' is the Bitmap of the image you want to upload
-                    // You can replace it with the actual Bitmap
-                    // Inside bt_cart.setOnClickListener
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    if (imageBitmap != null) {
-                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                         data = baos.toByteArray();
-
-                        // Continue with the image upload process...
-                    } else {
-                        Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
-                        // Handle the case when imageBitmap is null
-                    }
-
-                    UploadTask uploadTask = imageRef.putBytes(data);
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Get the download URL of the uploaded image
-                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String imageUrl = uri.toString();
-                                    upload.setImageUrl(imageUrl);
-
-                                    // Create the CartItem object with item details and image URL
-                                    CartItem cartItem = new CartItem(upload.getName(), upload.getPrice(), i, imageUrl);
-                                    cartRef.child(cartItemId).setValue(cartItem);
-                                    dismiss();
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    // Handle the case when the user is not logged in
-                    // You can redirect the user to the login screen or show a message
-                }
-            }
-        });
-
-
-
 
         return view;
     }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile(final double price) {
+        if (mImageUri != null) {
+            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+                    + "." + getFileExtension(mImageUri));
+
+
+            mUploadTask = fileReference.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mProgressBar.setProgress(0);
+                                }
+                            }, 500);
+
+                            Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
+
+                            // Retrieve the download URL and set it as the image URL in the Upload object
+                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri downloadUri) {
+                                    Upload upload = new Upload(item_name.getText().toString().trim(), downloadUri.toString(),price);
+                                    String uploadId = mDatabaseRef.push().getKey();
+                                    mDatabaseRef.child(uploadId).setValue(upload);
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(getActivity(), "No file selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }

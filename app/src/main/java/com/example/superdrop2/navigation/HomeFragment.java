@@ -1,7 +1,13 @@
 package com.example.superdrop2.navigation;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -9,17 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.ImageAdapter;
+import com.example.superdrop2.adapter.MyMenuAdapter;
 import com.example.superdrop2.adapter.SliderAdapter;
 import com.example.superdrop2.adapter.postview;
 import com.example.superdrop2.adapter.rest_Adapter;
+import com.example.superdrop2.methods.ezyMenuItem;
 import com.example.superdrop2.upload.Upload;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,6 +50,9 @@ public class HomeFragment extends Fragment {
     SliderView sliderView;
     private List<String> imageURLs = new ArrayList<>();
 
+    private MyMenuAdapter myMenuAdapter;
+
+
 //    private CardView c1,c2,c3;
 //    int[] images ={R.drawable.one,
 //            R.drawable.one,
@@ -62,9 +67,32 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
+    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+//                               ezy menu code here
+
+
+
+            List<ezyMenuItem> menuItems = new ArrayList<>();
+            menuItems.add(new ezyMenuItem(R.drawable.hamburger, "Burger"));
+            menuItems.add(new ezyMenuItem(R.drawable.fries, "Fries"));
+            menuItems.add(new ezyMenuItem(R.drawable.ice_cream, "ice cream"));
+            menuItems.add(new ezyMenuItem(R.drawable.momo, "Momos"));
+            menuItems.add(new ezyMenuItem(R.drawable.noodles_1, "Noodles"));
+            menuItems.add(new ezyMenuItem(R.drawable.orange_juice, "Juice"));
+            menuItems.add(new ezyMenuItem(R.drawable.pizza_icon, "Pizza"));
+            menuItems.add(new ezyMenuItem(R.drawable.sandwich, "Sandwich"));
+            menuItems.add(new ezyMenuItem(R.drawable.soda, "Soda"));
+             // Add more menu items as needed
+        mRecyclerView = view.findViewById(R.id.ezy_menu_rv);
+            myMenuAdapter = new MyMenuAdapter(menuItems);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+            mRecyclerView.setAdapter(myMenuAdapter);
+
+
 
 
 //        mRecyclerView.setHasFixedSize(true);
