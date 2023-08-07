@@ -40,17 +40,18 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 
 public class BottomSheet extends BottomSheetDialogFragment {
-    TextView item_name,item_price,item_quantity,total_price;
-    Button bt_cart,bt_order;
-    ImageView item_img,plus_img,minus_img;
-    int i=0;
+    TextView item_name, item_price, item_quantity, total_price;
+    Button bt_cart, bt_order;
+    ImageView item_img, plus_img, minus_img;
+    int i = 1;
     double price;
-    String priceWithSymbol,imageUrl;
+    String priceWithSymbol, imageUrl;
     Bitmap imageBitmap;
     byte[] data;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     private StorageTask mUploadTask;
+    private FirebaseAuth mAuth;
 
 
     public BottomSheet() {
@@ -70,8 +71,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
         bt_order = view.findViewById(R.id.sheet_order_bt);
         plus_img = view.findViewById(R.id.sheet_plus_bt);
         minus_img = view.findViewById(R.id.sheet_minus_bt);
-        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+        mStorageRef = FirebaseStorage.getInstance().getReference("cart");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("cart");
+        mAuth = FirebaseAuth.getInstance();
 
         // Retrieve item details from arguments
         Bundle args = getArguments();
@@ -112,76 +114,47 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 }
             }
         });// Load image using Picasso or any other library you prefer
-        Picasso.get().load(imageUrl).into(item_img, new com.squareup.picasso.Callback() {
-            @Override
-            public void onSuccess() {
-                // After image is loaded successfully, convert it to Bitmap
-                imageBitmap = ((BitmapDrawable) item_img.getDrawable()).getBitmap();
-            }
-
-            @Override
-            public void onError(Exception e) {
-                // Handle error if image loading fails
-            }
-        });
+        Picasso.get().load(imageUrl).into(item_img);
         // Inside BottomSheet.java
 
+        bt_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String itemName = item_name.getText().toString().trim();
+                double itemPrice = price;
+                int quantity = i;
+                addToUserCart(itemName, imageUrl, itemPrice, quantity);
+            }
+        });
         return view;
     }
 
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
-    }
-
-    private void uploadFile(final double price) {
-        if (mImageUri != null) {
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(mImageUri));
-
-
-            mUploadTask = fileReference.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mProgressBar.setProgress(0);
-                                }
-                            }, 500);
-
-                            Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
-
-                            // Retrieve the download URL and set it as the image URL in the Upload object
-                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri downloadUri) {
-                                    Upload upload = new Upload(item_name.getText().toString().trim(), downloadUri.toString(),price);
-                                    String uploadId = mDatabaseRef.push().getKey();
-                                    mDatabaseRef.child(uploadId).setValue(upload);
-                                }
-                            });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(getActivity(), "No file selected", Toast.LENGTH_SHORT).show();
+    private void addToUserCart(String itemName, String imageUrl, double itemPrice, int quantity) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            // User not authenticated, handle accordingly
+            return;
         }
+
+        String userId = currentUser.getUid();
+        DatabaseReference userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
+        DatabaseReference cartItemRef = userCartRef.push();
+
+        // Create a new CartItem object with the correct constructor
+        CartItem cartItem = new CartItem(itemName, itemPrice, quantity, imageUrl);
+
+        cartItemRef.setValue(cartItem)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
-
-
 }

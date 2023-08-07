@@ -46,7 +46,7 @@ public class Cart_Activity extends AppCompatActivity {
             String userId = currentUser.getUid();
 
             // Retrieve cart items from the user's cart node in the database
-            DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference("carts").child(userId);
+            DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
             cartRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
