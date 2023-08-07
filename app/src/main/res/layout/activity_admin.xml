@@ -24,14 +24,16 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_marginTop="10dp"
         android:layout_alignParentStart="true"
         android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/toolbar_bg"
         android:text="Offers!!"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
     <Button
         android:id="@+id/bunontop_add"
         style="@style/Widget.AppCompat.Button"
@@ -54,6 +56,7 @@
         android:layout_alignParentStart="true"
         android:layout_gravity="center"
         android:text="StreetWok"
+        android:background="@color/orange"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

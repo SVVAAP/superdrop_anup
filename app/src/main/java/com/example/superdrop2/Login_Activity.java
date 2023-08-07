@@ -56,15 +56,15 @@ public class Login_Activity extends AppCompatActivity {
     // string for storing our verification ID
     private String verificationId;
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        FirebaseUser currentuser= auth.getCurrentUser();
-//        if(currentuser!=null) {
-//            startActivity(new Intent(Login_Activity.this, NavActivity.class));
-//            finish();
-//        }
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentuser= mAuth.getCurrentUser();
+        if(currentuser!=null) {
+            startActivity(new Intent(Login_Activity.this, NavActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,9 @@ public class Login_Activity extends AppCompatActivity {
             public void onSwipeBottom() {
             }
 
+
         });
+
         // below line is for getting instance of our FirebaseAuth.
         mAuth = FirebaseAuth.getInstance();
 
