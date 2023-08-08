@@ -1,5 +1,6 @@
 package com.example.superdrop2.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,8 +44,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         holder.cartItemPrice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getItemPrice()));
         holder.cartItemQuantity.setText(String.valueOf(cartItem.getQuantity()));
         holder.getCartItemTotalprice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getTotalprice()));
-        Picasso.get().load(cartItem.getImageUrl()).into(holder.cartItemImg);
-    }
+        if(cartItem.getImageUrl()!=null){
+        Picasso.get().load(cartItem.getImageUrl()).into(holder.cartItemImg);}
+        else {
+            Picasso.get().load(R.drawable.logo).into(holder.cartItemImg);
+        }
+        }
+
 
     @Override
     public int getItemCount() {

@@ -7,8 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.example.superdrop2.navigation.NavActivity;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.hbb20.CountryCodePicker;
@@ -22,6 +25,16 @@ public class OtpSendActivity extends AppCompatActivity {
     private Button btnSend;
     private ProgressBar progressBar;
     private CountryCodePicker countryCodePicker;
+    private FirebaseAuth mAuth;
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentuser= mAuth.getCurrentUser();
+        if(currentuser!=null) {
+            startActivity(new Intent(OtpSendActivity.this, NavActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +45,7 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         progressBar = findViewById(R.id.progressBar);
         countryCodePicker = findViewById(R.id.ccp);
+        mAuth = FirebaseAuth.getInstance();
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +60,13 @@ public class OtpSendActivity extends AppCompatActivity {
     }
 
     private void sendOTP(String phoneNumber) {
+        // Disable UI elements
+        etPhone.setEnabled(false);
+        btnSend.setEnabled(false);
+        countryCodePicker.setEnabled(false);
+
+        // Show progress bar
+        progressBar.setVisibility(View.VISIBLE);
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
@@ -56,7 +77,13 @@ public class OtpSendActivity extends AppCompatActivity {
 
                     @Override
                     public void onVerificationFailed(FirebaseException e) {
-                        // Verification failed, show an error message
+                        etPhone.setEnabled(true);
+                        btnSend.setEnabled(true);
+                        countryCodePicker.setEnabled(true);
+
+                        // Hide progress bar
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(OtpSendActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
