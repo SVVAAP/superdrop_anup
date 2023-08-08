@@ -10,7 +10,7 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:shapeAppearance="@style/Imagestyle_round_corners"
-        app:strokeColor="#15E8FE"
-        app:strokeWidth="3dp"/>
+        app:strokeColor="@color/orange"
+        app:strokeWidth="1dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

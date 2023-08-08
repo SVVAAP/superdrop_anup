@@ -23,49 +23,58 @@ import java.util.List;
 
 public class Cart_Activity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private CartAdapter cartAdapter;
-    private List<CartItem> cartItems;
-    private DatabaseReference cartRef;
+    private CartAdapter adapter;
+    private List<CartItem> cartItemList;
+
     private FirebaseAuth mAuth;
+    private DatabaseReference userCartRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            // Handle user not authenticated
+
+        }
+
+        String userId = currentUser.getUid();
+        userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
+
         recyclerView = findViewById(R.id.cartRecyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(Cart_Activity.this));
 
-        cartItems = new ArrayList<>();
-        cartAdapter = new CartAdapter(cartItems);
-        recyclerView.setAdapter(cartAdapter);
+        cartItemList = new ArrayList<>();
+        adapter = new CartAdapter(cartItemList, this);
+        recyclerView.setAdapter(adapter);
 
-        // Get the current user's unique ID
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
+        retrieveCartItems();
 
-            // Retrieve cart items from the user's cart node in the database
-            DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
-            cartRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    cartItems.clear();
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        CartItem cartItem = postSnapshot.getValue(CartItem.class);
-                        cartItems.add(cartItem);
+    }
+
+    private void retrieveCartItems() {
+        userCartRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cartItemList.clear();
+
+                for (DataSnapshot cartItemSnapshot : snapshot.getChildren()) {
+                    CartItem cartItem = cartItemSnapshot.getValue(CartItem.class);
+                    if (cartItem != null) {
+                        cartItemList.add(cartItem);
                     }
-                    cartAdapter.notifyDataSetChanged();
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(Cart_Activity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            // Handle the case when the user is not logged in
-            // You can redirect the user to the login screen or show a message
-        }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database read error
+            }
+        });
     }
 }

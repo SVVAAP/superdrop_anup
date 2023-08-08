@@ -4,7 +4,7 @@ import android.widget.ImageView;
 
 public class CartItem {
     private String itemName;
-    private double itemPrice;
+    private double itemPrice,totalprice;
     private int quantity;
 
     private String itemimg;
@@ -13,11 +13,12 @@ public class CartItem {
         // Default constructor required for Firebase
     }
 
-    public CartItem(String itemName, double itemPrice, int quantity,String itemimg) {
+    public CartItem(String itemName, double itemPrice, int quantity,String itemimg,double totalprice) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.quantity = quantity;
         this.itemimg=itemimg;
+        this.totalprice=totalprice;
     }
 
     public String getItemName() {
@@ -27,11 +28,14 @@ public class CartItem {
     public double getItemPrice() {
         return itemPrice;
     }
+    public double getTotalprice() {
+        return totalprice;
+    }
 
     public int getQuantity() {
         return quantity;
     }
-    public String getItemimg(){
+    public String getImageUrl(){
         return itemimg;
     }
 
@@ -49,5 +53,8 @@ public class CartItem {
     }
     public void setItemimg(String itemimg){
         this.itemimg=itemimg;
+    }
+    public void setTotalprice(double totalprice) {
+        this.totalprice = totalprice;
     }
 }

@@ -47,9 +47,9 @@
                     app:sliderIndicatorGravity="center_horizontal|bottom"
                     app:sliderIndicatorMargin="15dp"
                     app:sliderIndicatorPadding="3dp"
-                    app:sliderIndicatorSelectedColor="#02147A"
-                    app:sliderIndicatorUnselectedColor="#0DB1B9"
-                    app:sliderScrollTimeInSec="2"
+                    app:sliderIndicatorSelectedColor="@color/dark_orange"
+                    app:sliderIndicatorUnselectedColor="@color/light_orange"
+                    app:sliderScrollTimeInSec="4"
                     app:sliderStartAutoCycle="true">
 
 

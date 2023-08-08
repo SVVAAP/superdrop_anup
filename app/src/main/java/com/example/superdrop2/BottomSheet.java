@@ -52,6 +52,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private DatabaseReference mDatabaseRef;
     private StorageTask mUploadTask;
     private FirebaseAuth mAuth;
+    double totalprice;
 
 
     public BottomSheet() {
@@ -97,6 +98,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 i++;
                 item_quantity.setText(String.valueOf(i));
+                totalprice=price*i;
                 String withsymboltprice = "₹" + String.valueOf(price * i);
                 total_price.setText(withsymboltprice);
             }
@@ -107,6 +109,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 if (i > 1) {
                     i--;
                     item_quantity.setText(String.valueOf(i));
+                    totalprice=price*i;
                     String withsymboltprice = "₹" + String.valueOf(price * i);
                     total_price.setText(withsymboltprice);
                 } else {
@@ -123,13 +126,14 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 String itemName = item_name.getText().toString().trim();
                 double itemPrice = price;
                 int quantity = i;
-                addToUserCart(itemName, imageUrl, itemPrice, quantity);
+                addToUserCart(itemName, imageUrl, itemPrice, quantity,totalprice);
             }
         });
+
         return view;
     }
 
-    private void addToUserCart(String itemName, String imageUrl, double itemPrice, int quantity) {
+    private void addToUserCart(String itemName, String imageUrl, double itemPrice, int quantity,double totalprice) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             // User not authenticated, handle accordingly
@@ -141,7 +145,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         DatabaseReference cartItemRef = userCartRef.push();
 
         // Create a new CartItem object with the correct constructor
-        CartItem cartItem = new CartItem(itemName, itemPrice, quantity, imageUrl);
+        CartItem cartItem = new CartItem(itemName, itemPrice, quantity, imageUrl,totalprice);
 
         cartItemRef.setValue(cartItem)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
