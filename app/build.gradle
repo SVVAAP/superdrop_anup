@@ -59,4 +59,6 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth")
     implementation 'com.github.TutorialsAndroid:GButton:v1.0.19'
+
+    implementation 'com.hbb20:ccp:2.5.0'
 }

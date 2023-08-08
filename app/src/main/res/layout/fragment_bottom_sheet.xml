@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/dialogbg"
     android:orientation="vertical"
-    android:paddingBottom="50dp"
     tools:context=".BottomSheet">
 
 
@@ -23,7 +22,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="355dp"
+        android:layout_height="455dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,76 +44,76 @@
             android:textColor="@color/lavender"
             android:textSize="30dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/sheet_img"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.029" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <ImageView
             android:id="@+id/sheet_img"
-            android:layout_width="102dp"
-            android:layout_height="86dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="156dp"
             android:padding="20px"
+            app:layout_constraintCircleRadius="20dp"
             android:src="@drawable/logo"
+            app:circularflow_defaultRadius="20dp"
+            app:circularflow_radiusInDP="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3" />
+            app:layout_constraintVertical_bias="0.224" />
 
         <TextView
             android:id="@+id/sheet_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/gotham"
             android:padding="15px"
             android:text="Name"
-            android:fontFamily="@font/gotham"
             android:textColor="@color/blue_700"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/sheet_img"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.259" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sheet_img" />
 
         <TextView
             android:id="@+id/sheet_price"
             android:layout_width="103dp"
             android:layout_height="33dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/gotham"
             android:gravity="center|left"
             android:text="peice"
-            android:fontFamily="@font/gotham"
             android:textColor="@color/blue_700"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.394" />
+            app:layout_constraintTop_toBottomOf="@+id/sheet_img" />
 
         <ImageView
             android:id="@+id/sheet_minus_bt"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="-3dp"
-            android:layout_marginEnd="8dp"
+            android:padding="7dp"
             android:src="@drawable/minus"
             app:layout_constraintBottom_toBottomOf="@+id/sheet_quantity"
             app:layout_constraintEnd_toStartOf="@+id/sheet_quantity"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/sheet_quantity"
-            app:layout_constraintVertical_bias="0.59" />
+            app:layout_constraintVertical_bias="0.6" />
 
         <TextView
             android:id="@+id/sheet_quantity"
             android:layout_width="56dp"
             android:layout_height="52dp"
-            android:layout_marginTop="176dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginEnd="52dp"
             android:layout_marginBottom="19dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
@@ -126,15 +125,16 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/sheet_order_bt"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.066" />
+            app:layout_constraintTop_toBottomOf="@+id/sheet_price"
+            app:layout_constraintVertical_bias="0.228" />
 
         <ImageView
             android:id="@+id/sheet_plus_bt"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="-3dp"
+            android:padding="7dp"
             android:src="@drawable/plus"
             app:layout_constraintBottom_toBottomOf="@+id/sheet_quantity"
             app:layout_constraintStart_toEndOf="@+id/sheet_quantity"
@@ -145,27 +145,27 @@
             android:id="@+id/sheet_order_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/buttonshapewhitebg"
+            android:background="@drawable/curved_shape"
             android:fontFamily="@font/calibri"
             android:text="Place Order"
             android:textAlignment="center"
-            android:textColor="@color/blue_700"
+            android:textColor="@color/colorAccent"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/sheet_addtocart_bt"/>
+            app:layout_constraintStart_toEndOf="@+id/sheet_addtocart_bt" />
 
 
         <Button
             android:id="@+id/sheet_addtocart_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/buttonshapewhitebg"
+            android:background="@drawable/curved_shape"
             android:fontFamily="@font/calibri"
             android:text="Add To Cart"
             android:textAlignment="center"
-            android:textColor="@color/blue_700"
+            android:textColor="@color/colorAccent"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -178,46 +178,50 @@
             android:id="@+id/sheet_totalprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:text="TextView"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="28dp"
             android:fontFamily="@font/calibri"
+            android:text="TextView"
             android:textAlignment="center"
             android:textAllCaps="false"
-            android:textSize="24sp"
+            android:textColor="@color/dark_orange"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/sheet_order_bt"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.937" />
+            app:layout_constraintTop_toBottomOf="@+id/sheet_quantity" />
 
         <TextView
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="12dp"
-            android:text="Quantity"
+            android:layout_marginStart="20dp"
             android:fontFamily="@font/gotham"
+            android:text="Quantity"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/sheet_addtocart_bt"
+            app:layout_constraintEnd_toStartOf="@+id/sheet_minus_bt"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sheet_img"
-            app:layout_constraintVertical_bias="0.132" />
+            app:layout_constraintTop_toBottomOf="@+id/sheet_name"
+            app:layout_constraintVertical_bias="0.196" />
 
         <TextView
             android:id="@+id/textView15"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/gotham"
             android:text="Total"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:fontFamily="@font/gotham"
             app:layout_constraintBottom_toTopOf="@+id/sheet_addtocart_bt"
+            app:layout_constraintEnd_toStartOf="@+id/sheet_totalprice"
+            app:layout_constraintHorizontal_bias="0.085"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView14"
-            app:layout_constraintVertical_bias="0.603" />
+            app:layout_constraintVertical_bias="0.711" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
