@@ -21,41 +21,45 @@
         android:typeface="sans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/cart_order"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cartRecyclerView">
 
         <TextView
-            android:layout_width="182dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Total Price"
             android:textAlignment="center"
-            android:textSize="24dp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/cart_grandprice"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Price"
             android:textAlignment="center"
-            android:textSize="24dp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -64,13 +68,12 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:layout_marginTop="15dp"
+        android:layout_margin="16dp"
         android:text="Place Order"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
