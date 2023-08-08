@@ -1,7 +1,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="120dp"
     android:layout_margin="5dp"
     app:cardCornerRadius="8dp">
 
@@ -14,11 +14,11 @@
             android:id="@+id/rest_img"
             android:layout_width="72dp"
             android:layout_height="72dp"
+            android:contentDescription="Restaurant Image"
             android:src="@drawable/logo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:contentDescription="Restaurant Image" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/cartItemName"
@@ -51,11 +51,13 @@
             android:id="@+id/cartItemPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
             android:text="Price"
-            android:textSize="16sp"
+            android:textColor="@color/dark_orange"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/cartItemQuantity"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/rest_img"
+            app:layout_constraintStart_toStartOf="@+id/cartItemQuantity"
             app:layout_constraintTop_toBottomOf="@+id/cartItemQuantity" />
 
         <TextView
@@ -65,9 +67,9 @@
             android:text="Total"
             android:textSize="18sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

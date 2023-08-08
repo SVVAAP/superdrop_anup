@@ -29,7 +29,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="21dp"
         android:background="@drawable/circle_background"
-        android:backgroundTint="#000000"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -46,7 +45,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:text="Anup Nayak"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold|italic" />
 
@@ -55,8 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right"
-            android:text="App | Web Devloper" />
+            android:text="App | Web Devloper"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
     <!-- Developer Srujan -->
@@ -88,7 +87,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:text="Srujan"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold|italic" />
 
@@ -97,8 +96,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right"
-            android:text="App | Web | Game Devloper" />
+            android:text="App | Web | Game Devloper"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
 

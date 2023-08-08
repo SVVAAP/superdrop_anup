@@ -50,7 +50,8 @@
             android:layout_weight="1"
             android:text="Total Price"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/cart_grandprice"
@@ -59,7 +60,8 @@
             android:layout_weight="1"
             android:text="Price"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

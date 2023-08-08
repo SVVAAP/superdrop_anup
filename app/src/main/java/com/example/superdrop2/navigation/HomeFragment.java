@@ -8,7 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -51,6 +60,13 @@ public class HomeFragment extends Fragment {
     private List<String> imageURLs = new ArrayList<>();
 
     private MyMenuAdapter myMenuAdapter;
+
+    //animatiopn in homr page
+    private View rootView;
+    private Animation fadeInAnimation;
+    private Animation slideUpAnimation;
+    private RecyclerView offerRecyclerView;
+
 
 
 //    private CardView c1,c2,c3;
@@ -171,6 +187,16 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        // animation code here
+        // Load animations
+        fadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        slideUpAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
+
+        // Apply animations
+        rootView.startAnimation(fadeInAnimation);
+        offerRecyclerView = rootView.findViewById(R.id.offer_recyclerview);
+        offerRecyclerView.startAnimation(slideUpAnimation);
 
         return view;
     }
