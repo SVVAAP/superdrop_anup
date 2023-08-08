@@ -4,6 +4,7 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:statusBarColor">@color/black</item>
+        <item name="colorPrimary">@color/dark_orange</item>
     </style>
 
     <style name="Theme.SUPERDROP2" parent="Base.Theme.SUPERDROP2" />
