@@ -19,7 +19,11 @@
             android:name=".Detail_Activity"
             android:exported="false" />
         <activity
-            android:name=".Login_Activity"
+            android:name=".OtpSendActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".OtpVerifyActivity"
             android:exported="false" />
         <activity
             android:name=".Admin_Activity"

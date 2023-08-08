@@ -115,9 +115,10 @@
                 android:id="@+id/note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
                 android:hint="Note if any ?"
-                android:inputType="text"
-                android:layout_marginTop="16dp"/>
+                android:inputType="text" />
 
 
             <!-- Payment Method Form -->
@@ -141,25 +142,61 @@
                 android:orientation="vertical"
                 android:layout_marginTop="8dp">
 
-                <RadioButton
-                    android:id="@+id/gpay_upi"
-                    android:layout_width="match_parent"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:drawableStart="@drawable/ic_gpay_upi"
-                    android:text="GPay UPI"
-                    android:textColor="#333333"
-                    android:textSize="16sp"/>
+                    android:layout_margin="20dp">
 
-                <RadioButton
-                    android:id="@+id/cash_on_delivery"
-                    android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="100dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/gpay" />
+
+                    <RadioButton
+                        android:id="@+id/gpay_upi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="GPay / UPI"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:drawableStart="@drawable/ic_cash_on_delivery"
-                    android:text="Cash on Delivery"
-                    android:textColor="#333333"
-                    android:textSize="16sp"/>
+                    android:layout_margin="20dp">
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="100dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/cod" />
+
+                    <RadioButton
+                        android:id="@+id/cash_on_delivery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Cash on Delivery"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.497"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- Add more payment methods here -->
 

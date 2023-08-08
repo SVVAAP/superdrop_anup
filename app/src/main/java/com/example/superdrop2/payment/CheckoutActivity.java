@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.superdrop2.R;
+import com.example.superdrop2.methods.Order;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -114,9 +115,12 @@ public class CheckoutActivity extends AppCompatActivity {
                 contactInstructions, note, paymentMethod));
     }
 
+    // Inside your CheckoutActivity.java
+
     private void redirectToOrderPlacedPage() {
-        // Redirect to the order placed page
-        startActivity(new Intent(this, OrderPlacedActivity.class));
-        finish();
+        Intent intent = new Intent(this, OrderPlacedActivity.class);
+        startActivity(intent);
+        finish(); // Optional: Close the current activity if needed
     }
+
 }
