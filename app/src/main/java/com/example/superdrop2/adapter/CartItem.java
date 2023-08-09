@@ -51,7 +51,7 @@ public class CartItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    public void setItemimg(String itemimg){
+    public void setImageUrl(String itemimg){
         this.itemimg=itemimg;
     }
     public void setTotalprice(double totalprice) {

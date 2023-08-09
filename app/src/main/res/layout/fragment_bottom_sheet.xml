@@ -143,15 +143,16 @@
 
         <Button
             android:id="@+id/sheet_order_bt"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/curved_shape"
             android:fontFamily="@font/calibri"
             android:text="Place Order"
             android:textAlignment="center"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/deep_orange_100"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:layout_marginBottom="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/sheet_addtocart_bt" />
@@ -159,15 +160,16 @@
 
         <Button
             android:id="@+id/sheet_addtocart_bt"
+            style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/curved_shape"
             android:fontFamily="@font/calibri"
             android:text="Add To Cart"
             android:textAlignment="center"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/deep_orange_100"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:layout_marginBottom="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/sheet_order_bt"
             app:layout_constraintHorizontal_bias="0.038"

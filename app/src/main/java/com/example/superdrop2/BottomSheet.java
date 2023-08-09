@@ -53,16 +53,13 @@ public class BottomSheet extends BottomSheetDialogFragment {
     byte[] data;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
+    private StorageTask mUploadTask;
     private FirebaseAuth mAuth;
-    private Context context;
     double totalprice;
 
 
     public BottomSheet() {
         // Required empty public constructor
-    }
-    public BottomSheet(Context context) {
-        this.context = context;
     }
 
     @Override
@@ -132,25 +129,17 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 String itemName = item_name.getText().toString().trim();
                 double itemPrice = price;
                 int quantity = i;
-                double totalItemPrice = itemPrice * quantity;
-
-                // Convert image to Uri and upload to Firebase Storage
-                uploadImageToStorageAndSaveToDatabase(imageBitmap, itemName, itemPrice, quantity, totalItemPrice);
-            }
-        });
-        bt_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              Intent intent=new Intent(getActivity(), CheckoutActivity.class);
-              startActivity(intent);
-
+                String totalPriceText = total_price.getText().toString().trim();
+                totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
+                totalprice = Double.parseDouble(totalPriceText);
+                addToUserCart(itemName, imageUrl, itemPrice, quantity,totalprice);
             }
         });
 
         return view;
     }
 
-    private void uploadImageToStorageAndSaveToDatabase(Bitmap bitmap, final String itemName, final double itemPrice, final int quantity, final double totalItemPrice) {
+    private void addToUserCart(String itemName, String imageUrl, double itemPrice, int quantity,double totalprice) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             // User not authenticated, handle accordingly
@@ -158,48 +147,24 @@ public class BottomSheet extends BottomSheetDialogFragment {
         }
 
         String userId = currentUser.getUid();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
+        DatabaseReference userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
+        DatabaseReference cartItemRef = userCartRef.push();
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        data = baos.toByteArray();
+        // Create a new CartItem object with the correct constructor
+        CartItem cartItem = new CartItem(itemName, itemPrice, quantity,totalprice, imageUrl);
 
-        // Upload image to Firebase Storage
-        String fileName = System.currentTimeMillis() + ".jpg";
-        StorageReference imageRef = mStorageRef.child(fileName);
-
-        UploadTask uploadTask = imageRef.putBytes(data);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        cartItemRef.setValue(cartItem)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(Uri uri) {
-                        String imageUrl = uri.toString();
-
-                        // Save item to Firebase Database
-                        CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalItemPrice, imageUrl);
-                        mDatabaseRef.push().setValue(cartItem)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle image upload failure
-            }
-        });
     }
 }
