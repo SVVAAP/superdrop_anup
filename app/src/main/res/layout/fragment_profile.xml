@@ -114,21 +114,11 @@
 
             <Button
                 android:id="@+id/adminbt"
-                style="@style/Widget.AppCompat.Button.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="Admin" />
-
-            <Button
-                android:id="@+id/logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:text="Admin" />
+                android:text="Admin"
+                android:layout_marginTop="16dp"/>
 
 
         </LinearLayout>

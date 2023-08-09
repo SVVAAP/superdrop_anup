@@ -5,12 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.CartAdapter;
 import com.example.superdrop2.adapter.CartItem;
+import com.example.superdrop2.payment.CheckoutActivity;
+import com.example.superdrop2.payment.OrderPlacedActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +36,7 @@ public class Cart_Activity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference userCartRef;
     double total = 0.0;
+    Button placeorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class Cart_Activity extends AppCompatActivity {
         String userId = currentUser.getUid();
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
         totalPriceTextView = findViewById(R.id.cart_grandprice);
+        placeorder=findViewById(R.id.cart_order);
 
         recyclerView = findViewById(R.id.cartRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -56,6 +63,15 @@ public class Cart_Activity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         retrieveCartItems();
+
+        placeorder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Cart_Activity.this, CheckoutActivity.class));
+                finish();
+
+            }
+        });
 
     }
 

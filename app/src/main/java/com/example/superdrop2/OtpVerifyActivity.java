@@ -4,10 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -40,6 +44,30 @@ public class OtpVerifyActivity extends AppCompatActivity {
 
         // Retrieve verification ID from the intent
         verificationId = getIntent().getStringExtra("verificationId");
+        // Inside your onCreate method
+        for (int i = 0; i < etCodeArray.length; i++) {
+            final int currentIndex = i;
+            final EditText currentEditText = etCodeArray[currentIndex];
+
+            currentEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if (charSequence.length() == 1 && currentIndex < etCodeArray.length - 1) {
+                        etCodeArray[currentIndex + 1].requestFocus();
+                    } else if (charSequence.length() == 0 && currentIndex > 0) {
+                        etCodeArray[currentIndex - 1].requestFocus();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                }
+            });
+        }
 
         btnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +84,14 @@ public class OtpVerifyActivity extends AppCompatActivity {
     }
 
     private void verifyOTP(String enteredOTP) {
+        for (EditText editText : etCodeArray) {
+            editText.setEnabled(false);
+        }
+        btnVerify.setEnabled(false);
+
+        // Show progress bar
+        progressBarVerify.setVisibility(View.VISIBLE);
+
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, enteredOTP);
         FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -64,8 +100,18 @@ public class OtpVerifyActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // OTP verification successful, proceed to the next activity
                             // For example, you can redirect to the user's profile or dashboard
+                            startActivity(new Intent(OtpVerifyActivity.this, Detail_Activity.class));
+                            finish();
                         } else {
+                            for (EditText editText : etCodeArray) {
+                                editText.setEnabled(true);
+                            }
+                            btnVerify.setEnabled(true);
+
+                            // Hide progress bar
+                            progressBarVerify.setVisibility(View.GONE);
                             // OTP verification failed, show an error message
+                            Toast.makeText(OtpVerifyActivity.this, "Error!!!!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
