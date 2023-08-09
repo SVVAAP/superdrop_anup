@@ -44,12 +44,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         holder.cartItemPrice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getItemPrice()));
         holder.cartItemQuantity.setText(String.valueOf(cartItem.getQuantity()));
         holder.getCartItemTotalprice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getTotalprice()));
-        if(cartItem.getImageUrl()!=null){
-        Picasso.get().load(cartItem.getImageUrl()).into(holder.cartItemImg);}
-        else {
-            Picasso.get().load(R.drawable.logo).into(holder.cartItemImg);
+        if (cartItem.getImageUrl() != null) {
+            Picasso.get().load(cartItem.getImageUrl()).into(holder.cartItemImg);
+        } else {
+            Picasso.get().load(R.drawable.logo).into(holder.cartItemImg); // Replace with your default image resource
         }
-        }
+    }
 
 
     @Override
