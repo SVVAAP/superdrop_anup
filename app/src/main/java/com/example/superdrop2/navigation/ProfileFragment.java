@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.superdrop2.Admin_Activity;
+import com.example.superdrop2.OtpSendActivity;
 import com.example.superdrop2.R;
 import com.example.superdrop2.methods.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,7 +38,7 @@ public class ProfileFragment extends Fragment {
 
     private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact;
     private RatingBar ratingBar;
-    private Button submitButton, editProfileButton,admin;
+    private Button submitButton, editProfileButton,admin,logout;
     private ImageView profileImage;
 
     private DatabaseReference databaseReference;
@@ -75,6 +76,7 @@ public class ProfileFragment extends Fragment {
         submitButton = view.findViewById(R.id.Submit);
         editProfileButton = view.findViewById(R.id.edit_Profile);
         profileImage = view.findViewById(R.id.profile_image);
+        logout=view.findViewById(R.id.logout_bt);
 
         // Initialize Firebase Database and Storage References
         databaseReference = FirebaseDatabase.getInstance().getReference("customer_profiles");
@@ -108,6 +110,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openImageChooser();
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent=new Intent(getActivity(), OtpSendActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -52,6 +52,12 @@
         <activity
             android:name=".navigation.NavActivity"
             android:exported="false" />
+        <activity
+            android:name=".payment.OrderPlacedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".payment.CheckoutActivity"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

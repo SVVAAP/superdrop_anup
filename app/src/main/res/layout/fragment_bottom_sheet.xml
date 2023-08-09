@@ -54,11 +54,11 @@
             android:layout_width="wrap_content"
             android:layout_height="156dp"
             android:padding="20px"
+            app:layout_constraintCircleRadius="20dp"
             android:src="@drawable/logo"
             app:circularflow_defaultRadius="20dp"
             app:circularflow_radiusInDP="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintCircleRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.666"
             app:layout_constraintStart_toStartOf="parent"
@@ -141,13 +141,10 @@
             app:layout_constraintTop_toTopOf="@+id/sheet_quantity"
             app:layout_constraintVertical_bias="0.6" />
 
-
         <Button
             android:id="@+id/sheet_order_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="177dp"
-            android:layout_marginEnd="28dp"
             android:background="@drawable/curved_shape"
             android:fontFamily="@font/calibri"
             android:text="Place Order"
@@ -157,13 +154,13 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sheet_img" />
+            app:layout_constraintStart_toEndOf="@+id/sheet_addtocart_bt" />
+
 
         <Button
             android:id="@+id/sheet_addtocart_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="184dp"
             android:background="@drawable/curved_shape"
             android:fontFamily="@font/calibri"
             android:text="Add To Cart"
@@ -173,10 +170,9 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/sheet_order_bt"
-            app:layout_constraintHorizontal_bias="0.248"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sheet_img"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintHorizontal_bias="0.038"
+            app:layout_constraintStart_toStartOf="parent" />
+
 
         <TextView
             android:id="@+id/sheet_totalprice"
@@ -191,6 +187,7 @@
             android:textColor="@color/dark_orange"
             android:textSize="30sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/sheet_order_bt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sheet_quantity" />
 

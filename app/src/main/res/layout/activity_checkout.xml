@@ -88,11 +88,6 @@
                 android:layout_marginTop="16dp"/>
 
 
-
-
-
-
-
             <!-- note -->
             <TextView
                 android:id="@+id/textView8"
