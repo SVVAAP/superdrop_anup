@@ -18,13 +18,13 @@
         <activity
             android:name=".Detail_Activity"
             android:exported="false" />
-        <activity
-            android:name=".OtpSendActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".OtpSendActivity"-->
+<!--            android:exported="false" />-->
 
-        <activity
-            android:name=".OtpVerifyActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".OtpVerifyActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".Admin_Activity"
             android:exported="false" />
