@@ -8,12 +8,14 @@ public class CartItem {
     private int quantity;
 
     private String itemimg;
+    private String itemId;
 
     public CartItem() {
         // Default constructor required for Firebase
     }
 
     public CartItem(String itemName, double itemPrice, int quantity,double totalprice,String itemimg) {
+        this.itemId = itemId;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.quantity = quantity;
@@ -38,6 +40,9 @@ public class CartItem {
     public String getImageUrl(){
         return itemimg;
     }
+    public String getItemId() {
+        return itemId;
+    }
 
     // Setter methods (if needed)
     public void setItemName(String itemName) {
@@ -57,4 +62,6 @@ public class CartItem {
     public void setTotalprice(double totalprice) {
         this.totalprice = totalprice;
     }
+    public void setItemId(String itemId) {
+        this.itemId = itemId;}
 }

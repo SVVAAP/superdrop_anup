@@ -139,7 +139,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         return view;
     }
 
-    private void addToUserCart(String itemName, String imageUrl, double itemPrice, int quantity,double totalprice) {
+    private void addToUserCart(String itemName, String imageUrl, double itemPrice, int quantity, double totalprice) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             // User not authenticated, handle accordingly
@@ -148,12 +148,16 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
         String userId = currentUser.getUid();
         DatabaseReference userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
-        DatabaseReference cartItemRef = userCartRef.push();
+
+        // Generate a unique item ID
+        String itemId = userCartRef.push().getKey();
 
         // Create a new CartItem object with the correct constructor
-        CartItem cartItem = new CartItem(itemName, itemPrice, quantity,totalprice, imageUrl);
+        CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalprice, imageUrl);
+        cartItem.setItemId(itemId); // Set the generated item ID
 
-        cartItemRef.setValue(cartItem)
+        // Save the cart item to the user's cart reference
+        userCartRef.child(itemId).setValue(cartItem)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
