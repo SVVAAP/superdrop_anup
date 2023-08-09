@@ -1,6 +1,7 @@
 package com.example.superdrop2;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.CartItem;
+import com.example.superdrop2.payment.CheckoutActivity;
 import com.example.superdrop2.upload.BunOnTopAdd_Activity;
 import com.example.superdrop2.upload.Upload;
 import com.example.superdrop2.upload.rest_add_Activity;
@@ -134,6 +136,14 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
                 // Convert image to Uri and upload to Firebase Storage
                 uploadImageToStorageAndSaveToDatabase(imageBitmap, itemName, itemPrice, quantity, totalItemPrice);
+            }
+        });
+        bt_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              Intent intent=new Intent(getActivity(), CheckoutActivity.class);
+              startActivity(intent);
+
             }
         });
 
