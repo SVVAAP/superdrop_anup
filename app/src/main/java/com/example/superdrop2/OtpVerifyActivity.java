@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,7 @@ public class OtpVerifyActivity extends AppCompatActivity {
     private Button btnVerify;
     private ProgressBar progressBarVerify;
     private String verificationId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,10 @@ public class OtpVerifyActivity extends AppCompatActivity {
 
         // Retrieve verification ID from the intent
         verificationId = getIntent().getStringExtra("verificationId");
+        String phoneNumber = getIntent().getStringExtra("phoneNumber");
+
+        TextView tvPhoneNumber = findViewById(R.id.tvMobile); // Use the appropriate TextView ID from your XML
+        tvPhoneNumber.setText(phoneNumber);
         // Inside your onCreate method
         for (int i = 0; i < etCodeArray.length; i++) {
             final int currentIndex = i;

@@ -1,4 +1,5 @@
 package com.example.superdrop2;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -31,6 +32,7 @@ public class OtpSendActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private CountryCodePicker countryCodePicker;
     private FirebaseAuth mAuth;
+    private ActivityResultLauncher<Intent> phoneNumberLauncher;
     private WebView webView;
     private WebViewClient webViewClient;
 //    private WebViewCompat webViewCompat;
@@ -110,6 +112,7 @@ public class OtpSendActivity extends AppCompatActivity {
                         // Call the OTP verification activity
                         Intent intent = new Intent(OtpSendActivity.this, OtpVerifyActivity.class);
                         intent.putExtra("verificationId", verificationId);
+                        intent.putExtra("phoneNumber", phoneNumber);
                         startActivity(intent);
                     }
                 };

@@ -2,6 +2,7 @@ package com.example.superdrop2.navigation;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,17 +26,23 @@ import androidx.fragment.app.Fragment;
 import com.example.superdrop2.Admin_Activity;
 import com.example.superdrop2.OtpSendActivity;
 import com.example.superdrop2.R;
+import com.example.superdrop2.adapter.CartItem;
 import com.example.superdrop2.methods.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class ProfileFragment extends Fragment {
@@ -46,16 +57,18 @@ public class ProfileFragment extends Fragment {
 
     private boolean isEditMode = false;
     private Uri selectedImageUri;
-
+    private FirebaseAuth mAuth;
     private static final int PICK_IMAGE_REQUEST = 1;
+    private ActivityResultLauncher<Intent> mGetContentLauncher;
+    private Uri mImageUri;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-
-
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userId = user.getUid();
         admin = view.findViewById(R.id.adminbt);
 
         admin.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +92,36 @@ public class ProfileFragment extends Fragment {
         logout=view.findViewById(R.id.logout_bt);
 
         // Initialize Firebase Database and Storage References
-        databaseReference = FirebaseDatabase.getInstance().getReference("customer_profiles");
-        storageReference = FirebaseStorage.getInstance().getReference("profile_images");
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        storageReference = FirebaseStorage.getInstance().getReference("users").child(userId);
+        // Load user data from Firebase and populate UI elements
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    User user = snapshot.getValue(User.class);
+
+                    // Populate UI elements with user data
+                    editFullName.setText(user.getFullName());
+                    editPhone.setText(user.getPhone());
+                    editStreetAddress.setText(user.getStreetAddress());
+                    editCity.setText(user.getCity());
+                    editEmergencyContact.setText(user.getEmergencyContact());
+                    ratingBar.setRating(user.getRating());
+
+                    // Load and display profile image using Picasso
+                    if (user.getProfileImageUrl() != null) {
+                        Picasso.get().load(user.getProfileImageUrl()).into(profileImage);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database error
+                Toast.makeText(getActivity(), "Error fetching user data", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Set initial UI state
         setEditMode(false);
@@ -121,6 +162,19 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        mGetContentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            if (data != null && data.getData() != null) {
+                                mImageUri = data.getData();
+                                Picasso.get().load(mImageUri).into(profileImage);
+                            }
+                        }
+                    }
+                });
 
         return view;
     }
@@ -137,21 +191,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openImageChooser() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
+        mGetContentLauncher.launch(intent);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
-            profileImage.setImageURI(selectedImageUri);
-        }
-    }
 
     private void saveProfileToFirebase() {
         // Get the profile data from the EditText fields and RatingBar
@@ -161,20 +205,7 @@ public class ProfileFragment extends Fragment {
         String city = editCity.getText().toString();
         String emergencyContact = editEmergencyContact.getText().toString();
         float rating = ratingBar.getRating();
-        // Get the profile image URL if you have it
-
-        // Create a User object and populate its attributes
-        User user = new User();
-        user.setFullName(fullName);
-        user.setPhone(phone);
-        user.setStreetAddress(streetAddress);
-        user.setCity(city);
-        user.setEmergencyContact(emergencyContact);
-        user.setRating(rating);
-        // Set the profileImageUrl attribute using the image URL obtained
-
-        // Convert the User object to a Map using the toMap method
-        Map<String, Object> userMap = user.toMap();
+        String imageurl=profileImage.toString();
 
         // Get the current user's ID
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -184,38 +215,20 @@ public class ProfileFragment extends Fragment {
 
             // Save the user data to Firebase using the databaseReference
             // Replace "users" with your database reference
-            databaseReference.child("users").child(userId).setValue(userMap)
+            User user = new User(fullName, phone, streetAddress, city, emergencyContact,rating,imageurl);
+            databaseReference.setValue(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            // Profile saved successfully
-                            setEditMode(false);
-                            Toast.makeText(getActivity(), "Profile saved successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            // Handle failure
-                            Toast.makeText(getActivity(), "Failed to save profile", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
-    }
-
-    private void uploadImageToFirebase(String profileId) {
-        StorageReference imageRef = storageReference.child(profileId + ".jpg");
-
-        UploadTask uploadTask = imageRef.putFile(selectedImageUri);
-
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            // Get the download URL and update the image URL in the user's profile
-            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                DatabaseReference profileRef = databaseReference.child(profileId);
-                profileRef.child("profileImageUrl").setValue(uri.toString());
-            });
-        }).addOnFailureListener(e -> {
-            // Handle failure
-        });
     }
 }
