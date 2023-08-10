@@ -67,7 +67,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         holder.cartItemImg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                toggleSelection(holder.getAdapterPosition()); // Use getAdapterPosition()
+                toggleSelection(holder.getAdapterPosition());
                 return true;
             }
         });
@@ -87,6 +87,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
             selectedItems.put(position, true);
         }
         notifyItemChanged(position);
+        notifyDataSetChanged(); // Add this line to update all items
+        // Check if any items are selected to determine the visibility of the delete button
+        if (getSelectedItemCount() > 0) {
+            ((Cart_Activity) context).showDeleteButton(); // Call a method in your activity
+        } else {
+            ((Cart_Activity) context).hideDeleteButton(); // Call a method in your activity
+        }
     }
     // Get the number of selected items
    public int getSelectedItemCount() {

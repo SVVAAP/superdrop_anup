@@ -30,8 +30,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.Context;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -48,7 +51,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
     ImageView item_img, plus_img, minus_img;
     int i = 1;
     double price;
-    String priceWithSymbol, imageUrl;
+    String priceWithSymbol, imageUrl,itemId;
     Bitmap imageBitmap;
     byte[] data;
     private StorageReference mStorageRef;
@@ -82,6 +85,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         // Retrieve item details from arguments
         Bundle args = getArguments();
         if (args != null) {
+            itemId = args.getString("itemId"); // Retrieve the itemId
             String name = args.getString("name", "Default Name");
             imageUrl = args.getString("imageUrl");
             price = args.getDouble("price", 0.0);
@@ -132,14 +136,14 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 String totalPriceText = total_price.getText().toString().trim();
                 totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
                 totalprice = Double.parseDouble(totalPriceText);
-                addToUserCart(itemName, imageUrl, itemPrice, quantity,totalprice);
+                addToUserCart(itemId,itemName, imageUrl, itemPrice, quantity,totalprice);
             }
         });
 
         return view;
     }
 
-    private void addToUserCart(String itemName, String imageUrl, double itemPrice, int quantity, double totalprice) {
+    private void addToUserCart(String itemId, String itemName, String imageUrl, double itemPrice, int quantity, double totalprice) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             // User not authenticated, handle accordingly
@@ -149,27 +153,46 @@ public class BottomSheet extends BottomSheetDialogFragment {
         String userId = currentUser.getUid();
         DatabaseReference userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
 
-        // Generate a unique item ID
-        String itemId = userCartRef.push().getKey();
-
-        // Create a new CartItem object with the correct constructor
-        CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalprice, imageUrl);
-        cartItem.setItemId(itemId); // Set the generated item ID
-
-        // Save the cart item to the user's cart reference
-        userCartRef.child(itemId).setValue(cartItem)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
+        // Check if the item already exists in the cart
+        userCartRef.orderByChild("itemId").equalTo(itemId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Item already exists, update the quantity
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        CartItem cartItem = snapshot.getValue(CartItem.class);
+                        int newQuantity = cartItem.getQuantity() + quantity;
+                        double newTotalPrice = cartItem.getTotalprice() + totalprice;
+                        snapshot.getRef().child("quantity").setValue(newQuantity);
+                        snapshot.getRef().child("totalPrice").setValue(newTotalPrice);
+                        Toast.makeText(getActivity(), "Item quantity updated", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                } else {
+                    // Item does not exist, add it to the cart
+                    String itemId = userCartRef.push().getKey();
+                    CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalprice, imageUrl);
+                    cartItem.setItemId(itemId);
+                    userCartRef.child(itemId).setValue(cartItem)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle onCancelled if needed
+            }
+        });
     }
 
 }

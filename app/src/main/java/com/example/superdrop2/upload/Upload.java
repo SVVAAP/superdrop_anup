@@ -1,6 +1,7 @@
 package com.example.superdrop2.upload;
 
 public class Upload {
+    private String itemId; // New field for unique item ID
     private String mName;
     private String mImageUrl;
     private Double mPrice;
@@ -31,6 +32,13 @@ public class Upload {
         }
         mName = name;
         mImageUrl = imageUrl;
+    }
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public String getName() {
