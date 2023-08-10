@@ -44,6 +44,7 @@ public class Cart_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        deleteButton=findViewById(R.id.cart_delet);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
@@ -82,6 +83,13 @@ public class Cart_Activity extends AppCompatActivity {
             }
         });
     }
+    public void showDeleteButton() {
+        deleteButton.setVisibility(View.VISIBLE);
+    }
+
+    public void hideDeleteButton() {
+        deleteButton.setVisibility(View.INVISIBLE);
+    }
 
     private void retrieveCartItems() {
         userCartRef.addValueEventListener(new ValueEventListener() {
@@ -111,10 +119,12 @@ public class Cart_Activity extends AppCompatActivity {
     }
     private void deleteSelectedItems() {
         List<Integer> selectedItems = adapter.getSelectedItems();
+        double deletedTotal = 0.0;
+
         for (int position : selectedItems) {
             CartItem cartItem = cartItemList.get(position);
+            deletedTotal += cartItem.getTotalprice();
             DatabaseReference itemRef = userCartRef.child(cartItem.getItemId());
-
             // Remove the item from Firebase Database
             itemRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -132,7 +142,9 @@ public class Cart_Activity extends AppCompatActivity {
         }
 
         // Clear the selection and update the adapter
+        total -= deletedTotal; // Subtract deleted total from current total
         adapter.selectedItems.clear();
         adapter.notifyDataSetChanged();
+        totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
     }
 }

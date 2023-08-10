@@ -148,8 +148,9 @@ public class StreetWokAdd_Activity extends AppCompatActivity {
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
+                                    String uploadId = mDatabaseRef.push().getKey(); // Generate a unique item ID
                                     Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price);
-                                    String uploadId = mDatabaseRef.push().getKey();
+                                    upload.setItemId(uploadId); // Set the unique item ID
                                     mDatabaseRef.child(uploadId).setValue(upload);
                                 }
                             });

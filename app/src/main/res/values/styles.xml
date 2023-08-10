@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Imagestyle_round_corners">
-        <item name="cornerSize">30dp</item>
+        <item name="cornerSize">15dp</item>
         <item name="cornerFamily">rounded</item>
     </style>
 

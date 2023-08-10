@@ -1,14 +1,20 @@
 package com.example.superdrop2;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
+import androidx.webkit.WebViewClientCompat;
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
 import com.example.superdrop2.navigation.NavActivity;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +32,10 @@ public class OtpSendActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private CountryCodePicker countryCodePicker;
     private FirebaseAuth mAuth;
+    private ActivityResultLauncher<Intent> phoneNumberLauncher;
+    private WebView webView;
+    private WebViewClient webViewClient;
+//    private WebViewCompat webViewCompat;
     @Override
     public void onStart() {
         super.onStart();
@@ -45,7 +55,17 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         progressBar = findViewById(R.id.progressBar);
         countryCodePicker = findViewById(R.id.ccp);
+        webView = findViewById(R.id.webView);
         mAuth = FirebaseAuth.getInstance();
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                // Intercept the URL and load it in the WebView
+                view.loadUrl(request.getUrl().toString());
+                return true;
+            }
+        });
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +84,7 @@ public class OtpSendActivity extends AppCompatActivity {
         etPhone.setEnabled(false);
         btnSend.setEnabled(false);
         countryCodePicker.setEnabled(false);
-
+       // FirebaseUser firebase.auth().settings.appVerificationDisabledForTesting = true;
         // Show progress bar
         progressBar.setVisibility(View.VISIBLE);
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
@@ -92,6 +112,7 @@ public class OtpSendActivity extends AppCompatActivity {
                         // Call the OTP verification activity
                         Intent intent = new Intent(OtpSendActivity.this, OtpVerifyActivity.class);
                         intent.putExtra("verificationId", verificationId);
+                        intent.putExtra("phoneNumber", phoneNumber);
                         startActivity(intent);
                     }
                 };

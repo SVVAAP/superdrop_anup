@@ -4,6 +4,7 @@ import static android.app.PendingIntent.getActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -28,17 +29,19 @@ import com.example.superdrop2.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class NavActivity extends AppCompatActivity {
+        public class NavActivity extends AppCompatActivity {
 
-    BottomNavigationView bnview;
-    Toolbar toolbar;
+            BottomNavigationView bnview;
+            Toolbar toolbar;
 
-    ImageView btn_cart,btn_logo;
-    View view;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+            ImageView btn_cart,btn_logo;
+            View view;
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

@@ -141,6 +141,7 @@ public class MenuFragment extends Fragment {
     private void showBottomSheetForItem(Upload item) {
         BottomSheet bottomSheetFragment = new BottomSheet();
         Bundle args = new Bundle();
+        args.putString("itemId", item.getItemId()); // Pass the itemId to the BottomSheet
         args.putString("name", item.getName());
         args.putString("imageUrl", item.getImageUrl());
         args.putDouble("price", item.getPrice());

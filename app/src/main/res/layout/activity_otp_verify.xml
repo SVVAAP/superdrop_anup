@@ -67,7 +67,7 @@
 
         <EditText
             android:id="@+id/etC1"
-            android:layout_width="55dp"
+            android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_marginTop="45dp"
             android:layout_marginEnd="3dp"
@@ -81,11 +81,12 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMobile" />
+            app:layout_constraintTop_toBottomOf="@+id/tvMobile"
+            app:layout_constraintWidth_percent="0.15" />
 
         <EditText
             android:id="@+id/etC2"
-            android:layout_width="55dp"
+            android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_marginEnd="3dp"
             android:background="@drawable/border"
@@ -98,11 +99,12 @@
             app:layout_constraintEnd_toStartOf="@+id/etC3"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/etC1"
-            app:layout_constraintTop_toTopOf="@+id/etC1" />
+            app:layout_constraintTop_toTopOf="@+id/etC1"
+            app:layout_constraintWidth_percent="0.15" />
 
         <EditText
             android:id="@+id/etC3"
-            android:layout_width="55dp"
+            android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_marginEnd="3dp"
             android:background="@drawable/border"
@@ -115,11 +117,12 @@
             app:layout_constraintEnd_toStartOf="@+id/etC4"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/etC2"
-            app:layout_constraintTop_toTopOf="@+id/etC1" />
+            app:layout_constraintTop_toTopOf="@+id/etC1"
+            app:layout_constraintWidth_percent="0.15" />
 
         <EditText
             android:id="@+id/etC4"
-            android:layout_width="55dp"
+            android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_marginEnd="3dp"
             android:background="@drawable/border"
@@ -132,11 +135,12 @@
             app:layout_constraintEnd_toStartOf="@+id/etC5"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/etC3"
-            app:layout_constraintTop_toTopOf="@+id/etC1" />
+            app:layout_constraintTop_toTopOf="@+id/etC1"
+            app:layout_constraintWidth_percent="0.15" />
 
         <EditText
             android:id="@+id/etC5"
-            android:layout_width="55dp"
+            android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_marginEnd="3dp"
             android:background="@drawable/border"
@@ -149,11 +153,12 @@
             app:layout_constraintEnd_toStartOf="@+id/etC6"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/etC4"
-            app:layout_constraintTop_toTopOf="@+id/etC1" />
+            app:layout_constraintTop_toTopOf="@+id/etC1"
+            app:layout_constraintWidth_percent="0.15" />
 
         <EditText
             android:id="@+id/etC6"
-            android:layout_width="55dp"
+            android:layout_width="0dp"
             android:layout_height="55dp"
             android:background="@drawable/border"
             android:ems="10"
@@ -166,7 +171,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/etC5"
             app:layout_constraintTop_toTopOf="@+id/etC1"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintWidth_percent="0.15" />
 
         <TextView
             android:id="@+id/textView7"

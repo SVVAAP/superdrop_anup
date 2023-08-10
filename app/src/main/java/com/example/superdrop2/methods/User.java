@@ -4,20 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User {
-
-
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("fullName", fullName);
-        result.put("phone", phone);
-        result.put("streetAddress", streetAddress);
-        result.put("city", city);
-        result.put("emergencyContact", emergencyContact);
-        result.put("rating", rating);
-        // Include other attributes here, such as profileImageUrl
-
-        return result;
-    }
     private String fullName;
     private String phone;
     private String streetAddress;
@@ -26,6 +12,20 @@ public class User {
     private float rating;
     private String profileImageUrl; // New attribute to store image URL
 
+    public User() {
+        // Default constructor required for Firebase
+    }
+
+    public User(String fullName,String phone,String streetAddress,String city,String emergencyContact,float rating,String imageurl){
+        this.fullName=fullName;
+        this.phone=phone;
+        this.streetAddress=streetAddress;
+        this.city=city;
+        this.emergencyContact=emergencyContact;
+        this.rating=rating;
+        this.profileImageUrl=imageurl;
+
+    }
     public String getFullName() {
         return fullName;
     }
@@ -82,5 +82,5 @@ public class User {
         this.profileImageUrl = profileImageUrl;
     }
 
-    // Constructors, getters, setters, etc.
+
 }

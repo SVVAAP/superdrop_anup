@@ -8,14 +8,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.superdrop2.Cart_Activity;
 import com.example.superdrop2.R;
+import com.example.superdrop2.adapter.CartAdapter;
+import com.example.superdrop2.adapter.CartItem;
 import com.example.superdrop2.methods.Order;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckoutActivity extends AppCompatActivity {
 
@@ -24,15 +40,39 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private RadioGroup paymentMethodsRadioGroup;
     private RadioButton gpayUPIRadioButton, cashOnDeliveryRadioButton;
-
+    private TextView totalPriceTextView;
     private Button placeOrderButton;
-
+    private RecyclerView recyclerView;
+    private CartAdapter adapter;
+    private List<CartItem> cartItemList;
+    private FirebaseAuth mAuth;
+    private DatabaseReference userCartRef;
+    double total = 0.0;
     private DatabaseReference orderDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            // Handle user not authenticated
+
+        }
+
+        String userId = currentUser.getUid();
+        userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
+
+        recyclerView = findViewById(R.id.checkout_recyclerview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(CheckoutActivity.this));
+
+        cartItemList = new ArrayList<>();
+        adapter = new CartAdapter(cartItemList, this);
+        recyclerView.setAdapter(adapter);
+
+        retrieveCartItems();
 
         // Initialize Firebase references
         orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
@@ -43,6 +83,7 @@ public class CheckoutActivity extends AppCompatActivity {
         shippingCityEditText = findViewById(R.id.shipping_city);
         contactInstructionsEditText = findViewById(R.id.contact_instructions);
         noteEditText = findViewById(R.id.note);
+        totalPriceTextView = findViewById(R.id.checkout_grandtotal);
 
         paymentMethodsRadioGroup = findViewById(R.id.payment_methods_radio_group);
         gpayUPIRadioButton = findViewById(R.id.gpay_upi);
@@ -121,6 +162,32 @@ public class CheckoutActivity extends AppCompatActivity {
         Intent intent = new Intent(this, OrderPlacedActivity.class);
         startActivity(intent);
         finish(); // Optional: Close the current activity if needed
+    }
+    private void retrieveCartItems() {
+        userCartRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cartItemList.clear();
+
+                for (DataSnapshot cartItemSnapshot : snapshot.getChildren()) {
+                    String itemId = cartItemSnapshot.getKey(); // Get the item ID
+                    CartItem cartItem = cartItemSnapshot.getValue(CartItem.class);
+                    if (cartItem != null) {
+                        cartItem.setItemId(itemId); // Set the item ID
+                        cartItemList.add(cartItem);
+                        total += (cartItem.getTotalprice());
+                    }
+                }
+
+                adapter.notifyDataSetChanged();
+                totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database read error
+            }
+        });
     }
 
 }
