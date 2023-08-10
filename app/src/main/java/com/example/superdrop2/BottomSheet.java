@@ -1,7 +1,6 @@
 package com.example.superdrop2;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.CartItem;
-import com.example.superdrop2.payment.CheckoutActivity;
 import com.example.superdrop2.upload.BunOnTopAdd_Activity;
 import com.example.superdrop2.upload.Upload;
 import com.example.superdrop2.upload.rest_add_Activity;
@@ -32,7 +30,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.core.Context;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -44,7 +41,7 @@ import java.io.ByteArrayOutputStream;
 
 public class BottomSheet extends BottomSheetDialogFragment {
     TextView item_name, item_price, item_quantity, total_price;
-    Button bt_cart,bt_order;
+    Button bt_cart, bt_order;
     ImageView item_img, plus_img, minus_img;
     int i = 1;
     double price;
@@ -129,9 +126,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 String itemName = item_name.getText().toString().trim();
                 double itemPrice = price;
                 int quantity = i;
-                String totalPriceText = total_price.getText().toString().trim();
-                totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
-                totalprice = Double.parseDouble(totalPriceText);
                 addToUserCart(itemName, imageUrl, itemPrice, quantity,totalprice);
             }
         });
@@ -139,7 +133,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         return view;
     }
 
-    private void addToUserCart(String itemName, String imageUrl, double itemPrice, int quantity, double totalprice) {
+    private void addToUserCart(String itemName, String imageUrl, double itemPrice, int quantity,double totalprice) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             // User not authenticated, handle accordingly
@@ -148,16 +142,12 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
         String userId = currentUser.getUid();
         DatabaseReference userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
-
-        // Generate a unique item ID
-        String itemId = userCartRef.push().getKey();
+        DatabaseReference cartItemRef = userCartRef.push();
 
         // Create a new CartItem object with the correct constructor
-        CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalprice, imageUrl);
-        cartItem.setItemId(itemId); // Set the generated item ID
+        CartItem cartItem = new CartItem(itemName, itemPrice, quantity, imageUrl,totalprice);
 
-        // Save the cart item to the user's cart reference
-        userCartRef.child(itemId).setValue(cartItem)
+        cartItemRef.setValue(cartItem)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
