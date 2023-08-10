@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/border_left"
-            android:padding="8dp"
+            android:padding="15dp"
             app:ccp_autoDetectCountry="true"
             app:ccp_showFullName="false"
             app:ccp_showNameCode="false"
@@ -95,7 +95,7 @@
             android:layout_width="109dp"
             android:layout_height="61dp"
             android:layout_marginTop="45dp"
-            android:layout_marginBottom="45dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/curved_shape"
             android:text="SEND"
             android:textColor="@color/white"
@@ -119,6 +119,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <WebView
+        android:id="@+id/webView"
         android:layout_width="382dp"
         android:layout_height="161dp"
         android:visibility="invisible"
