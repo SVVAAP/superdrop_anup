@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,14 +40,14 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private RadioGroup paymentMethodsRadioGroup;
     private RadioButton gpayUPIRadioButton, cashOnDeliveryRadioButton;
-
+    private TextView totalPriceTextView;
     private Button placeOrderButton;
     private RecyclerView recyclerView;
     private CartAdapter adapter;
     private List<CartItem> cartItemList;
     private FirebaseAuth mAuth;
     private DatabaseReference userCartRef;
-
+    double total = 0.0;
     private DatabaseReference orderDatabaseReference;
 
     @Override
@@ -82,6 +83,7 @@ public class CheckoutActivity extends AppCompatActivity {
         shippingCityEditText = findViewById(R.id.shipping_city);
         contactInstructionsEditText = findViewById(R.id.contact_instructions);
         noteEditText = findViewById(R.id.note);
+        totalPriceTextView = findViewById(R.id.checkout_grandtotal);
 
         paymentMethodsRadioGroup = findViewById(R.id.payment_methods_radio_group);
         gpayUPIRadioButton = findViewById(R.id.gpay_upi);
@@ -173,10 +175,12 @@ public class CheckoutActivity extends AppCompatActivity {
                     if (cartItem != null) {
                         cartItem.setItemId(itemId); // Set the item ID
                         cartItemList.add(cartItem);
+                        total += (cartItem.getTotalprice());
                     }
                 }
 
                 adapter.notifyDataSetChanged();
+                totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
             }
 
             @Override
