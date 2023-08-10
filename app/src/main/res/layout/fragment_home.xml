@@ -86,7 +86,7 @@
                     android:textSize="25dp" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/card_bunontop"
+                    android:id="@+id/card_bunontop_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -124,7 +124,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/card_streetwok"
+                    android:id="@+id/card_streetwok_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -163,7 +163,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/card_bowlexpress"
+                    android:id="@+id/card_bowlexpress_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"

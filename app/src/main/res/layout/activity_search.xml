@@ -25,7 +25,7 @@
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_bunontop"
+            android:id="@+id/card_bunontop_search"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_gravity="clip_horizontal|center|left"
@@ -64,7 +64,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_streetwok"
+            android:id="@+id/card_streetwok_search"
             android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -85,13 +85,14 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:contentDescription="rest_img2"
-                    android:padding="5dp"
+                    android:padding="7dp"
                     android:src="@drawable/streetwok" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="3dp"
                     android:padding="5dp"
                     android:text="StreetWok"
                     android:textColor="#FFFFFF"
@@ -104,7 +105,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_bowlexpress"
+            android:id="@+id/card_bowlexpress_search"
             android:layout_width="99dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
@@ -132,6 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="2dp"
                     android:padding="5dp"
                     android:text="BowlExpress"
                     android:textColor="#FFFFFF"

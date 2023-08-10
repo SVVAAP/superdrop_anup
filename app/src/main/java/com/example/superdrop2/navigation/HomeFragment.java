@@ -8,21 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.ImageAdapter;
@@ -149,19 +141,19 @@ public class HomeFragment extends Fragment {
 //        });
 
 
-        CardView cardBunontop = view.findViewById(R.id.card_bowlexpress);
+        CardView cardBunontop = view.findViewById(R.id.card_bowlexpress_search);
         cardBunontop.setOnClickListener(v -> {
             String bunontopData = "bowlexpress";
             openMenuFragment(bunontopData);
         });
 
-        CardView cardStreetwok = view.findViewById(R.id.card_streetwok);
+        CardView cardStreetwok = view.findViewById(R.id.card_streetwok_search);
         cardStreetwok.setOnClickListener(v -> {
             String streetwokData = "streetwok";
             openMenuFragment(streetwokData);
         });
 
-        CardView cardBowlexpress = view.findViewById(R.id.card_bunontop);
+        CardView cardBowlexpress = view.findViewById(R.id.card_bunontop_search);
         cardBowlexpress.setOnClickListener(v -> {
             String bowlexpressData = "bunontop";
             openMenuFragment(bowlexpressData);
