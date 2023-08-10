@@ -141,19 +141,19 @@ public class HomeFragment extends Fragment {
 //        });
 
 
-        CardView cardBunontop = view.findViewById(R.id.card_bowlexpress_search);
+        CardView cardBunontop = view.findViewById(R.id.bowlexpress_card);
         cardBunontop.setOnClickListener(v -> {
             String bunontopData = "bowlexpress";
             openMenuFragment(bunontopData);
         });
 
-        CardView cardStreetwok = view.findViewById(R.id.card_streetwok_search);
+        CardView cardStreetwok = view.findViewById(R.id.streetwok_card);
         cardStreetwok.setOnClickListener(v -> {
             String streetwokData = "streetwok";
             openMenuFragment(streetwokData);
         });
 
-        CardView cardBowlexpress = view.findViewById(R.id.card_bunontop_search);
+        CardView cardBowlexpress = view.findViewById(R.id.bunontop_card);
         cardBowlexpress.setOnClickListener(v -> {
             String bowlexpressData = "bunontop";
             openMenuFragment(bowlexpressData);

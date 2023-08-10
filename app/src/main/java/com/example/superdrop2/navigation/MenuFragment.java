@@ -1,8 +1,11 @@
 package com.example.superdrop2.navigation;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.superdrop2.BottomSheet;
 import com.example.superdrop2.R;
+import com.example.superdrop2.SearchActivity;
 import com.example.superdrop2.adapter.rest_Adapter;
 import com.example.superdrop2.upload.Upload;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -39,13 +43,14 @@ public class MenuFragment extends Fragment {
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
     private List<Upload> mUploads;
-    private Button btn_bunontop, btn_streetwok, btn_bowlexpress;
+    private CardView card_bunontop, card_streetwok, card_bowlexpress, button_search;
 
 
     public MenuFragment() {
         // Required empty public constructor
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
@@ -58,15 +63,16 @@ public class MenuFragment extends Fragment {
         }
         item_view(data1);
 
-        btn_bunontop = view.findViewById(R.id.bunontop_btn);
-        btn_streetwok = view.findViewById(R.id.streetwok_btn);
-        btn_bowlexpress = view.findViewById(R.id.bowlexpress_btn);
+        card_bunontop = view.findViewById(R.id.bunontop_card);
+        card_streetwok = view.findViewById(R.id.streetwok_card);
+        card_bowlexpress = view.findViewById(R.id.bowlexpress_card);
+        button_search = view.findViewById(R.id.button2);
 
         recyclerview = view.findViewById(R.id.fooditems_rv);
         recyclerview.setHasFixedSize(true);
         recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        btn_bunontop.setOnClickListener(new View.OnClickListener() {
+        card_bunontop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = "bunontop";
@@ -74,7 +80,7 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        btn_streetwok.setOnClickListener(new View.OnClickListener() {
+        card_streetwok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = "streetwok";
@@ -82,13 +88,21 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        btn_bowlexpress.setOnClickListener(new View.OnClickListener() {
+        card_bowlexpress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = "bowlexpress";
                 item_view(name);
             }
         });
+
+        button_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSearchActivity();
+            }
+        });
+
 
         mAdapter = new rest_Adapter(getActivity(), mUploads);
         recyclerview.setAdapter(mAdapter);
@@ -102,6 +116,17 @@ public class MenuFragment extends Fragment {
 
         return view;
     }
+
+
+    public void openSearchActivity() {
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        startActivity(intent);
+
+        // Apply slide-right animation
+        getActivity().overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
+
+    }
+
 
     public void item_view(String rest_name) {
         if (rest_name != null) {
