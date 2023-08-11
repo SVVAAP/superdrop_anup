@@ -2,6 +2,7 @@ package com.example.superdrop2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -46,18 +47,24 @@ public class DeleteActivity extends AppCompatActivity {
         bowlexpress="bowlexpress";
 
         recyclerview1=findViewById(R.id.recyclerView_bunontop);
+        recyclerview1.setHasFixedSize(true);
+        recyclerview1.setLayoutManager(new LinearLayoutManager(this));
         recyclerView2=findViewById(R.id.recyclerView_streetwok);
+        recyclerView2.setHasFixedSize(true);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         recyclerView3=findViewById(R.id.recyclerView_bowlexpress);
+        recyclerView3.setHasFixedSize(true);
+        recyclerView3.setLayoutManager(new LinearLayoutManager(this));
 
         mUploads1=item_view(bunontop);
         mAdapter = new delet_Adapter(this, mUploads1,1);
         recyclerview1.setAdapter(mAdapter);
 
-        mUploads2=item_view(bunontop);
+        mUploads2=item_view(streetwok);
         mAdapter = new delet_Adapter(this, mUploads2,2);
         recyclerView2.setAdapter(mAdapter);
 
-        mUploads3=item_view(bunontop);
+        mUploads3=item_view(bowlexpress);
         mAdapter = new delet_Adapter(this, mUploads3,3);
         recyclerView3.setAdapter(mAdapter);
 
@@ -68,6 +75,7 @@ public class DeleteActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public List<Upload> item_view(String rest_name) {
         List<Upload> uploads = new ArrayList<>();

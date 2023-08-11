@@ -139,6 +139,13 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 addToUserCart(itemId,itemName, imageUrl, itemPrice, quantity,totalprice);
             }
         });
+        bt_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(),Cart_Activity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
@@ -193,6 +200,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 // Handle onCancelled if needed
             }
         });
+
     }
 
 }

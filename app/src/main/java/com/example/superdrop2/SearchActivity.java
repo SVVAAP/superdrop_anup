@@ -2,6 +2,7 @@ package com.example.superdrop2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -30,19 +31,6 @@ public class SearchActivity extends AppCompatActivity {
     private List<Upload> mUploads,mUploads1,mUploads2,mUploads3;
     private String bunontop,streetwok,bowlexpress;
 
-    private void performSearch(String query) {
-        List<Upload> bunOnTopItems = item_view(bunontop, query);
-        mAdapter = new rest_Adapter(this, bunOnTopItems);
-        recyclerview1.setAdapter(mAdapter);
-
-        List<Upload> streetWokItems = item_view(streetwok, query);
-        mAdapter = new rest_Adapter(this, streetWokItems);
-        recyclerView2.setAdapter(mAdapter);
-
-        List<Upload> bowlExpressItems = item_view(bowlexpress, query);
-        mAdapter = new rest_Adapter(this, bowlExpressItems);
-        recyclerView3.setAdapter(mAdapter);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,20 +41,17 @@ public class SearchActivity extends AppCompatActivity {
         bowlexpress="bowlexpress";
 
         recyclerview1=findViewById(R.id.recyclerView_bunontop);
+        recyclerview1.setHasFixedSize(true);
+        recyclerview1.setLayoutManager(new LinearLayoutManager(this));
         recyclerView2=findViewById(R.id.recyclerView_streetwok);
+        recyclerView2.setHasFixedSize(true);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         recyclerView3=findViewById(R.id.recyclerView_bowlexpress);
+        recyclerView3.setHasFixedSize(true);
+        recyclerView3.setLayoutManager(new LinearLayoutManager(this));
 
-        mUploads1=item_view(bunontop);
-        mAdapter = new rest_Adapter(this, mUploads1);
-        recyclerview1.setAdapter(mAdapter);
 
-        mUploads2=item_view(bunontop);
-        mAdapter = new rest_Adapter(this, mUploads2);
-        recyclerView2.setAdapter(mAdapter);
-
-        mUploads3=item_view(bunontop);
-        mAdapter = new rest_Adapter(this, mUploads3);
-        recyclerView3.setAdapter(mAdapter);
+        loadAllItems();
 
         Button searchButton = findViewById(R.id.search_bt);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -74,9 +59,39 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SearchView searchView = findViewById(R.id.searchView);
                 String query = searchView.getQuery().toString();
-                performSearch(query);
+                if (query.isEmpty()) {
+                    loadAllItems();
+                } else {
+                    filterItems(query);
+                }
             }
         });
+    }
+    private void loadAllItems() {
+        mUploads1 = item_view(bunontop, null);
+        mAdapter = new rest_Adapter(this, mUploads1);
+        recyclerview1.setAdapter(mAdapter);
+
+        mUploads2 = item_view(streetwok, null);
+        mAdapter = new rest_Adapter(this, mUploads2);
+        recyclerView2.setAdapter(mAdapter);
+
+        mUploads3 = item_view(bowlexpress, null);
+        mAdapter = new rest_Adapter(this, mUploads3);
+        recyclerView3.setAdapter(mAdapter);
+    }
+    private void filterItems(String query) {
+        mUploads1 = item_view(bunontop, query);
+        mAdapter = new rest_Adapter(this, mUploads1);
+        recyclerview1.setAdapter(mAdapter);
+
+        mUploads2 = item_view(streetwok, query);
+        mAdapter = new rest_Adapter(this, mUploads2);
+        recyclerView2.setAdapter(mAdapter);
+
+        mUploads3 = item_view(bowlexpress, query);
+        mAdapter = new rest_Adapter(this, mUploads3);
+        recyclerView3.setAdapter(mAdapter);
     }
 
     public List<Upload> item_view(String rest_name) {
