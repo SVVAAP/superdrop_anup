@@ -25,7 +25,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/anup" />
+                android:src="@drawable/profile_icon" />
 
             <!-- Full Name -->
             <EditText
@@ -106,7 +106,6 @@
 
             <Button
                 android:id="@+id/edit_Profile"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -114,22 +113,22 @@
                 android:text="Edit Profile" />
 
             <Button
-                android:id="@+id/logout_bt"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="Logout" />
-
-            <Button
                 android:id="@+id/adminbt"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Surface"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:text="Admin" />
+
+            <Button
+                android:id="@+id/logout_bt"
+                style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Surface"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Logout" />
 
 
         </LinearLayout>

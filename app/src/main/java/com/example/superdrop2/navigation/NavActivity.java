@@ -71,6 +71,8 @@ import com.google.android.material.navigation.NavigationBarView;
             public void onClick(View view) {
                 Intent intent = new Intent(NavActivity.this, Cart_Activity.class);
                 startActivity(intent);
+                // Apply slide-right animation
+                NavActivity.this.overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
             }
         });
         btn_logo.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +80,8 @@ import com.google.android.material.navigation.NavigationBarView;
             public void onClick(View view) {
                 Intent intent = new Intent(NavActivity.this, Abtdev_Activity.class);
                 startActivity(intent);
+                // Apply slide-right animation
+                NavActivity.this.overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
             }
         });
     }

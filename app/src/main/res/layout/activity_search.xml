@@ -1,83 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_menu.xml -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <!-- Search bar -->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="MENU"
-        android:textColor="#000000"
-        android:textColorHint="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="10dp"
+        android:background="@drawable/curved_shape"
+        android:foregroundTint="#FFFFFF"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search for food items" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Top section with buttons -->
+    <LinearLayout
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Surface"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/curved_shape"
-            android:text="search"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="openSearchActivity" />
-
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/button2"
-            app:layout_constraintStart_toStartOf="@+id/button2"
-            app:layout_constraintTop_toTopOf="@+id/button2"
-            app:srcCompat="@drawable/search"
-            app:tint="#FFFFFF" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="050dp"
-        android:layout_marginTop="72dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/bunontop_card"
-            android:layout_width="wrap_content"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_gravity="clip_horizontal|center|left"
             android:layout_margin="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="1dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/streetwok_card"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:clickable="true">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -110,20 +65,14 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/streetwok_card"
-            android:layout_width="wrap_content"
+            android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:clickable="true"
             android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/bowlexpress_card"
-            app:layout_constraintStart_toEndOf="@+id/bunontop_card"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingEnd="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -157,21 +106,15 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/bowlexpress_card"
-            android:layout_width="wrap_content"
+            android:layout_width="99dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
             android:layout_margin="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:clickable="true"
             android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/streetwok_card"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingEnd="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -200,16 +143,25 @@
 
         </androidx.cardview.widget.CardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <!-- RecyclerViews for displaying food items -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_bunontop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fooditems_rv"
+        android:id="@+id/recyclerView_streetwok"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:circularflow_radiusInDP="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_bowlexpress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
+
+</LinearLayout>

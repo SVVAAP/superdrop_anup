@@ -2,6 +2,7 @@ package com.example.superdrop2.navigation;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -62,6 +63,7 @@ public class ProfileFragment extends Fragment {
     private ActivityResultLauncher<Intent> mGetContentLauncher;
     private Uri mImageUri;
 
+    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

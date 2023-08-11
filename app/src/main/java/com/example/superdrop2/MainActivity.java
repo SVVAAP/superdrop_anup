@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(MainActivity.this, OtpSendActivity.class));
-//                startActivity(new Intent(MainActivity.this, NavActivity.class));
+             //  startActivity(new Intent(MainActivity.this, NavActivity.class));
                 finish();
             }
         },4800);
