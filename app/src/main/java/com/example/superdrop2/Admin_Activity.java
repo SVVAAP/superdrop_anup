@@ -30,7 +30,7 @@ public class Admin_Activity extends AppCompatActivity {
         add_rest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Admin_Activity.this, rest_add_Activity.class);
+                Intent intent = new Intent(Admin_Activity.this, DeleteActivity.class);
                 startActivity(intent);
             }
         });

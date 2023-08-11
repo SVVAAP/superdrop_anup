@@ -68,6 +68,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/add_to_basket" />
 
+        <CheckBox
+            android:id="@+id/menucheckbox"
+            android:layout_width="61dp"
+            android:layout_height="61dp"
+            android:padding="-10dp"
+            android:translationX="11dp"
+            android:translationY="-11dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

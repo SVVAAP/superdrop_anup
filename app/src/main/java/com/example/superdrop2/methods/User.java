@@ -26,6 +26,11 @@ public class User {
         this.profileImageUrl=imageurl;
 
     }
+    public User(String fullName, String phoneNumber, String address) {
+        this.fullName = fullName;
+        this.emergencyContact = phoneNumber;
+        this.streetAddress = address;
+    }
     public String getFullName() {
         return fullName;
     }

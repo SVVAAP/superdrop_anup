@@ -9,11 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.CartAdapter;
 import com.example.superdrop2.adapter.CartItem;
+import com.example.superdrop2.navigation.NavActivity;
 import com.example.superdrop2.payment.CheckoutActivity;
 import com.example.superdrop2.payment.OrderPlacedActivity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,13 +40,14 @@ public class Cart_Activity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference userCartRef;
     double total = 0.0;
-    Button placeorder,deleteButton;
+    ImageView edit_bt, back_bt;
+    Button placeorder, deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        deleteButton=findViewById(R.id.cart_delet);
+        deleteButton = findViewById(R.id.cart_delet);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
@@ -55,7 +58,7 @@ public class Cart_Activity extends AppCompatActivity {
         String userId = currentUser.getUid();
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
         totalPriceTextView = findViewById(R.id.cart_grandprice);
-        placeorder=findViewById(R.id.cart_order);
+        placeorder = findViewById(R.id.cart_order);
 
         recyclerView = findViewById(R.id.cartRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -66,13 +69,26 @@ public class Cart_Activity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         retrieveCartItems();
+        edit_bt = findViewById(R.id.edit_img);
+        edit_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.toggleCheckboxVisibility();
+            }
+        });
+        back_bt = findViewById(R.id.back_img);
+        back_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Cart_Activity.this, NavActivity.class));
+            }
+        });
 
         placeorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Cart_Activity.this, CheckoutActivity.class));
                 finish();
-
             }
         });
 
@@ -83,6 +99,7 @@ public class Cart_Activity extends AppCompatActivity {
             }
         });
     }
+
     public void showDeleteButton() {
         deleteButton.setVisibility(View.VISIBLE);
     }
@@ -108,7 +125,11 @@ public class Cart_Activity extends AppCompatActivity {
                 }
 
                 adapter.notifyDataSetChanged();
-                totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
+                if (cartItemList.isEmpty()) {
+                    totalPriceTextView.setText("₹0.00"); // Display default total
+                } else {
+                    totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
+                }
             }
 
             @Override
@@ -117,6 +138,7 @@ public class Cart_Activity extends AppCompatActivity {
             }
         });
     }
+
     private void deleteSelectedItems() {
         List<Integer> selectedItems = adapter.getSelectedItems();
         double deletedTotal = 0.0;
@@ -139,6 +161,11 @@ public class Cart_Activity extends AppCompatActivity {
                     Toast.makeText(Cart_Activity.this, "Failed to delete item", Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+
+        // Remove the selected items from the local list
+        for (int position : selectedItems) {
+            cartItemList.remove(position);
         }
 
         // Clear the selection and update the adapter

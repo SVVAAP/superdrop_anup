@@ -87,7 +87,7 @@
         android:layout_height="65dp"
         android:background="@color/colorPrimary"
         android:padding="10dp"
-        android:text="Add Restaurant"
+        android:text="Delete Menu"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

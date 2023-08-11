@@ -43,7 +43,8 @@ public class MenuFragment extends Fragment {
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
     private List<Upload> mUploads;
-    private CardView card_bunontop, card_streetwok, card_bowlexpress, button_search;
+    private Button  button_search;
+    private CardView card_bunontop, card_streetwok, card_bowlexpress;
 
 
     public MenuFragment() {

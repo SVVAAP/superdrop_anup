@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="clip_horizontal|center|left"
             android:layout_margin="5dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:clickable="true"
@@ -88,8 +88,8 @@
                 android:padding="2dp">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:padding="-35dp"
                     android:src="@drawable/bun_on_top" />
 
@@ -100,7 +100,7 @@
                     android:layout_marginEnd="5dp"
                     android:text="BunOnTop"
                     android:textColor="#FFFFFF"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
 
@@ -114,7 +114,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:clickable="true"
@@ -133,8 +132,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:contentDescription="rest_img2"
                     android:padding="7dp"
                     android:src="@drawable/streetwok" />
@@ -147,7 +146,7 @@
                     android:padding="5dp"
                     android:text="StreetWok"
                     android:textColor="#FFFFFF"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
 
@@ -161,8 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
             android:layout_margin="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:clickable="true"
@@ -181,8 +179,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:padding="5dp"
                     android:src="@drawable/bowlexpress_logo" />
 
@@ -194,7 +192,7 @@
                     android:padding="5dp"
                     android:text="BowlExpress"
                     android:textColor="#FFFFFF"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
 

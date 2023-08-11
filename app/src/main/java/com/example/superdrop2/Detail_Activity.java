@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.superdrop2.methods.User;
 import com.example.superdrop2.navigation.NavActivity;
-import com.example.superdrop2.upload.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -23,12 +23,14 @@ public class Detail_Activity extends AppCompatActivity {
     // Firebase references
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
+    private String phoneNumberget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         // Initialize Firebase
+        phoneNumberget = getIntent().getStringExtra("phoneNumber");
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
 

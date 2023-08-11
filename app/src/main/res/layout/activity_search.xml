@@ -16,6 +16,11 @@
         android:foregroundTint="#FFFFFF"
         android:iconifiedByDefault="false"
         android:queryHint="Search for food items" />
+    <Button
+        android:id="@+id/search_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/search"/>
 
     <!-- Top section with buttons -->
     <LinearLayout

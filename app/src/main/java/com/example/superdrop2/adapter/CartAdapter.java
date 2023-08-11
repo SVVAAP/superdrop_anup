@@ -29,6 +29,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
     private Context context;
     public SparseBooleanArray selectedItems = new SparseBooleanArray();
     private OnItemLongClickListener longClickListener; // Interface reference
+    private boolean showCheckboxes = false; // Add this flag
     public interface OnItemLongClickListener {
         void onItemLongClick(int position);
     }
@@ -36,6 +37,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
     public CartAdapter(List<CartItem> cartItemList, Context context) {
         this.cartItemList = cartItemList;
         this.context = context;
+
         this.longClickListener = longClickListener; // Initialize the interface
     }
 
@@ -60,19 +62,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         } else {
             Picasso.get().load(R.drawable.logo).into(holder.cartItemImg); // Replace with your default image resource
         }
-        holder.checkBox.setChecked(selectedItems.get(position, false)); // Set the checkbox state
-        // Always show check box when item is long-clicked
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                holder.checkBox.setVisibility(View.VISIBLE);
-                int adapterPosition = holder.getAdapterPosition();
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    toggleSelection(adapterPosition);
-                }
-                return true;
-            }
-        });
+        if (showCheckboxes) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+        } else {
+            holder.checkBox.setVisibility(View.INVISIBLE);
+        }
+    }
+    // Method to toggle checkbox visibility
+    public void toggleCheckboxVisibility() {
+        showCheckboxes = !showCheckboxes;
+        notifyDataSetChanged();
     }
 
     public void toggleSelection(int position) {
@@ -137,6 +136,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
             checkBox = itemView.findViewById(R.id.checkBox);
 
             // Toggle selection when the checkbox is clicked
+            if(adapter.showCheckboxes){
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            adapter.toggleSelection(position);
+                        }
+                    }
+                });
+            }
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -148,17 +158,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
             });
 
             // Toggle selection when the item view is long-clicked
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    for (int i = 0; i < adapter.getItemCount(); i++) {
-                        adapter.selectedItems.put(i, true);
-                    }
-                    adapter.notifyItemRangeChanged(0, adapter.getItemCount());
-                    ((Cart_Activity) context).showDeleteButton(); // Update visibility of delete button
-                    return true;
-                }
-            });
         }
     }
 }
