@@ -43,12 +43,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
     @Override
     public CartItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item, parent, false);
-        return new CartItemViewHolder(view);
+        return new CartItemViewHolder(view,this,context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartItemViewHolder holder, int position) {
         CartItem cartItem = cartItemList.get(position);
+
 
         holder.cartItemName.setText(cartItem.getItemName());
         holder.cartItemPrice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getItemPrice()));
@@ -59,40 +60,35 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         } else {
             Picasso.get().load(R.drawable.logo).into(holder.cartItemImg); // Replace with your default image resource
         }
-        if (selectedItems.get(position, false)) {
-            holder.checkBox.setVisibility(View.VISIBLE);
-        } else {
-            holder.checkBox.setVisibility(View.GONE);
-        }
-        holder.cartItemImg.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                toggleSelection(holder.getAdapterPosition());
-                return true;
-            }
-        });
+        holder.checkBox.setChecked(selectedItems.get(position, false)); // Set the checkbox state
+        // Always show check box when item is long-clicked
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                toggleSelection(holder.getAdapterPosition());
+                holder.checkBox.setVisibility(View.VISIBLE);
+                int adapterPosition = holder.getAdapterPosition();
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    toggleSelection(adapterPosition);
+                }
                 return true;
             }
         });
     }
 
     public void toggleSelection(int position) {
+
         if (selectedItems.get(position, false)) {
             selectedItems.delete(position);
         } else {
             selectedItems.put(position, true);
         }
         notifyItemChanged(position);
-        notifyDataSetChanged(); // Add this line to update all items
-        // Check if any items are selected to determine the visibility of the delete button
+
+        // Update visibility of delete button
         if (getSelectedItemCount() > 0) {
-            ((Cart_Activity) context).showDeleteButton(); // Call a method in your activity
+            ((Cart_Activity) context).showDeleteButton();
         } else {
-            ((Cart_Activity) context).hideDeleteButton(); // Call a method in your activity
+            ((Cart_Activity) context).hideDeleteButton();
         }
     }
     // Get the number of selected items
@@ -101,12 +97,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
     }
 
     // Get the list of selected item positions
+    // Get the list of selected item positions
     public List<Integer> getSelectedItems() {
-        List<Integer> items = new ArrayList<>(selectedItems.size());
+        List<Integer> items = new ArrayList<>();
         for (int i = 0; i < selectedItems.size(); i++) {
             items.add(selectedItems.keyAt(i));
         }
         return items;
+    }
 
 //        public void toggleSelection() {
 //            // Toggle the selection state of all items
@@ -115,7 +113,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
 //            }
 //            notifyDataSetChanged();
 //        }
-    }
+  //  }
 
 
     @Override
@@ -128,7 +126,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         TextView cartItemName, cartItemPrice, cartItemQuantity,getCartItemTotalprice;
         CheckBox checkBox;
 
-        public CartItemViewHolder(@NonNull View itemView) {
+        public CartItemViewHolder(@NonNull View itemView,CartAdapter adapter,Context context) {
             super(itemView);
 
             cartItemImg = itemView.findViewById(R.id.rest_img);
@@ -137,6 +135,30 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
             cartItemQuantity = itemView.findViewById(R.id.cartItemQuantity);
             getCartItemTotalprice=itemView.findViewById(R.id.cart_total_price);
             checkBox = itemView.findViewById(R.id.checkBox);
+
+            // Toggle selection when the checkbox is clicked
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        adapter.toggleSelection(position);
+                    }
+                }
+            });
+
+            // Toggle selection when the item view is long-clicked
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    for (int i = 0; i < adapter.getItemCount(); i++) {
+                        adapter.selectedItems.put(i, true);
+                    }
+                    adapter.notifyItemRangeChanged(0, adapter.getItemCount());
+                    ((Cart_Activity) context).showDeleteButton(); // Update visibility of delete button
+                    return true;
+                }
+            });
         }
     }
 }

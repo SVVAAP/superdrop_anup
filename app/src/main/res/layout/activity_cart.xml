@@ -40,8 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Delete"
-        android:textSize="20sp"
         android:textAlignment="center"
+        android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

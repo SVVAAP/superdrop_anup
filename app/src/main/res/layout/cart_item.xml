@@ -84,6 +84,7 @@
             android:layout_height="wrap_content"
             android:translationX="10dp"
             android:translationY="-15dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/cart_total_price"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

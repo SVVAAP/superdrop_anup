@@ -21,6 +21,7 @@ import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.CartAdapter;
 import com.example.superdrop2.adapter.CartItem;
 import com.example.superdrop2.methods.Order;
+import com.example.superdrop2.methods.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +29,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -46,7 +50,8 @@ public class CheckoutActivity extends AppCompatActivity {
     private CartAdapter adapter;
     private List<CartItem> cartItemList;
     private FirebaseAuth mAuth;
-    private DatabaseReference userCartRef;
+    private DatabaseReference userCartRef,databaseReference;
+    private StorageReference storageReference;
     double total = 0.0;
     private DatabaseReference orderDatabaseReference;
 
@@ -73,6 +78,29 @@ public class CheckoutActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         retrieveCartItems();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        storageReference = FirebaseStorage.getInstance().getReference("users").child(userId);
+        // Load user data from Firebase and populate UI elements
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    User user = snapshot.getValue(User.class);
+
+                    // Populate UI elements with user data
+                    shippingNameEditText.setText(user.getFullName());
+                    contactInstructionsEditText.setText(user.getPhone());
+                    shippingAddressEditText.setText(user.getStreetAddress());
+                    shippingCityEditText.setText(user.getCity());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database error
+                Toast.makeText(CheckoutActivity.this, "Error loading data... ", Toast.LENGTH_SHORT).show();;
+            }
+        });
 
         // Initialize Firebase references
         orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
@@ -128,8 +156,8 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private String calculateTotalAmount() {
-        // Calculate and fetch the total amount from Firebase or other sources
-        return "100"; // Replace with your actual total amount
+       String grandtotal=String.valueOf(total);
+        return grandtotal; // Replace with your actual total amount
     }
 
     private void openGPayPayment(String amount) {
