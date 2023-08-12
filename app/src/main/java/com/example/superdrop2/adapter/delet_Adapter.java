@@ -24,13 +24,11 @@ import java.util.List;
 public class delet_Adapter extends RecyclerView.Adapter<delet_Adapter.RestImageVHolder>{
     private Context rcontext;
     private List<Upload> mitems;
-    public SparseBooleanArray selectedItems = new SparseBooleanArray();
-    private int recyclerViewType;
+    private SparseBooleanArray selectedItems = new SparseBooleanArray();
 
-    public delet_Adapter(Context context, List<Upload> Uploads,int recyclerViewType) {
+    public delet_Adapter(Context context, List<Upload> Uploads) {
         rcontext = context;
         mitems = Uploads;
-        this.recyclerViewType = recyclerViewType;
     }
     @NonNull
     @Override
@@ -46,32 +44,17 @@ public class delet_Adapter extends RecyclerView.Adapter<delet_Adapter.RestImageV
         Picasso.get().load(uploadCurrent.getImageUrl()).fit().centerCrop().into(holder.imageView);
         String priceWithSymbol = "₹" + String.valueOf(uploadCurrent.getPrice()); // Add ₹ symbol
         holder.textViewPrice.setText(priceWithSymbol); // Display the price with ₹ symbol
+        holder.checkBox.setVisibility(View.VISIBLE);
+        holder.checkBox.setChecked(selectedItems.get(position, false));
 
-    }
-    public int getRecyclerViewType() {
-        return recyclerViewType;
-    }
-    public void toggleSelection(int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSelection(position);
+            }
+        });
 
-        if (selectedItems.get(position, false)) {
-            selectedItems.delete(position);
-        } else {
-            selectedItems.put(position, true);
-        }
-        notifyItemChanged(position);
-    }
-    public int getSelectedItemCount() {
-        return selectedItems.size();
-    }
 
-    // Get the list of selected item positions
-    // Get the list of selected item positions
-    public List<Integer> getSelectedItems() {
-        List<Integer> items = new ArrayList<>();
-        for (int i = 0; i < selectedItems.size(); i++) {
-            items.add(selectedItems.keyAt(i));
-        }
-        return items;
     }
 
     @Override
@@ -94,11 +77,28 @@ public class delet_Adapter extends RecyclerView.Adapter<delet_Adapter.RestImageV
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        adapter.toggleSelection(position);
-                    }
+                    toggleSelection(getAdapterPosition());
                 }
-            });        }
+            });
+
+        }
     }
+    private void toggleSelection(int position) {
+        if (selectedItems.get(position, false)) {
+            selectedItems.delete(position);
+        } else {
+            selectedItems.put(position, true);
+        }
+        notifyDataSetChanged();
+    }
+
+    public List<Upload> getSelectedItems() {
+        List<Upload> selected = new ArrayList<>();
+        for (int i = 0; i < selectedItems.size(); i++) {
+            int position = selectedItems.keyAt(i);
+            selected.add(mitems.get(position));
+        }
+        return selected;
+    }
+
 }

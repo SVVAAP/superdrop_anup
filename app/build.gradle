@@ -62,4 +62,5 @@ dependencies {
     implementation 'com.github.TutorialsAndroid:GButton:v1.0.19'
 
     implementation 'com.hbb20:ccp:2.5.0'
+    implementation 'com.google.firebase:firebase-firestore:23.0.0'
 }
