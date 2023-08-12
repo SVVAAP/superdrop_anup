@@ -150,7 +150,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         return view;
     }
 
-    private void addToUserCart(String itemId, String itemName, String imageUrl, double itemPrice, int quantity, double totalprice) {
+    private void addToUserCart(String itemIdm, String itemName, String imageUrl, double itemPrice, int quantity, double totalprice) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             // User not authenticated, handle accordingly
@@ -161,7 +161,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         DatabaseReference userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
 
         // Check if the item already exists in the cart
-        userCartRef.orderByChild("itemId").equalTo(itemId).addListenerForSingleValueEvent(new ValueEventListener() {
+        userCartRef.orderByChild("itemId").equalTo(itemIdm).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -178,7 +178,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                     // Item does not exist, add it to the cart
                     String itemId = userCartRef.push().getKey();
                     CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalprice, imageUrl);
-                    cartItem.setItemId(itemId);
+                    cartItem.setItemId(itemIdm);
                     userCartRef.child(itemId).setValue(cartItem)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

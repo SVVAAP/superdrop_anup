@@ -63,6 +63,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
             Picasso.get().load(R.drawable.logo).into(holder.cartItemImg); // Replace with your default image resource
         }
         if (showCheckboxes) {
+            holder.checkBox.setChecked(selectedItems.get(position, false));
             holder.checkBox.setVisibility(View.VISIBLE);
         } else {
             holder.checkBox.setVisibility(View.INVISIBLE);
@@ -81,14 +82,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         } else {
             selectedItems.put(position, true);
         }
-        notifyItemChanged(position);
-
         // Update visibility of delete button
         if (getSelectedItemCount() > 0) {
             ((Cart_Activity) context).showDeleteButton();
         } else {
             ((Cart_Activity) context).hideDeleteButton();
         }
+        notifyItemChanged(position);
     }
     // Get the number of selected items
    public int getSelectedItemCount() {

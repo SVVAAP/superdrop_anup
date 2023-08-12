@@ -223,13 +223,14 @@ public class ProfileFragment extends Fragment {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Details uploaded", Toast.LENGTH_SHORT).show();
+                            setEditMode(false);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Failed to upload", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
