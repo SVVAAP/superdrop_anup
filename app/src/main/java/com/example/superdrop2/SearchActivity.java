@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,12 +71,12 @@ public class SearchActivity extends AppCompatActivity {
 
         for (String restaurantPath : restaurantPaths) {
             db.collection(restaurantPath)
-                    .whereEqualTo("Name", query)
+                    .whereEqualTo("name", query)
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                searchResults.add(document.getString("itemName"));
+                                searchResults.add(document.getString("name"));
                             }
                             displaySearchResults();
                         } else {
