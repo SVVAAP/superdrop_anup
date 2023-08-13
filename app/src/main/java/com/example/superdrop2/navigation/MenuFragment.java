@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import com.example.superdrop2.BottomSheet;
 import com.example.superdrop2.R;
 import com.example.superdrop2.SearchActivity;
+import com.example.superdrop2.SearchFragment;
 import com.example.superdrop2.adapter.rest_Adapter;
 import com.example.superdrop2.upload.Upload;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -45,6 +49,7 @@ public class MenuFragment extends Fragment {
     private List<Upload> mUploads;
     private Button  button_search;
     private CardView card_bunontop, card_streetwok, card_bowlexpress;
+    private FrameLayout container_search;
 
 
     public MenuFragment() {
@@ -68,6 +73,7 @@ public class MenuFragment extends Fragment {
         card_streetwok = view.findViewById(R.id.streetwok_card);
         card_bowlexpress = view.findViewById(R.id.bowlexpress_card);
         button_search = view.findViewById(R.id.button2);
+        container_search=view.findViewById(R.id.search_container);
 
         recyclerview = view.findViewById(R.id.fooditems_rv);
         recyclerview.setHasFixedSize(true);
@@ -100,7 +106,12 @@ public class MenuFragment extends Fragment {
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openSearchActivity();
+                container_search.setVisibility(View.VISIBLE);
+                FragmentManager fm = getChildFragmentManager();
+                FragmentTransaction ft=fm.beginTransaction();
+                SearchFragment searchFragment= new SearchFragment();
+                ft.add(R.id.search_container, searchFragment);
+                ft.commit();
             }
         });
 

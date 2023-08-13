@@ -30,9 +30,10 @@ public class Detail_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         // Initialize Firebase
-        phoneNumberget = getIntent().getStringExtra("phoneNumber");
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
+
+        phoneNumberget = getIntent().getStringExtra("phoneNumber");
 
         // Initialize views
         fullName = findViewById(R.id.fullname);
@@ -53,14 +54,14 @@ public class Detail_Activity extends AppCompatActivity {
         if (user != null) {
             String userId = user.getUid();
             String name = fullName.getText().toString();
-            String phone = phoneNumber.getText().toString();
+            String phone_optnl = phoneNumber.getText().toString();
             String userAddress = address.getText().toString();
 
             // Reference to the "users" node in Firebase Database
             DatabaseReference userRef = mDatabase.getReference("users").child(userId);
 
             // Create a User object and set the details
-            User userDetails = new User(name, phone, userAddress);
+            User userDetails = new User(name,phoneNumberget, phone_optnl, userAddress);
 
             // Push the user details to the database
             userRef.setValue(userDetails)

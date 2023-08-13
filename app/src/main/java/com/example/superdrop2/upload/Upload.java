@@ -1,10 +1,11 @@
 package com.example.superdrop2.upload;
 
 public class Upload {
-    private String itemId; // New field for unique item ID
+    private String mitemId; // New field for unique item ID
     private String mName;
     private String mImageUrl;
     private Double mPrice;
+    private  String mrestname;
 
     public Upload() {
         //empty constructor needed
@@ -16,6 +17,16 @@ public class Upload {
         mName = name;
         mImageUrl = imageUrl;
         mPrice = price; // Set the price
+    }
+    public Upload(String name, String imageUrl, double price,String restname,String itemId) {
+        if (name.trim().equals("")) {
+            name = "No Name";
+        }
+        mName = name;
+        mImageUrl = imageUrl;
+        mPrice = price; // Set the price
+        mrestname=restname;
+        mitemId=itemId;
     }
     // Add the getters and setters for the price variable
     public double getPrice() {
@@ -34,11 +45,18 @@ public class Upload {
         mImageUrl = imageUrl;
     }
     public String getItemId() {
-        return itemId;
+        return mitemId;
     }
 
+    public void setRestName(String restName) {
+        this.mrestname = restName;
+    }
+
+    public String getRestName() {
+        return mrestname;
+    }
     public void setItemId(String itemId) {
-        this.itemId = itemId;
+        this.mitemId = itemId;
     }
 
     public String getName() {

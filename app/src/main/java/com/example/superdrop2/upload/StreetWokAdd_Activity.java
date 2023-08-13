@@ -46,8 +46,8 @@ public class StreetWokAdd_Activity extends AppCompatActivity {
 
     private Uri mImageUri;
 
-    private StorageReference mStorageRef;
-    private DatabaseReference mDatabaseRef;
+    private StorageReference mStorageRef,sStorageRef;
+    private DatabaseReference mDatabaseRef,sDatabaseRef;
 
     private StorageTask mUploadTask;
     private ActivityResultLauncher<Intent> mGetContentLauncher;
@@ -67,6 +67,8 @@ public class StreetWokAdd_Activity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("streetwok");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("streetwok");
+        sStorageRef = FirebaseStorage.getInstance().getReference("menu");
+        sDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
 
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +131,7 @@ public class StreetWokAdd_Activity extends AppCompatActivity {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
 
-
+            String restname="StreetWok";
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -150,8 +152,10 @@ public class StreetWokAdd_Activity extends AppCompatActivity {
                                 public void onSuccess(Uri downloadUri) {
                                     String uploadId = mDatabaseRef.push().getKey(); // Generate a unique item ID
                                     Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price);
+                                    Upload upload2 = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price,restname,uploadId);
                                     upload.setItemId(uploadId); // Set the unique item ID
                                     mDatabaseRef.child(uploadId).setValue(upload);
+                                    sDatabaseRef.child(uploadId).setValue(upload2);
                                 }
                             });
                         }

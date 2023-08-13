@@ -26,7 +26,7 @@ public class OtpVerifyActivity extends AppCompatActivity {
     private EditText[] etCodeArray = new EditText[6];
     private Button btnVerify;
     private ProgressBar progressBarVerify;
-    private String verificationId,phoneNumber;
+    private String verificationId,phoneNumber1;
 
 
 
@@ -47,10 +47,10 @@ public class OtpVerifyActivity extends AppCompatActivity {
 
         // Retrieve verification ID from the intent
         verificationId = getIntent().getStringExtra("verificationId");
-        phoneNumber = getIntent().getStringExtra("phoneNumber");
+        phoneNumber1 = getIntent().getStringExtra("phoneNumber");
 
         TextView tvPhoneNumber = findViewById(R.id.tvMobile); // Use the appropriate TextView ID from your XML
-        tvPhoneNumber.setText(phoneNumber);
+        tvPhoneNumber.setText(phoneNumber1);
         // Inside your onCreate method
         for (int i = 0; i < etCodeArray.length; i++) {
             final int currentIndex = i;
@@ -108,7 +108,8 @@ public class OtpVerifyActivity extends AppCompatActivity {
                             // OTP verification successful, proceed to the next activity
                             // For example, you can redirect to the user's profile or dashboard
                             Intent intent = new Intent(OtpVerifyActivity.this,Detail_Activity.class);
-                            intent.putExtra("phoneNumber", phoneNumber);
+                            intent.putExtra("phoneNumber", phoneNumber1);
+                            startActivity(intent);
                             finish();
                         } else {
                             for (EditText editText : etCodeArray) {
