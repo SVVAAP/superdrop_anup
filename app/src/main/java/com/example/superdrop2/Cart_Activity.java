@@ -174,5 +174,6 @@ public class Cart_Activity extends AppCompatActivity {
         adapter.selectedItems.clear();
         adapter.notifyDataSetChanged();
 
+        recreate();
     }
 }

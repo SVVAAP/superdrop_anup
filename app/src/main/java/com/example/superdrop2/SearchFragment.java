@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.rest_Adapter;
@@ -34,6 +35,9 @@ public class SearchFragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private List<Upload> mUploads;
     private Button button_search;
+    private List<Upload> mFilteredUploads; // List to hold filtered items
+    private search_menu_adapter mFilteredAdapter; // Adapter for filtered items
+    private SearchView mSearchView;
 
 
     public SearchFragment() {
@@ -44,6 +48,8 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         mUploads = new ArrayList<>();
+        mFilteredUploads = new ArrayList<>();
+        mSearchView = view.findViewById(R.id.searchView_m);
 
         recyclerview = view.findViewById(R.id.search_recyclerview);
         recyclerview.setHasFixedSize(true);
@@ -51,6 +57,9 @@ public class SearchFragment extends Fragment {
         item_view();
 
         mAdapter = new search_menu_adapter(getActivity(), mUploads);
+
+        mFilteredAdapter = new search_menu_adapter(getActivity(), mFilteredUploads);
+        
         recyclerview.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener(new rest_Adapter.OnItemClickListener() {
@@ -59,6 +68,22 @@ public class SearchFragment extends Fragment {
                 showBottomSheetForItem(item);
             }
         });
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Filter the items based on the user's search input
+                filterItems(newText);
+                recyclerview.setAdapter(mFilteredAdapter);
+                return true;
+            }
+        });
+// Create the filtered adapter and set it to the RecyclerView
+
 
         return view;
     }
@@ -102,6 +127,21 @@ public class SearchFragment extends Fragment {
         args.putDouble("price", item.getPrice());
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
+    }
+    private void filterItems(String query) {
+        mFilteredUploads.clear();
+
+        if (query.isEmpty()) {
+            mFilteredUploads.addAll(mUploads); // Show all items when query is empty
+        } else {
+            for (Upload upload : mUploads) {
+                if (upload.getName().toLowerCase().contains(query.toLowerCase())) {
+                    mFilteredUploads.add(upload);
+                }
+            }
+        }
+
+        mFilteredAdapter.notifyDataSetChanged();
     }
 
 }

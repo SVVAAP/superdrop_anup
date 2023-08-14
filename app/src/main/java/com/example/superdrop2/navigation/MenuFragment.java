@@ -109,18 +109,19 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 if (isEditMode) {
                     show(true);
+                    button_search.setText("Search");
                     FragmentManager fm = getChildFragmentManager();
-                    FragmentTransaction ft=fm.beginTransaction();
-                    SearchFragment searchFragment= new SearchFragment();
-                    ft.add(R.id.search_container, searchFragment);
+                    FragmentTransaction ft = fm.beginTransaction();
+                    SearchFragment searchFragment = new SearchFragment();
+                    ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
+                    ft.addToBackStack(null); // Add to back stack to allow navigation back
                     ft.commit();
-                    isEditMode=false;
+                    isEditMode = false;
                 } else {
                     show(false);
-                    isEditMode=true;
-
+                    isEditMode = true;
+                    button_search.setText("X");
                 }
-
             }
         });
 
