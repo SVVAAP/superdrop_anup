@@ -170,8 +170,9 @@ public class Cart_Activity extends AppCompatActivity {
 
         // Clear the selection and update the adapter
         total -= deletedTotal; // Subtract deleted total from current total
+        totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
         adapter.selectedItems.clear();
         adapter.notifyDataSetChanged();
-        totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
+
     }
 }

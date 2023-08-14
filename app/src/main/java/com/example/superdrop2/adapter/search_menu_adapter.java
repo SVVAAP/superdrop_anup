@@ -40,7 +40,7 @@ public class search_menu_adapter extends RecyclerView.Adapter<search_menu_adapte
     @NonNull
     @Override
     public search_menu_adapter.SearchViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(rcontext).inflate(R.layout.rest_item_v, parent, false);
+        View v = LayoutInflater.from(rcontext).inflate(R.layout.search_menu_v, parent, false);
         return new SearchViewholder(v);
     }
 
@@ -76,9 +76,9 @@ public class search_menu_adapter extends RecyclerView.Adapter<search_menu_adapte
         // Add TextView for price
         public SearchViewholder(@NonNull View itemView) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.rest_name);
-            imageView = itemView.findViewById(R.id.rest_img);
-            textViewPrice = itemView.findViewById(R.id.rest_price);
+            textViewName = itemView.findViewById(R.id.search_name);
+            imageView = itemView.findViewById(R.id.search_img);
+            textViewPrice = itemView.findViewById(R.id.search_price);
             textViewRest_name=itemView.findViewById(R.id.rest_name_text);
 
             // Set click listener on the whole item view

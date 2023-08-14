@@ -50,6 +50,7 @@ public class MenuFragment extends Fragment {
     private Button  button_search;
     private CardView card_bunontop, card_streetwok, card_bowlexpress;
     private FrameLayout container_search;
+    private Boolean isEditMode=false;
 
 
     public MenuFragment() {
@@ -106,12 +107,20 @@ public class MenuFragment extends Fragment {
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                container_search.setVisibility(View.VISIBLE);
-                FragmentManager fm = getChildFragmentManager();
-                FragmentTransaction ft=fm.beginTransaction();
-                SearchFragment searchFragment= new SearchFragment();
-                ft.add(R.id.search_container, searchFragment);
-                ft.commit();
+                if (isEditMode) {
+                    show(true);
+                    FragmentManager fm = getChildFragmentManager();
+                    FragmentTransaction ft=fm.beginTransaction();
+                    SearchFragment searchFragment= new SearchFragment();
+                    ft.add(R.id.search_container, searchFragment);
+                    ft.commit();
+                    isEditMode=false;
+                } else {
+                    show(false);
+                    isEditMode=true;
+
+                }
+
             }
         });
 
@@ -127,6 +136,13 @@ public class MenuFragment extends Fragment {
         });
 
         return view;
+    }
+    public void show(Boolean editMode){
+        container_search.setVisibility(editMode ? View.GONE: View.VISIBLE);
+        recyclerview.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        card_bowlexpress.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        card_bunontop.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        card_streetwok.setVisibility(editMode ? View.VISIBLE : View.GONE);
     }
 
 
