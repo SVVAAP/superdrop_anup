@@ -30,17 +30,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
     private List<CartItem> cartItemList;
     private Context context;
     public SparseBooleanArray selectedItems = new SparseBooleanArray();
-    private rest_Adapter.OnItemClickListener listener; // Add this line
+    private CartAdapter.OnItemClickListener listener; // Add this line
     private boolean showCheckboxes = false; // Add this flag
     public interface OnItemClickListener {
-        void onItemClick(Upload item);
+        void onItemClick(CartItem item);
     }
 
     // Member variable to hold the click listener
-    private rest_Adapter.OnItemClickListener mListener;
+    private CartAdapter.OnItemClickListener mListener;
 
     // Method to set the click listener
-    public void setOnItemClickListener(rest_Adapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(CartAdapter.OnItemClickListener listener) {
         mListener = listener;
     }
 
@@ -77,6 +77,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         } else {
             holder.checkBox.setVisibility(View.INVISIBLE);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onItemClick(cartItem);
+                }
+            }
+        });
+
     }
     // Method to toggle checkbox visibility
     public void toggleCheckboxVisibility() {
@@ -129,7 +138,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         return cartItemList.size();
     }
 
-    public static class CartItemViewHolder extends RecyclerView.ViewHolder {
+    public static class CartItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView cartItemImg;
         TextView cartItemName, cartItemPrice, cartItemQuantity,getCartItemTotalprice;
         CheckBox checkBox;
@@ -143,6 +152,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
             cartItemQuantity = itemView.findViewById(R.id.cartItemQuantity);
             getCartItemTotalprice=itemView.findViewById(R.id.cart_total_price);
             checkBox = itemView.findViewById(R.id.checkBox);
+            itemView.setOnClickListener(this);
 
             // Toggle selection when the checkbox is clicked
             if(adapter.showCheckboxes){
@@ -167,6 +177,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
             });
 
             // Toggle selection when the item view is long-clicked
+        }
+        @Override
+        public void onClick(View v) {
+            // Nothing to do here, we handle the click in the onBindViewHolder
         }
     }
 }
