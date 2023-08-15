@@ -44,6 +44,24 @@ public class OtpVerifyActivity extends AppCompatActivity {
 
         btnVerify = findViewById(R.id.btnVerify);
         progressBarVerify = findViewById(R.id.progressBarVerify);
+        etCodeArray[0].addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() == 6) {
+                    for (int j = 0; j < etCodeArray.length; j++) {
+                        etCodeArray[j].setText(String.valueOf(charSequence.charAt(j)));
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
         // Retrieve verification ID from the intent
         verificationId = getIntent().getStringExtra("verificationId");
@@ -65,8 +83,12 @@ public class OtpVerifyActivity extends AppCompatActivity {
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if (charSequence.length() == 1 && currentIndex < etCodeArray.length - 1) {
                         etCodeArray[currentIndex + 1].requestFocus();
-                    } else if (charSequence.length() == 0 && currentIndex > 0) {
-                        etCodeArray[currentIndex - 1].requestFocus();
+                    } else if (charSequence.length() == 0) {
+                        if (i1 > 0) { // Handling backspace
+                            if (currentIndex > 0) {
+                                etCodeArray[currentIndex - 1].requestFocus();
+                            }
+                        }
                     }
                 }
 

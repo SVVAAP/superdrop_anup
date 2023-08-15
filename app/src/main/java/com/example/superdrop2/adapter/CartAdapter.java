@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.superdrop2.Cart_Activity;
 import com.example.superdrop2.R;
 import android.content.Context;
+
+import com.example.superdrop2.upload.Upload;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -28,17 +30,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
     private List<CartItem> cartItemList;
     private Context context;
     public SparseBooleanArray selectedItems = new SparseBooleanArray();
-    private OnItemLongClickListener longClickListener; // Interface reference
+    private rest_Adapter.OnItemClickListener listener; // Add this line
     private boolean showCheckboxes = false; // Add this flag
-    public interface OnItemLongClickListener {
-        void onItemLongClick(int position);
+    public interface OnItemClickListener {
+        void onItemClick(Upload item);
+    }
+
+    // Member variable to hold the click listener
+    private rest_Adapter.OnItemClickListener mListener;
+
+    // Method to set the click listener
+    public void setOnItemClickListener(rest_Adapter.OnItemClickListener listener) {
+        mListener = listener;
     }
 
     public CartAdapter(List<CartItem> cartItemList, Context context) {
         this.cartItemList = cartItemList;
         this.context = context;
 
-        this.longClickListener = longClickListener; // Initialize the interface
     }
 
     @NonNull

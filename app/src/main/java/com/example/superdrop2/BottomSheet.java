@@ -150,7 +150,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         return view;
     }
 
-    private void addToUserCart(String itemIdm, String itemName, String imageUrl, double itemPrice, int quantity, double totalprice) {
+    private void addToUserCart(String itemIdm, String itemName, String imageUrl, double itemPrice, int quantity, double totalPrice) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             // User not authenticated, handle accordingly
@@ -165,11 +165,11 @@ public class BottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Item already exists, update the quantity
+                    // Item already exists, update the quantity and total price
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         CartItem cartItem = snapshot.getValue(CartItem.class);
                         int newQuantity = cartItem.getQuantity() + quantity;
-                        double newTotalPrice = cartItem.getTotalprice() + totalprice;
+                        double newTotalPrice = cartItem.getItemPrice() * newQuantity;
                         snapshot.getRef().child("quantity").setValue(newQuantity);
                         snapshot.getRef().child("totalPrice").setValue(newTotalPrice);
                         Toast.makeText(getActivity(), "Item quantity updated", Toast.LENGTH_SHORT).show();
@@ -177,7 +177,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 } else {
                     // Item does not exist, add it to the cart
                     String itemId = userCartRef.push().getKey();
-                    CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalprice, imageUrl);
+                    CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalPrice, imageUrl);
                     cartItem.setItemId(itemIdm);
                     userCartRef.child(itemId).setValue(cartItem)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -200,7 +200,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 // Handle onCancelled if needed
             }
         });
-
     }
 
 }
