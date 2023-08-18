@@ -15,9 +15,11 @@ import android.widget.Toast;
 
 import com.example.superdrop2.adapter.CartAdapter;
 import com.example.superdrop2.adapter.CartItem;
+import com.example.superdrop2.adapter.rest_Adapter;
 import com.example.superdrop2.navigation.NavActivity;
 import com.example.superdrop2.payment.CheckoutActivity;
 import com.example.superdrop2.payment.OrderPlacedActivity;
+import com.example.superdrop2.upload.Upload;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -98,6 +100,12 @@ public class Cart_Activity extends AppCompatActivity {
                 deleteSelectedItems();
             }
         });
+        adapter.setOnItemClickListener(new CartAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(CartItem item) {
+                showBottomSheetForItem(item);
+            }
+        });
     }
 
     public void showDeleteButton() {
@@ -175,5 +183,16 @@ public class Cart_Activity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         recreate();
+    }
+    private void showBottomSheetForItem(CartItem item) {
+        Cart_BottomSheet bottomSheetFragment = new Cart_BottomSheet();
+        Bundle args = new Bundle();
+        args.putString("itemId", item.getItemId()); // Pass the itemId to the BottomSheet
+        args.putString("name", item.getItemName());
+        args.putString("imageUrl", item.getImageUrl());
+        args.putDouble("price", item.getItemPrice());
+        args.putInt("quantity",item.getQuantity());
+        bottomSheetFragment.setArguments(args);
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }
 }
