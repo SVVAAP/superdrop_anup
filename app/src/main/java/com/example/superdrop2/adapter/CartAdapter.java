@@ -65,7 +65,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         holder.cartItemName.setText(cartItem.getItemName());
         holder.cartItemPrice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getItemPrice()));
         holder.cartItemQuantity.setText(String.valueOf(cartItem.getQuantity()));
-        holder.getCartItemTotalprice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getTotalprice()));
+        holder.CartItemTotalprice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getTotalprice()));
+//        double price =cartItem.getItemPrice();
+//        int qty=cartItem.getQuantity();
+//        double total=price*qty;
+//        holder.getCartItemTotalprice.setText("₹" + new DecimalFormat("0.00").format(total));
         if (cartItem.getImageUrl() != null) {
             Picasso.get().load(cartItem.getImageUrl()).into(holder.cartItemImg);
         } else {
@@ -140,7 +144,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
 
     public static class CartItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView cartItemImg;
-        TextView cartItemName, cartItemPrice, cartItemQuantity,getCartItemTotalprice;
+        TextView cartItemName, cartItemPrice, cartItemQuantity,CartItemTotalprice;
         CheckBox checkBox;
 
         public CartItemViewHolder(@NonNull View itemView,CartAdapter adapter,Context context) {
@@ -150,7 +154,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
             cartItemName = itemView.findViewById(R.id.cartItemName);
             cartItemPrice = itemView.findViewById(R.id.cartItemPrice);
             cartItemQuantity = itemView.findViewById(R.id.cartItemQuantity);
-            getCartItemTotalprice=itemView.findViewById(R.id.cart_total_price);
+            CartItemTotalprice=itemView.findViewById(R.id.cart_total_price);
             checkBox = itemView.findViewById(R.id.checkBox);
             itemView.setOnClickListener(this);
 

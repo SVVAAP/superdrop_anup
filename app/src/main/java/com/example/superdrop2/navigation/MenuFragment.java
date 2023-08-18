@@ -1,17 +1,22 @@
 package com.example.superdrop2.navigation;
 
+import static androidx.core.view.ViewGroupKt.setMargins;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +56,7 @@ public class MenuFragment extends Fragment {
     private CardView card_bunontop, card_streetwok, card_bowlexpress;
     private FrameLayout container_search;
     private Boolean isEditMode=false;
+    ImageView imageView;
 
 
     public MenuFragment() {
@@ -75,10 +81,17 @@ public class MenuFragment extends Fragment {
         card_bowlexpress = view.findViewById(R.id.bowlexpress_card);
         button_search = view.findViewById(R.id.button2);
         container_search=view.findViewById(R.id.search_container);
+        imageView =view.findViewById(R.id.imageView7);
 
         recyclerview = view.findViewById(R.id.fooditems_rv);
         recyclerview.setHasFixedSize(true);
-        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));  
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        SearchFragment searchFragment = new SearchFragment();
+        ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
+        ft.addToBackStack(null); // Add to back stack to allow navigation back
+        ft.commit();
 
         card_bunontop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,25 +116,41 @@ public class MenuFragment extends Fragment {
                 item_view(name);
             }
         });
-
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isEditMode) {
                     show(true);
                     button_search.setText("Search");
-                    FragmentManager fm = getChildFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    SearchFragment searchFragment = new SearchFragment();
-                    ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
-                    ft.addToBackStack(null); // Add to back stack to allow navigation back
-                    ft.commit();
+                    ViewGroup.LayoutParams params = button_search.getLayoutParams();
+                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    button_search.setLayoutParams(params);
+                    // Align the button to the center
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone((ConstraintLayout) view.getParent());
+                    constraintSet.centerHorizontally(R.id.button2, ConstraintSet.PARENT_ID);
+                    constraintSet.applyTo((ConstraintLayout) view.getParent());
+                    button_search.animate()
+                            .translationXBy(0) // Shift to right side
+                            .setDuration(300) // Animation duration in milliseconds
+                            .start();
+                    imageView.setVisibility(View.VISIBLE);
                     isEditMode = false;
                 } else {
                     show(false);
                     isEditMode = true;
+                    ViewGroup.LayoutParams params = button_search.getLayoutParams();
+                    params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    button_search.setLayoutParams(params);
                     button_search.setText("X");
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone((ConstraintLayout) view.getParent());
+                    constraintSet.connect(R.id.button2, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+                    constraintSet.clear(R.id.button2, ConstraintSet.START);
+                    constraintSet.applyTo((ConstraintLayout) view.getParent());
+                    imageView.setVisibility(View.GONE);
                 }
+
             }
         });
 
