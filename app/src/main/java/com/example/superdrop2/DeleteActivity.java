@@ -73,11 +73,12 @@ public class DeleteActivity extends AppCompatActivity {
         ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
         ft.addToBackStack(null); // Add to back stack to allow navigation back
         ft.commit();
-
+item_view(data);
         card_bunontop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = "bunontop";
+                data=name;
                 item_view(name);
             }
         });
@@ -86,6 +87,7 @@ public class DeleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String name = "streetwok";
+                data=name;
                 item_view(name);
             }
         });
@@ -94,6 +96,7 @@ public class DeleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String name = "bowlexpress";
+                data=name;
                 item_view(name);
             }
         });
@@ -145,11 +148,11 @@ public class DeleteActivity extends AppCompatActivity {
                 // Get the selected items to delete
                 List<Upload> selectedItems = mAdapter.getSelectedItems();
                 // Get the current folder name
-                String currentFolder = getCurrentFolderName();
+               // String currentFolder = getCurrentFolderName();
 
                 // Get reference to the Firebase database for "menu" and "bunontop" nodes
                 DatabaseReference menuRef = FirebaseDatabase.getInstance().getReference("menu");
-                DatabaseReference currentFolderRef = FirebaseDatabase.getInstance().getReference(currentFolder);
+                DatabaseReference currentFolderRef = FirebaseDatabase.getInstance().getReference(data);
 
                 // Loop through selected items and delete them from both "menu" and "bunontop"
                 for (Upload selectedItem : selectedItems) {
@@ -218,6 +221,7 @@ public class DeleteActivity extends AppCompatActivity {
                         upload.setPrice(priceValue);
                     }
                     mUploads.add(upload);
+                    mAdapter.clearSelectedItems();
                 }
                 mAdapter.notifyDataSetChanged();
 //                mAdapter = new rest_Adapter(getActivity(), mUploads);
