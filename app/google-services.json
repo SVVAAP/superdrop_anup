@@ -15,22 +15,11 @@
       },
       "oauth_client": [
         {
-<<<<<<< HEAD
-          "client_id": "587544703441-61eefiqj29qth9hvgca7khna1st0st6d.apps.googleusercontent.com",
+          "client_id": "587544703441-somtfq0efjbnq170pgql03144a6d2gk4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.superdrop2",
             "certificate_hash": "33c8fc0731ec98d92f56b2be430262c90d6e0bea"
-          }
-        },
-        {
-=======
->>>>>>> origin/master
-          "client_id": "587544703441-bifvqa1vtpna0csik7le6mk7ns5kgnbs.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.superdrop2",
-            "certificate_hash": "31fca92493ab73e5163706aa5cac0d4df963e6aa"
           }
         },
         {
