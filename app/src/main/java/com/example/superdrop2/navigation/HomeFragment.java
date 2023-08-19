@@ -1,6 +1,7 @@
 package com.example.superdrop2.navigation;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -72,6 +73,8 @@ public class HomeFragment extends Fragment {
     ArrayList<postview> postviewlist;
     private ImageAdapter madapter;
     private DatabaseReference mdatabaseref;
+
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -101,9 +104,17 @@ public class HomeFragment extends Fragment {
             menuItems.add(new ezyMenuItem(R.drawable.soda, "Soda"));
              // Add more menu items as needed
         mRecyclerView = view.findViewById(R.id.ezy_menu_rv);
-            myMenuAdapter = new MyMenuAdapter(menuItems);
+            myMenuAdapter = new MyMenuAdapter(menuItems,this);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
             mRecyclerView.setAdapter(myMenuAdapter);
+
+        myMenuAdapter.setOnItemClickListener(new MyMenuAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String item) {
+                openMenuFragmentsearch(item);
+                Toast.makeText(getActivity(), "clicked..", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
@@ -117,29 +128,6 @@ public class HomeFragment extends Fragment {
         sliderView = view.findViewById(R.id.slider_view);
 
         fetchImageURLs();
-
-//        mDatabaseRef.addValueEventListener(new ValueEventListener() {
-//            // Inside the ValueEventListener in HomeFragment
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                mUploads.clear();
-//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                    Upload upload = postSnapshot.getValue(Upload.class);
-//                    // Get the download URL from Firebase Storage and set it in the Upload object
-//                    upload.setImageUrl(postSnapshot.child("imageUrl").getValue(String.class));
-//                    mUploads.add(upload);
-//                }
-//                mAdapter = new rest_Adapter(getActivity(), mUploads);
-//                mRecyclerView.setAdapter(mAdapter);
-//                mProgressCircle.setVisibility(View.INVISIBLE);
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//                mProgressCircle.setVisibility(View.INVISIBLE);
-//            }
-//        });
-
 
         CardView cardBunontop = view.findViewById(R.id.bowlexpress_card);
         cardBunontop.setOnClickListener(v -> {
@@ -202,6 +190,10 @@ public class HomeFragment extends Fragment {
         NavActivity navActivity = (NavActivity) requireActivity();
         navActivity.loadMenuFragment(data);
     }
+    public void openMenuFragmentsearch(String data) {
+        NavActivity navActivity = (NavActivity) requireActivity();
+        navActivity.loadMenuFragmentsearch(data);
+    }
     private void fetchImageURLs() {
         // Get a reference to the "uploads" folder in Firebase Storage
         StorageReference storageRef = FirebaseStorage.getInstance().getReference("Offers");
@@ -261,6 +253,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 
 }
 

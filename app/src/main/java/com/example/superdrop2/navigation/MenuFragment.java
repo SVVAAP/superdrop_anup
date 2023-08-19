@@ -148,6 +148,7 @@ public class MenuFragment extends Fragment {
                     constraintSet.connect(R.id.button2, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
                     constraintSet.clear(R.id.button2, ConstraintSet.START);
                     constraintSet.applyTo((ConstraintLayout) view.getParent());
+                    getActivity().overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
                     imageView.setVisibility(View.GONE);
                 }
 
@@ -168,11 +169,13 @@ public class MenuFragment extends Fragment {
         return view;
     }
     public void show(Boolean editMode){
-        container_search.setVisibility(editMode ? View.GONE: View.VISIBLE);
-        recyclerview.setVisibility(editMode ? View.VISIBLE : View.GONE);
-        card_bowlexpress.setVisibility(editMode ? View.VISIBLE : View.GONE);
-        card_bunontop.setVisibility(editMode ? View.VISIBLE : View.GONE);
-        card_streetwok.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        if (container_search != null) { // Add this null check
+            container_search.setVisibility(editMode ? View.GONE : View.VISIBLE);
+            recyclerview.setVisibility(editMode ? View.VISIBLE : View.GONE);
+            card_bowlexpress.setVisibility(editMode ? View.VISIBLE : View.GONE);
+            card_bunontop.setVisibility(editMode ? View.VISIBLE : View.GONE);
+            card_streetwok.setVisibility(editMode ? View.VISIBLE : View.GONE);
+        }
     }
 
 
@@ -221,6 +224,26 @@ public class MenuFragment extends Fragment {
         });
     }
 
+    public void openMenuFragment(String itemName) {
+        Bundle args = new Bundle();
+        args.putString("itemName", itemName);
+
+        SearchFragment searchFragment = new SearchFragment();
+        searchFragment.setArguments(args);
+        show(false);
+        isEditMode = true;
+        ViewGroup.LayoutParams params = button_search.getLayoutParams();
+        params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        button_search.setLayoutParams(params);
+        button_search.setText("X");
+//        ConstraintSet constraintSet = new ConstraintSet();
+//        constraintSet.clone((ConstraintLayout) view.getParent());
+//        constraintSet.connect(R.id.button2, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+//        constraintSet.clear(R.id.button2, ConstraintSet.START);
+//        constraintSet.applyTo((ConstraintLayout) view.getParent());
+        imageView.setVisibility(View.GONE);
+
+    }
     private void showBottomSheetForItem(Upload item) {
         BottomSheet bottomSheetFragment = new BottomSheet();
         Bundle args = new Bundle();

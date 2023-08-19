@@ -50,6 +50,12 @@ public class SearchFragment extends Fragment {
         mUploads = new ArrayList<>();
         mFilteredUploads = new ArrayList<>();
         mSearchView = view.findViewById(R.id.searchView_m);
+//        mSearchView.getFocusable();
+        Bundle args = getArguments();
+        if (args != null) {
+            String itemName = args.getString("itemName", "");
+            mSearchView.setQuery(itemName, false); // Set the item name in the SearchView
+        }
 
         recyclerview = view.findViewById(R.id.search_recyclerview);
         recyclerview.setHasFixedSize(true);
