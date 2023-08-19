@@ -56,6 +56,10 @@ public class delet_Adapter extends RecyclerView.Adapter<delet_Adapter.RestImageV
 
 
     }
+    public void clearSelectedItems() {
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
