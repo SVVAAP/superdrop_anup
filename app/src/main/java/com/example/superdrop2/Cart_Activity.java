@@ -192,6 +192,7 @@ public class Cart_Activity extends AppCompatActivity {
         args.putString("imageUrl", item.getImageUrl());
         args.putDouble("price", item.getItemPrice());
         args.putInt("quantity",item.getQuantity());
+        args.putDouble("totalprice",item.getTotalprice());
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
     }

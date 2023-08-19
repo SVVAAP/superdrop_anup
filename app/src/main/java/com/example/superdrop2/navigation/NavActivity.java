@@ -36,6 +36,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
             ImageView btn_cart,btn_logo;
             View view;
+
             @Override
             protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,4 +111,13 @@ import com.google.android.material.navigation.NavigationBarView;
             ft.addToBackStack(null); // Add the fragment to the back stack if needed
             ft.commit();
         }
+            public void loadMenuFragmentsearch(String data) {
+                MenuFragment menuFragment = new MenuFragment();
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.bncontainer, menuFragment);
+                ft.addToBackStack(null); // Add the fragment to the back stack if needed
+                ft.commit();
+                menuFragment.openMenuFragment(data);
+            }
 }

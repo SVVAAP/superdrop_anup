@@ -1,5 +1,6 @@
 package com.example.superdrop2;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +35,11 @@ import com.squareup.picasso.Picasso;
 
 public class Cart_BottomSheet extends BottomSheetDialogFragment {
     TextView item_name, item_price, item_quantity, total_price;
-    Button bt_cart,bt_order;
+    Button bt_cart, bt_order;
     ImageView item_img, plus_img, minus_img;
-    int i = 1,qty;
-    double price;
-    String priceWithSymbol, imageUrl,itemId;
+    int i = 1, qty;
+    double price, tprice;
+    String priceWithSymbol, imageUrl, itemId, tpriceWithSymbol;
     Bitmap imageBitmap;
     byte[] data;
     private StorageReference mStorageRef;
@@ -45,6 +47,7 @@ public class Cart_BottomSheet extends BottomSheetDialogFragment {
     private StorageTask mUploadTask;
     private FirebaseAuth mAuth;
     double totalprice;
+    private Activity mActivity;
 
 
     public Cart_BottomSheet() {
@@ -63,12 +66,13 @@ public class Cart_BottomSheet extends BottomSheetDialogFragment {
         item_quantity = view.findViewById(R.id.cart_sheet_quantity);
         item_img = view.findViewById(R.id.cart_sheet_img);
         bt_cart = view.findViewById(R.id.cart_sheet_updatecart_bt);
-      // bt_order = view.findViewById(R.id.sheet_order_bt);
+        // bt_order = view.findViewById(R.id.sheet_order_bt);
         plus_img = view.findViewById(R.id.cart_sheet_plus_bt);
         minus_img = view.findViewById(R.id.cart_sheet_minus_bt);
         mStorageRef = FirebaseStorage.getInstance().getReference("cart");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("cart");
         mAuth = FirebaseAuth.getInstance();
+        mActivity = getActivity();
 
         // Retrieve item details from arguments
         Bundle args = getArguments();
@@ -77,14 +81,16 @@ public class Cart_BottomSheet extends BottomSheetDialogFragment {
             String name = args.getString("name", "Default Name");
             imageUrl = args.getString("imageUrl");
             price = args.getDouble("price", 0.0);
-            qty=args.getInt("quantity",1);
-            i=qty;
+            qty = args.getInt("quantity", 1);
+            tprice = args.getDouble("totalprice", 0.0);
+            i = qty;
 
             // Display item details in the bottom sheet
             item_name.setText(name);
             priceWithSymbol = "₹" + String.valueOf(price);
+            tpriceWithSymbol = "₹" + String.valueOf(tprice);
             item_price.setText(priceWithSymbol);
-            total_price.setText(priceWithSymbol);
+            total_price.setText(tpriceWithSymbol);
             item_quantity.setText(String.valueOf(qty));
 
             // Load image using Picasso or any other library you prefer
@@ -96,7 +102,7 @@ public class Cart_BottomSheet extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 i++;
                 item_quantity.setText(String.valueOf(i));
-                totalprice=price*i;
+                totalprice = price * i;
                 String withsymboltprice = "₹" + String.valueOf(price * i);
                 total_price.setText(withsymboltprice);
             }
@@ -107,7 +113,7 @@ public class Cart_BottomSheet extends BottomSheetDialogFragment {
                 if (i > 1) {
                     i--;
                     item_quantity.setText(String.valueOf(i));
-                    totalprice=price*i;
+                    totalprice = price * i;
                     String withsymboltprice = "₹" + String.valueOf(price * i);
                     total_price.setText(withsymboltprice);
                 } else {
@@ -126,9 +132,13 @@ public class Cart_BottomSheet extends BottomSheetDialogFragment {
                 int quantity = i;
                 String totalPriceText = total_price.getText().toString().trim();
                 totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
-                totalprice = Double.parseDouble(totalPriceText);
-                addToUserCart(itemId,itemName, imageUrl, itemPrice, quantity,totalprice);
-                Toast.makeText(getActivity(), "updating..", Toast.LENGTH_SHORT).show();
+                double totalprice = Double.parseDouble(totalPriceText);
+
+                // Update the item in the Firebase database
+                updateCartItemInDatabase(itemId, quantity, totalprice);
+
+                // Close the bottom sheet
+                dismiss();
             }
         });
 //        bt_order.setOnClickListener(new View.OnClickListener() {
@@ -142,33 +152,53 @@ public class Cart_BottomSheet extends BottomSheetDialogFragment {
         return view;
     }
 
-    private void addToUserCart(String itemIdm, String itemName, String imageUrl, double itemPrice, int quantity, double totalPrice) {
+    private void updateCartItemInDatabase(String itemId, int quantity, double totalprice) {
+        mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
-            // User not authenticated, handle accordingly
+            // Handle user not authenticated
             return;
         }
 
         String userId = currentUser.getUid();
         DatabaseReference userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
 
-        // Check if the item already exists in the cart
-        userCartRef.orderByChild("itemId").equalTo(itemIdm).addListenerForSingleValueEvent(new ValueEventListener() {
+        // Retrieve the existing CartItem object from the Firebase database
+        userCartRef.child(itemId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    // Item already exists, update the quantity and total price
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        CartItem cartItem = snapshot.getValue(CartItem.class);
-                        snapshot.getRef().child("quantity").setValue(quantity);
-                        snapshot.getRef().child("totalprice").setValue( totalPrice);
-                        Toast.makeText(getActivity(), "Item quantity updated", Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    CartItem existingCartItem = snapshot.getValue(CartItem.class);
+
+                    if (existingCartItem != null) {
+                        // Update the quantity and total price
+                        existingCartItem.setQuantity(quantity);
+                        existingCartItem.setTotalprice(totalprice);
+
+                        // Update the item in the Firebase database
+                        userCartRef.child(itemId).setValue(existingCartItem)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        if (mActivity != null) {
+                                            Toast.makeText(mActivity, "Quantity updated successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(), "Failed to update quantity", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     }
                 }
+            }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "error...", Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database read error
             }
         });
     }
-
 }
