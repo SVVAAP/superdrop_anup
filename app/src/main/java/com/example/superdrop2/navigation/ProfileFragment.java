@@ -190,7 +190,7 @@ public class ProfileFragment extends Fragment {
         editCity.setEnabled(editMode);
         editEmergencyContact.setEnabled(editMode);
         submitButton.setVisibility(editMode ? View.VISIBLE : View.GONE);
-        editProfileButton.setText(editMode ? "Save Profile" : "Edit Profile");
+        editProfileButton.setVisibility(editMode?View.GONE:View.VISIBLE);
     }
 
     private void openImageChooser() {
