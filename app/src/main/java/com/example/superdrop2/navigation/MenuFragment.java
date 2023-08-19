@@ -148,6 +148,7 @@ public class MenuFragment extends Fragment {
                     constraintSet.connect(R.id.button2, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
                     constraintSet.clear(R.id.button2, ConstraintSet.START);
                     constraintSet.applyTo((ConstraintLayout) view.getParent());
+                    getActivity().overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
                     imageView.setVisibility(View.GONE);
                 }
 

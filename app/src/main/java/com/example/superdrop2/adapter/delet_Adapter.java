@@ -89,7 +89,7 @@ public class delet_Adapter extends RecyclerView.Adapter<delet_Adapter.RestImageV
         } else {
             selectedItems.put(position, true);
         }
-        notifyDataSetChanged();
+        notifyItemChanged(position); // Notify adapter about the change
     }
 
     public List<Upload> getSelectedItems() {
