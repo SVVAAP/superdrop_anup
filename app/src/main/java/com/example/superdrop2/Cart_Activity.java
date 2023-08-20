@@ -1,5 +1,7 @@
 package com.example.superdrop2;
 
+import static com.example.superdrop2.navigation.NavActivity.getInstance;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +51,7 @@ public class Cart_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        updateBadgeNumber();
         deleteButton = findViewById(R.id.cart_delet);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -195,5 +198,11 @@ public class Cart_Activity extends AppCompatActivity {
         args.putDouble("totalprice",item.getTotalprice());
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+    }
+    private void updateBadgeNumber() {
+        NavActivity navActivity = NavActivity.getInstance();
+        if (navActivity != null) {
+            navActivity.clear();
+        }
     }
 }

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.CartItem;
+import com.example.superdrop2.navigation.NavActivity;
 import com.example.superdrop2.payment.CheckoutActivity;
 import com.example.superdrop2.upload.BunOnTopAdd_Activity;
 import com.example.superdrop2.upload.Upload;
@@ -50,7 +51,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
     TextView item_name, item_price, item_quantity, total_price;
     Button bt_cart,bt_order;
     ImageView item_img, plus_img, minus_img;
-    int i = 1;
+    int i = 1,newItemCount=0;
     double price;
     String priceWithSymbol, imageUrl,itemId;
     Bitmap imageBitmap;
@@ -185,6 +186,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
+                                    newItemCount++;
+                                    updateBadgeNumber(newItemCount);
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -193,6 +196,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                                     Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                    updateBadgeNumber(newItemCount);
                 }
             }
 
@@ -201,6 +205,13 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 // Handle onCancelled if needed
             }
         });
+    }
+    // Update the badge number in NavActivity
+    private void updateBadgeNumber(int newItemCount) {
+        NavActivity navActivity = (NavActivity) getActivity();
+        if (navActivity != null) {
+            navActivity.updateBadgeNumber(newItemCount);
+        }
     }
 
 }
