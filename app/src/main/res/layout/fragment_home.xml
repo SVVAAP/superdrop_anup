@@ -38,12 +38,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/circle_background">
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#F6F6F6">
 
                 <ImageView
                     android:id="@+id/gifImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="450dp"
+                    android:layout_height="200dp"
                     android:src="@drawable/offergif"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
