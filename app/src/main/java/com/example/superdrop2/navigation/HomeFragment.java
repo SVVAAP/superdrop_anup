@@ -2,21 +2,34 @@ package com.example.superdrop2.navigation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.VideoView;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.ImageAdapter;
 import com.example.superdrop2.adapter.MyMenuAdapter;
@@ -182,6 +195,60 @@ public class HomeFragment extends Fragment {
         rootView.startAnimation(fadeInAnimation);
         offerRecyclerView = rootView.findViewById(R.id.offer_recyclerview);
         offerRecyclerView.startAnimation(slideUpAnimation);
+
+
+
+        //here the code for to load menu fragment
+        // Inside HomeFragment's onCreateView() method or another relevant location
+        FragmentManager fragmentManager = getChildFragmentManager(); // If using Fragment within a Fragment
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        MenuFragment menuFragment = new MenuFragment(); // Create an instance of your MenuFragment
+        fragmentTransaction.replace(R.id.MenuFragmentLayout, menuFragment);
+        fragmentTransaction.addToBackStack(null); // Optional: Add the transaction to the back stack
+
+        fragmentTransaction.commit();
+
+// here the code for offer gif file load
+
+        ImageView gifImageView = view.findViewById(R.id.gifImageView);
+        gifImageView.setImageResource(R.drawable.offergif);
+
+// Load the GIF image using a GIF-specific library like Glide
+        Glide.with(this)
+                .asGif()
+                .load(R.drawable.offergif)
+                .into(gifImageView);
+
+// Optionally, set up looping by setting an AnimationListener
+        Glide.with(this)
+                .asGif()
+                .load(R.drawable.offergif)
+                .listener(new RequestListener<GifDrawable>() {
+                    @Override
+                    public boolean onLoadFailed(
+                            @Nullable GlideException e,
+                            Object model,
+                            Target<GifDrawable> target,
+                            boolean isFirstResource
+                    ) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(
+                            GifDrawable resource,
+                            Object model,
+                            Target<GifDrawable> target,
+                            DataSource dataSource,
+                            boolean isFirstResource
+                    ) {
+                        // Set looping here
+                        resource.setLoopCount(GifDrawable.LOOP_FOREVER);
+                        return false;
+                    }
+                })
+                .into(gifImageView);
 
         return view;
     }

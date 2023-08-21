@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,8 +14,9 @@
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="16:9"
         app:shapeAppearance="@style/Imagestyle_round_corners"
-        app:strokeColor="@color/deep_orange_600"
-        app:strokeWidth="1dp"/>
+        app:strokeWidth="1dp"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="20dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
