@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#ff0000" /> <!-- Set your desired red color -->
+            <size android:width="20dp" android:height="20dp" /> <!-- Set desired dimensions -->
+        </shape>
+    </item>
+    <item android:top="4dp" android:end="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YOUR_NUMBER"
+            android:textColor="@android:color/white"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="12sp"
+        android:gravity="center"
+        />
+    </item>
+</layer-list>

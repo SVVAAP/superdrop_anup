@@ -59,7 +59,7 @@
             android:outlineSpotShadowColor="#373434"
             android:shadowColor="#322F2F"
             android:shadowRadius="5"
-            android:text="Continue Ordering Your ❤️ Food"
+            android:text="Track Your Order"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView6"

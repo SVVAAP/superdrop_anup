@@ -36,6 +36,28 @@
                 android:clickable="true"
                 android:padding="15dp"
                 app:srcCompat="@drawable/shopping_cart" />
+            <!-- Notification Badge -->
+
+            <!-- Notification Badge -->
+            <!-- Badge Number -->
+
+            <TextView
+                android:id="@+id/badge_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/cart_img"
+                android:layout_alignEnd="@id/cart_img"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/badge_background"
+                android:paddingStart="6dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="6dp"
+                android:paddingBottom="2dp"
+                android:text="5"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/logo_img"

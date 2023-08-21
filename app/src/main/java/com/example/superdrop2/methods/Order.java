@@ -1,6 +1,9 @@
 package com.example.superdrop2.methods;
 
 
+import com.example.superdrop2.adapter.CartItem;
+
+import java.util.List;
 
 public class Order {
     private String shippingName;
@@ -9,6 +12,7 @@ public class Order {
     private String contactInstructions;
     private String note;
     private String paymentMethod;
+    private List<CartItem> items;
 
     public Order() {
         // Default constructor required for Firebase
@@ -23,7 +27,13 @@ public class Order {
         this.note = note;
         this.paymentMethod = paymentMethod;
     }
+    public List<CartItem> getItems() {
+        return items;
+    }
 
+    public void setItems(List<CartItem> items) {
+        this.items = items;
+    }
     public String getShippingName() {
         return shippingName;
     }

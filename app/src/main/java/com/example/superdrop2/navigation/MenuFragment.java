@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +47,7 @@ import java.util.List;
 
 
 public class MenuFragment extends Fragment {
-    private String data1, data = "bunontop"; //default data
+    private String data1 = "bunontop"; //default data
     private RecyclerView recyclerview;
     private rest_Adapter mAdapter;
     private ProgressBar mProgressCircle;
@@ -57,7 +58,7 @@ public class MenuFragment extends Fragment {
     private FrameLayout container_search;
     private Boolean isEditMode=false;
     ImageView imageView;
-
+    private LinearLayout selectedLinearLayout = null;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -76,12 +77,14 @@ public class MenuFragment extends Fragment {
         }
         item_view(data1);
 
+
         card_bunontop = view.findViewById(R.id.bunontop_card);
         card_streetwok = view.findViewById(R.id.streetwok_card);
         card_bowlexpress = view.findViewById(R.id.bowlexpress_card);
         button_search = view.findViewById(R.id.button2);
         container_search=view.findViewById(R.id.search_container);
         imageView =view.findViewById(R.id.imageView7);
+        handleCardViewSelection(data1);
 
         recyclerview = view.findViewById(R.id.fooditems_rv);
         recyclerview.setHasFixedSize(true);
@@ -98,6 +101,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 String name = "bunontop";
                 item_view(name);
+                handleCardViewSelection(name);
             }
         });
 
@@ -106,6 +110,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 String name = "streetwok";
                 item_view(name);
+                handleCardViewSelection(name);
             }
         });
 
@@ -114,6 +119,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 String name = "bowlexpress";
                 item_view(name);
+                handleCardViewSelection(name);
             }
         });
         button_search.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +183,30 @@ public class MenuFragment extends Fragment {
             card_streetwok.setVisibility(editMode ? View.VISIBLE : View.GONE);
         }
     }
+    private void handleCardViewSelection(String folderName) {
+        LinearLayout clickedLinearLayout = null;
 
+        // Determine the clicked card view based on the folder name
+        // Determine the clicked linear layout based on the folder name
+        if ("bunontop".equals(folderName)) {
+            clickedLinearLayout = card_bunontop.findViewById(R.id.linear_bunontop_card);
+        } else if ("streetwok".equals(folderName)) {
+            clickedLinearLayout = card_streetwok.findViewById(R.id.linear_streetwok_card);
+        } else if ("bowlexpress".equals(folderName)) {
+            clickedLinearLayout = card_bowlexpress.findViewById(R.id.linear_bowlexpress_card);
+        }
+
+        if (clickedLinearLayout != null) {
+            // If there is a selected linear layout, restore its background
+            if (selectedLinearLayout != null) {
+                selectedLinearLayout.setBackgroundResource(R.drawable.curved_shape); // Restore normal drawable
+            }
+
+            // Set the background drawable of the clicked linear layout
+            clickedLinearLayout.setBackgroundResource(R.drawable.curved_shape_dark); // Darkened drawable
+            selectedLinearLayout = clickedLinearLayout;
+        }
+        }
 
     public void openSearchActivity() {
         Intent intent = new Intent(getActivity(), SearchActivity.class);
@@ -190,11 +219,14 @@ public class MenuFragment extends Fragment {
 
 
     public void item_view(String rest_name) {
+        String deault1="bunontop";
         if (rest_name != null) {
             mDatabaseRef = FirebaseDatabase.getInstance().getReference(rest_name);
         } else {
             mDatabaseRef = FirebaseDatabase.getInstance().getReference("bunontop");
         }
+
+
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             // Inside the ValueEventListener in HomeFragment

@@ -18,10 +18,12 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.CartItem;
+import com.example.superdrop2.navigation.NavActivity;
 import com.example.superdrop2.payment.CheckoutActivity;
 import com.example.superdrop2.upload.BunOnTopAdd_Activity;
 import com.example.superdrop2.upload.Upload;
@@ -50,7 +52,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
     TextView item_name, item_price, item_quantity, total_price;
     Button bt_cart,bt_order;
     ImageView item_img, plus_img, minus_img;
-    int i = 1;
+    int i = 1,newItemCount=0;
     double price;
     String priceWithSymbol, imageUrl,itemId;
     Bitmap imageBitmap;
@@ -60,6 +62,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private StorageTask mUploadTask;
     private FirebaseAuth mAuth;
     double totalprice;
+    ProgressBar progressBar;
 
 
     public BottomSheet() {
@@ -79,6 +82,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
         bt_order = view.findViewById(R.id.sheet_order_bt);
         plus_img = view.findViewById(R.id.sheet_plus_bt);
         minus_img = view.findViewById(R.id.sheet_minus_bt);
+        progressBar=view.findViewById(R.id.progressbar_bottom);
+        progressBar.setVisibility(View.INVISIBLE);
         mStorageRef = FirebaseStorage.getInstance().getReference("cart");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("cart");
         mAuth = FirebaseAuth.getInstance();
@@ -138,6 +143,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
                 totalprice = Double.parseDouble(totalPriceText);
                 addToUserCart(itemId,itemName, imageUrl, itemPrice, quantity,totalprice);
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
         bt_order.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +179,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         double newTotalPrice = cartItem.getTotalprice()+totalPrice;
                         snapshot.getRef().child("quantity").setValue(newQuantity);
                         snapshot.getRef().child("totalprice").setValue(newTotalPrice);
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getActivity(), "Item quantity updated", Toast.LENGTH_SHORT).show();
+                        dismiss();
                     }
                 } else {
                     // Item does not exist, add it to the cart
@@ -184,15 +192,21 @@ public class BottomSheet extends BottomSheetDialogFragment {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    progressBar.setVisibility(View.INVISIBLE);
                                     Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
+                                    newItemCount++;
+                                    updateBadgeNumber(newItemCount);
+                                    dismiss();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    progressBar.setVisibility(View.INVISIBLE);
                                     Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                    updateBadgeNumber(newItemCount);
                 }
             }
 
@@ -201,6 +215,13 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 // Handle onCancelled if needed
             }
         });
+    }
+    // Update the badge number in NavActivity
+    private void updateBadgeNumber(int newItemCount) {
+        NavActivity navActivity = (NavActivity) getActivity();
+        if (navActivity != null) {
+            navActivity.updateBadgeNumber(newItemCount);
+        }
     }
 
 }

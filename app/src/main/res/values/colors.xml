@@ -10,6 +10,8 @@
     <color name="orange">#FD5800</color>
     <color name="light_orange">#FD8646</color>
     <color name="dark_orange">#FF5722</color>
+    <color name="default_card_color">#F0FD8544</color> <!-- Normal color -->
+    <color name="selected_card_color">#C14300</color> <!-- Darkened color -->
 
     <!-- Red -->
     <color name="red_50">#ffebee</color>

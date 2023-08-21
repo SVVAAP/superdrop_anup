@@ -1,5 +1,7 @@
 package com.example.superdrop2;
 
+import static com.example.superdrop2.navigation.NavActivity.getInstance;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +51,7 @@ public class Cart_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        updateBadgeNumber();
         deleteButton = findViewById(R.id.cart_delet);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -89,8 +92,12 @@ public class Cart_Activity extends AppCompatActivity {
         placeorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Cart_Activity.this, CheckoutActivity.class));
-                finish();
+                if (cartItemList.isEmpty()) {
+                    Toast.makeText(Cart_Activity.this, "Cart is empty. Add items to your cart.", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivity(new Intent(Cart_Activity.this, CheckoutActivity.class));
+                    finish();
+                }
             }
         });
 
@@ -151,7 +158,9 @@ public class Cart_Activity extends AppCompatActivity {
         List<Integer> selectedItems = adapter.getSelectedItems();
         double deletedTotal = 0.0;
 
-        for (int position : selectedItems) {
+        // Iterate over selected items in reverse order
+        for (int i = selectedItems.size() - 1; i >= 0; i--) {
+            int position = selectedItems.get(i);
             CartItem cartItem = cartItemList.get(position);
             deletedTotal += cartItem.getTotalprice();
             DatabaseReference itemRef = userCartRef.child(cartItem.getItemId());
@@ -169,15 +178,13 @@ public class Cart_Activity extends AppCompatActivity {
                     Toast.makeText(Cart_Activity.this, "Failed to delete item", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
 
-        // Remove the selected items from the local list
-        for (int position : selectedItems) {
+            // Remove the item from the local list
             cartItemList.remove(position);
         }
 
-        // Clear the selection and update the adapter
-        total -= deletedTotal; // Subtract deleted total from current total
+        // Update the total and selected items
+        total -= deletedTotal;
         totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
         adapter.selectedItems.clear();
         adapter.notifyDataSetChanged();
@@ -195,5 +202,11 @@ public class Cart_Activity extends AppCompatActivity {
         args.putDouble("totalprice",item.getTotalprice());
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+    }
+    private void updateBadgeNumber() {
+        NavActivity navActivity = NavActivity.getInstance();
+        if (navActivity != null) {
+            navActivity.clear();
+        }
     }
 }

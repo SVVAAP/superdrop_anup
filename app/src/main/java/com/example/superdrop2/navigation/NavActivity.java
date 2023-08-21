@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.superdrop2.Abtdev_Activity;
 import com.example.superdrop2.Cart_Activity;
@@ -33,9 +35,11 @@ import com.google.android.material.navigation.NavigationBarView;
 
             BottomNavigationView bnview;
             Toolbar toolbar;
-
+            int ItemCount=0;
             ImageView btn_cart,btn_logo;
             View view;
+            TextView badgeNumber;
+            private static NavActivity instance;
 
             @Override
             protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,7 @@ import com.google.android.material.navigation.NavigationBarView;
         btn_cart= findViewById(R.id.cart_img);
         btn_logo=findViewById(R.id.logo_img);
         bnview =findViewById(R.id.nav_container);
-
+                badgeNumber = findViewById(R.id.badge_number); // Replace with your TextView ID
         bnview.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -65,6 +69,7 @@ import com.google.android.material.navigation.NavigationBarView;
             }
 
         });
+                instance = this;
         bnview.setSelectedItemId(R.id.nav_home);
 
         btn_cart.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +102,18 @@ import com.google.android.material.navigation.NavigationBarView;
 
 
     }
-
+            public static NavActivity getInstance() {
+                return instance;
+            }
+    public void clear(){
+                ItemCount=0;
+                badgeNumber.setVisibility(View.INVISIBLE);
+    }
+            public void updateBadgeNumber(int newItemCount) {
+                ItemCount=ItemCount+newItemCount;
+                badgeNumber.setText(String.valueOf(ItemCount));
+                badgeNumber.setVisibility(ItemCount > 0 ? View.VISIBLE : View.INVISIBLE);
+            }
         // Your activity code
         public void loadMenuFragment(String data) {
             MenuFragment menuFragment = new MenuFragment();

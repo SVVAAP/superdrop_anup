@@ -61,7 +61,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:visibility="gone"
-        android:background="@android:drawable/dialog_holo_light_frame"
+        android:background="@drawable/border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,6 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="clip_horizontal|center|left"
             android:layout_margin="5dp"
+            android:background="@color/white"
             android:layout_marginStart="5dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
@@ -96,6 +97,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
+                android:id="@+id/linear_bunontop_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/curved_shape"
@@ -133,6 +135,7 @@
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:clickable="true"
+            android:background="@color/white"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -141,6 +144,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
+                android:id="@+id/linear_streetwok_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/curved_shape"
@@ -180,6 +184,7 @@
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:clickable="true"
+            android:background="@color/white"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -188,6 +193,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
+                android:id="@+id/linear_bowlexpress_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/curved_shape"
