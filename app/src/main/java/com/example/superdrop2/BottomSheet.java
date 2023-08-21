@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private StorageTask mUploadTask;
     private FirebaseAuth mAuth;
     double totalprice;
+    ProgressBar progressBar;
 
 
     public BottomSheet() {
@@ -80,6 +82,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
         bt_order = view.findViewById(R.id.sheet_order_bt);
         plus_img = view.findViewById(R.id.sheet_plus_bt);
         minus_img = view.findViewById(R.id.sheet_minus_bt);
+        progressBar=view.findViewById(R.id.progressbar_bottom);
+        progressBar.setVisibility(View.INVISIBLE);
         mStorageRef = FirebaseStorage.getInstance().getReference("cart");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("cart");
         mAuth = FirebaseAuth.getInstance();
@@ -139,6 +143,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
                 totalprice = Double.parseDouble(totalPriceText);
                 addToUserCart(itemId,itemName, imageUrl, itemPrice, quantity,totalprice);
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
         bt_order.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +179,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         double newTotalPrice = cartItem.getTotalprice()+totalPrice;
                         snapshot.getRef().child("quantity").setValue(newQuantity);
                         snapshot.getRef().child("totalprice").setValue(newTotalPrice);
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getActivity(), "Item quantity updated", Toast.LENGTH_SHORT).show();
+                        dismiss();
                     }
                 } else {
                     // Item does not exist, add it to the cart
@@ -185,14 +192,17 @@ public class BottomSheet extends BottomSheetDialogFragment {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    progressBar.setVisibility(View.INVISIBLE);
                                     Toast.makeText(getActivity(), "Item added to cart", Toast.LENGTH_SHORT).show();
                                     newItemCount++;
                                     updateBadgeNumber(newItemCount);
+                                    dismiss();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    progressBar.setVisibility(View.INVISIBLE);
                                     Toast.makeText(getActivity(), "Failed to add item to cart", Toast.LENGTH_SHORT).show();
                                 }
                             });
