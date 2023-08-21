@@ -39,9 +39,7 @@ import java.util.List;
 
 public class CheckoutActivity extends AppCompatActivity {
 
-    private EditText shippingNameEditText, shippingAddressEditText, shippingCityEditText,
-            contactInstructionsEditText, noteEditText;
-
+    private EditText shippingNameEditText, shippingAddressEditText, shippingCityEditText, contactInstructionsEditText, noteEditText;
     private RadioGroup paymentMethodsRadioGroup;
     private RadioButton gpayUPIRadioButton, cashOnDeliveryRadioButton;
     private TextView totalPriceTextView;
@@ -113,9 +111,9 @@ public class CheckoutActivity extends AppCompatActivity {
         noteEditText = findViewById(R.id.note);
         totalPriceTextView = findViewById(R.id.checkout_grandtotal);
 
-        paymentMethodsRadioGroup = findViewById(R.id.payment_methods_radio_group);
-        gpayUPIRadioButton = findViewById(R.id.gpay_upi);
-        cashOnDeliveryRadioButton = findViewById(R.id.cash_on_delivery);
+//        paymentMethodsRadioGroup = findViewById(R.id.payment_methods_radio_group);
+//        gpayUPIRadioButton = findViewById(R.id.gpay_upi);
+//        cashOnDeliveryRadioButton = findViewById(R.id.cash_on_delivery);
 
         placeOrderButton = findViewById(R.id.place_order_button);
 
@@ -134,25 +132,27 @@ public class CheckoutActivity extends AppCompatActivity {
         String contactInstructions = contactInstructionsEditText.getText().toString();
         String note = noteEditText.getText().toString();
 
-        String paymentMethod = "";
-        int selectedRadioButtonId = paymentMethodsRadioGroup.getCheckedRadioButtonId();
-        if (selectedRadioButtonId == R.id.gpay_upi) {
-            paymentMethod = "GPay UPI";
-            // Proceed to GPay page for payment
-            String totalAmount = calculateTotalAmount(); // Get the total amount from Firebase
-            openGPayPayment(totalAmount);
-        } else if (selectedRadioButtonId == R.id.cash_on_delivery) {
-            paymentMethod = "Cash on Delivery";
-            // Proceed with order placement
-            placeOrderInFirebase(shippingName, shippingAddress, shippingCity, contactInstructions, note, paymentMethod);
-            redirectToOrderPlacedPage();
-        }
+        String paymentMethod = "COD";
+//        int selectedRadioButtonId = paymentMethodsRadioGroup.getCheckedRadioButtonId();
+//        if (selectedRadioButtonId == R.id.gpay_upi) {
+//            paymentMethod = "GPay UPI";
+//            // Proceed to GPay page for payment
+//            String totalAmount = calculateTotalAmount(); // Get the total amount from Firebase
+//            openGPayPayment(totalAmount);
+//        } else if (selectedRadioButtonId == R.id.cash_on_delivery) {
+//            paymentMethod = "Cash on Delivery";
+//            // Proceed with order placement
+//            placeOrderInFirebase(shippingName, shippingAddress, shippingCity, contactInstructions, note, paymentMethod);
+//            redirectToOrderPlacedPage();
+//        }
 
         // You can handle more payment methods here
 
         // Store order details in Firebase
-        orderDatabaseReference.push().setValue(new Order(shippingName, shippingAddress, shippingCity,
-                contactInstructions, note, paymentMethod));
+        Order order = new Order(shippingName, shippingAddress, shippingCity,
+                contactInstructions, note, paymentMethod);
+        order.setItems(cartItemList);
+        orderDatabaseReference.push().setValue(order);
     }
 
     private String calculateTotalAmount() {
