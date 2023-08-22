@@ -147,10 +147,11 @@ public class CheckoutActivity extends AppCompatActivity {
 //        }
 
         // You can handle more payment methods here
-
+String total2=calculateTotalAmount();
         // Store order details in Firebase
         Order order = new Order(shippingName, shippingAddress, shippingCity,
                 contactInstructions, note, paymentMethod);
+        order.setGrandTotal(total2);
         order.setItems(cartItemList);
         orderDatabaseReference.push().setValue(order);
     }

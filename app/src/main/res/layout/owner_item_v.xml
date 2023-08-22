@@ -6,17 +6,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/orderTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:text="Order"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"/>
-
     <!-- Shipping Information -->
     <TextView
         android:id="@+id/shippingInfoTextView"

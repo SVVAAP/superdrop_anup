@@ -267,14 +267,6 @@
                 </androidx.recyclerview.widget.RecyclerView>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <FrameLayout
-                android:id="@+id/MenuFragmentLayout"
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:padding="10dp">
-
-            </FrameLayout>
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -11,7 +11,7 @@ public class Order {
     private String shippingCity;
     private String contactInstructions;
     private String note;
-    private String paymentMethod;
+    private String paymentMethod,grandtotal;
     private List<CartItem> items;
 
     public Order() {
@@ -72,6 +72,14 @@ public class Order {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getGrandTotal() {
+        return grandtotal;
+    }
+
+    public void setGrandTotal(String grandtotal) {
+        this.grandtotal = grandtotal;
     }
 
     public String getPaymentMethod() {
