@@ -185,6 +185,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         @Override
         public void onClick(View v) {
             // Nothing to do here, we handle the click in the onBindViewHolder
+
         }
     }
 }
