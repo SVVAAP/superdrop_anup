@@ -51,19 +51,19 @@
 
         <ImageView
             android:id="@+id/cart_sheet_img"
-            android:layout_width="wrap_content"
+            style="widgetbutt"
+            android:layout_width="150dp"
             android:layout_height="156dp"
-            android:padding="20px"
+            android:foregroundGravity="center"
             android:src="@drawable/logo"
             app:circularflow_defaultRadius="20dp"
             app:circularflow_radiusInDP="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintCircleRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.666"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.224" />
+            app:layout_constraintVertical_bias="0.204" />
 
         <TextView
             android:id="@+id/cart_sheet_name"
