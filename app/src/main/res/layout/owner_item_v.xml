@@ -1,6 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/orderTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:text="Order"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Shipping Information -->
+    <TextView
+        android:id="@+id/shippingInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Shipping Information"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/shippingNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name: shippingName"/>
+
+    <TextView
+        android:id="@+id/shippingAddressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address: shippingAddress"/>
+
+    <TextView
+        android:id="@+id/shippingCityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City: shippingCity"/>
+
+    <!-- Contact Instructions -->
+    <TextView
+        android:id="@+id/contactInstructionsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Contact Instructions"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/contactInstructionsContentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="contactInstructions"/>
+
+    <!-- Note -->
+    <TextView
+        android:id="@+id/noteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Note"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/noteContentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="note"/>
+
+    <!-- Payment Method -->
+    <TextView
+        android:id="@+id/paymentMethodTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Payment Method"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/paymentMethodContentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="paymentMethod"/>
+
+    <!-- Food Items RecyclerView -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Ordered Items"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/foodItemsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/acceptButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="#00FF00"
+            android:text="Accept"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="#FF0000"
+            android:text="Cancel"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</LinearLayout>
+
+
