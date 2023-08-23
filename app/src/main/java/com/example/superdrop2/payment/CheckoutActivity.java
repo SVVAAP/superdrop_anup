@@ -22,6 +22,7 @@ import com.example.superdrop2.adapter.CartAdapter;
 import com.example.superdrop2.adapter.CartItem;
 import com.example.superdrop2.methods.Order;
 import com.example.superdrop2.methods.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +38,9 @@ import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CheckoutActivity extends AppCompatActivity {
 
@@ -135,34 +138,32 @@ public class CheckoutActivity extends AppCompatActivity {
         String note = noteEditText.getText().toString();
 
         String paymentMethod = "COD";
-        // ...
+//        int selectedRadioButtonId = paymentMethodsRadioGroup.getCheckedRadioButtonId();
+//        if (selectedRadioButtonId == R.id.gpay_upi) {
+//            paymentMethod = "GPay UPI";
+//            // Proceed to GPay page for payment
+//            String totalAmount = calculateTotalAmount(); // Get the total amount from Firebase
+//            openGPayPayment(totalAmount);
+//        } else if (selectedRadioButtonId == R.id.cash_on_delivery) {
+//            paymentMethod = "Cash on Delivery";
+//            // Proceed with order placement
+//            placeOrderInFirebase(shippingName, shippingAddress, shippingCity, contactInstructions, note, paymentMethod);
+//            redirectToOrderPlacedPage();
+//        }
 
-        // Calculate total amount and store order details
-        String totalAmount = calculateTotalAmount();
-        //String paymentMethod = "Cash on Delivery";
+        // You can handle more payment methods here
 
+        // Store order details in Firebase
         Order order = new Order(shippingName, shippingAddress, shippingCity,
                 contactInstructions, note, paymentMethod);
-        order.setGrandTotal(totalAmount);
-
-        String orderId = orderDatabaseReference.push().getKey(); // Generate a unique order ID
-        orderDatabaseReference.child(orderId).setValue(order); // Store order details
-
-        DatabaseReference orderItemsReference = orderDatabaseReference.child(orderId).child("items"); // Reference to items node
-        for (CartItem cartItem : cartItemList) {
-            String itemName = cartItem.getItemName();
-            double itemPrice = cartItem.getItemPrice();
-            int quantity = cartItem.getQuantity();
-            double totalPrice = cartItem.getTotalprice();
-            String imageUrl = cartItem.getImageUrl();
-
-            String itemId = orderItemsReference.push().getKey(); // Generate a unique item ID
-            CartItem newCartItem = new CartItem(itemId, itemName, itemPrice, quantity, totalPrice, imageUrl);
-            orderItemsReference.child(itemId).setValue(newCartItem); // Store item details under the unique item ID
-        }
-
-        // Redirect to the order placed page
-        redirectToOrderPlacedPage();
+        order.setItems(cartItemList);
+        orderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                redirectToOrderPlacedPage();
+            }
+        });
     }
 
     private String calculateTotalAmount() {
