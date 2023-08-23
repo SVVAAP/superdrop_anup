@@ -54,6 +54,7 @@
             style="widgetbutt"
             android:layout_width="150dp"
             android:layout_height="156dp"
+            android:background="@drawable/rounded_edge"
             android:foregroundGravity="center"
             android:src="@drawable/logo"
             app:circularflow_defaultRadius="20dp"
@@ -63,7 +64,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.204" />
+            app:layout_constraintVertical_bias="0.204"
+            android:clipToOutline="true"/>
 
         <TextView
             android:id="@+id/cart_sheet_name"

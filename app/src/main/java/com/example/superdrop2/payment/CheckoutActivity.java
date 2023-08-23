@@ -33,6 +33,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import org.checkerframework.common.returnsreceiver.qual.This;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,38 +135,34 @@ public class CheckoutActivity extends AppCompatActivity {
         String note = noteEditText.getText().toString();
 
         String paymentMethod = "COD";
-//        int selectedRadioButtonId = paymentMethodsRadioGroup.getCheckedRadioButtonId();
-//        if (selectedRadioButtonId == R.id.gpay_upi) {
-//            paymentMethod = "GPay UPI";
-//            // Proceed to GPay page for payment
-//            String totalAmount = calculateTotalAmount(); // Get the total amount from Firebase
-//            openGPayPayment(totalAmount);
-//        } else if (selectedRadioButtonId == R.id.cash_on_delivery) {
-//            paymentMethod = "Cash on Delivery";
-//            // Proceed with order placement
-//            placeOrderInFirebase(shippingName, shippingAddress, shippingCity, contactInstructions, note, paymentMethod);
-//            redirectToOrderPlacedPage();
-//        }
+        // ...
 
-        // You can handle more payment methods here
-String total2=calculateTotalAmount();
-        // Store order details in Firebase
+        // Calculate total amount and store order details
+        String totalAmount = calculateTotalAmount();
+        //String paymentMethod = "Cash on Delivery";
+
         Order order = new Order(shippingName, shippingAddress, shippingCity,
                 contactInstructions, note, paymentMethod);
-        order.setGrandTotal(total2);
-        for(int i=0;i<cartItemList.size();i++) {
-            String itemName=cartItemList.getname;
-            String itemPrice=;
-            String quantity=;
-            String totalPrice=;
-            String imageUrl=;
-            String itemIdm=;
-            String itemId = userCartRef.push().getKey();
-            CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalPrice, imageUrl);
-            cartItem.setItemId(itemIdm);
-            order.child(itemId).setValue(cartItem);
+        order.setGrandTotal(totalAmount);
+
+        String orderId = orderDatabaseReference.push().getKey(); // Generate a unique order ID
+        orderDatabaseReference.child(orderId).setValue(order); // Store order details
+
+        DatabaseReference orderItemsReference = orderDatabaseReference.child(orderId).child("items"); // Reference to items node
+        for (CartItem cartItem : cartItemList) {
+            String itemName = cartItem.getItemName();
+            double itemPrice = cartItem.getItemPrice();
+            int quantity = cartItem.getQuantity();
+            double totalPrice = cartItem.getTotalprice();
+            String imageUrl = cartItem.getImageUrl();
+
+            String itemId = orderItemsReference.push().getKey(); // Generate a unique item ID
+            CartItem newCartItem = new CartItem(itemId, itemName, itemPrice, quantity, totalPrice, imageUrl);
+            orderItemsReference.child(itemId).setValue(newCartItem); // Store item details under the unique item ID
         }
-        orderDatabaseReference.push().setValue(order);
+
+        // Redirect to the order placed page
+        redirectToOrderPlacedPage();
     }
 
     private String calculateTotalAmount() {
