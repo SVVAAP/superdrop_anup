@@ -152,7 +152,18 @@ String total2=calculateTotalAmount();
         Order order = new Order(shippingName, shippingAddress, shippingCity,
                 contactInstructions, note, paymentMethod);
         order.setGrandTotal(total2);
-        order.setItems(cartItemList);
+        for(int i=0;i<cartItemList.size();i++) {
+            String itemName=cartItemList.getname;
+            String itemPrice=;
+            String quantity=;
+            String totalPrice=;
+            String imageUrl=;
+            String itemIdm=;
+            String itemId = userCartRef.push().getKey();
+            CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalPrice, imageUrl);
+            cartItem.setItemId(itemIdm);
+            order.child(itemId).setValue(cartItem);
+        }
         orderDatabaseReference.push().setValue(order);
     }
 

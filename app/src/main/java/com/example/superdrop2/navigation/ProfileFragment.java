@@ -29,6 +29,7 @@ import com.example.superdrop2.OtpSendActivity;
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.CartItem;
 import com.example.superdrop2.methods.User;
+import com.example.superdrop2.payment.OwnersActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,7 +51,7 @@ public class ProfileFragment extends Fragment {
 
     private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact;
     private RatingBar ratingBar;
-    private Button submitButton, editProfileButton,admin,logout;
+    private Button submitButton, editProfileButton,admin,logout,owner;
     private ImageView profileImage;
 
     private DatabaseReference databaseReference;
@@ -93,6 +94,7 @@ public class ProfileFragment extends Fragment {
         editProfileButton = view.findViewById(R.id.edit_Profile);
         profileImage = view.findViewById(R.id.profile_image);
         logout=view.findViewById(R.id.logout_bt);
+        owner=view.findViewById(R.id.owner_bt);
 
         // Initialize Firebase Database and Storage References
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
@@ -162,6 +164,13 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent=new Intent(getActivity(), OtpSendActivity.class);
+                startActivity(intent);
+            }
+        });
+        owner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(), OwnersActivity.class);
                 startActivity(intent);
             }
         });

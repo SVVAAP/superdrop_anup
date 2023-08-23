@@ -49,6 +49,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
         this.context = context;
 
     }
+    public void setCartItems(List<CartItem> cartItemList) {
+        this.cartItemList = cartItemList;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override

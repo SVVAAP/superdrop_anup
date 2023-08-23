@@ -45,7 +45,8 @@ public class OwnersActivity extends AppCompatActivity {
                         orderList.add(order);
                     }
                 }
-
+                oAdapter = new Owner_Adapter(orderList,OwnersActivity.this);
+                recyclerview.setAdapter(oAdapter);
 
                 // Now you have a list of orders. You can pass this list to the RecyclerView adapter.
                 // Example: adapter.setItems(orderList);
@@ -56,7 +57,6 @@ public class OwnersActivity extends AppCompatActivity {
                 // Handle database error
             }
         });
-        oAdapter = new Owner_Adapter(orderList,OwnersActivity.this);
-        recyclerview.setAdapter(oAdapter);
+
     }
 }
