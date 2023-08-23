@@ -198,8 +198,16 @@ public class HomeFragment extends Fragment {
 
 
 
-        //here the code for to load menu fragment
-        // Inside HomeFragment's onCreateView() method or another relevant location
+//        //here the code for to load menu fragment
+//        // Inside HomeFragment's onCreateView() method or another relevant location
+//        FragmentManager fragmentManager = getChildFragmentManager(); // If using Fragment within a Fragment
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+//        MenuFragment menuFragment = new MenuFragment(); // Create an instance of your MenuFragment
+//        fragmentTransaction.replace(R.id.MenuFragmentLayout, menuFragment);
+//        fragmentTransaction.addToBackStack(null); // Optional: Add the transaction to the back stack
+//
+//        fragmentTransaction.commit();
 
 // here the code for offer gif file load
 

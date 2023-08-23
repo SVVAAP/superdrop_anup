@@ -28,7 +28,7 @@
         android:layout_below="@id/page_title"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="21dp"
-        android:background="@drawable/curved_shape"
+        android:background="@drawable/circle_background"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -45,7 +45,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:text="Anup Nayak"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold|italic" />
 
@@ -67,7 +67,7 @@
         android:layout_marginTop="16dp"
 
         android:layout_marginBottom="21dp"
-        android:background="@drawable/curved_shape"
+        android:background="@drawable/circle_background"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -87,7 +87,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:text="Srujan"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold|italic" />
 
@@ -103,12 +103,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="186dp"
+            android:layout_height="173dp"
             android:layout_marginTop="350dp"
             android:foregroundGravity="center_vertical|center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -145,6 +149,15 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView3"
             app:layout_constraintVertical_bias="0.573"
             tools:layout_editor_absoluteX="0dp" />
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email- workwithsvvaap@gmail.com"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/svvaap_details" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

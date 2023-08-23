@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-   >
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <gradient
-        android:startColor="#FCBD7E"
-        android:endColor="#FBE4CB"
+        android:startColor="#FFD180"
+        android:endColor="#FFAB40"
         android:angle="315" />
 
     <corners
@@ -18,6 +17,6 @@
 
     <stroke
         android:width="3dp"
-        android:color="@color/amber_900"/>
+        android:color="#FF6D00"/> <!-- A complementary color to the gradient -->
 
 </shape>
