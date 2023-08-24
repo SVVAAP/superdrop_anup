@@ -22,15 +22,6 @@ public class CartItem {
         this.itemimg=itemimg;
         this.totalprice=totalprice;
     }
-    public CartItem(String itemId, String itemName, double itemPrice, int quantity, double totalprice, String itemimg) {
-        this.itemId = itemId;
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
-        this.quantity = quantity;
-        this.itemimg = itemimg;
-        this.totalprice = totalprice;
-    }
-
 
     public String getItemName() {
         return itemName;

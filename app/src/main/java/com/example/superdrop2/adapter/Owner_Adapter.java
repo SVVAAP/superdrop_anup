@@ -27,13 +27,12 @@ import java.util.List;
     @Override
     public Owner_Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.owner_item_v, parent, false);
-        return new Owner_Adapter.ViewHolder(view);
+        return new Owner_Adapter.ViewHolder(view,parent);
     }
 
     @Override
     public void onBindViewHolder(@NonNull Owner_Adapter.ViewHolder holder, int position) {
         Order order = orderList.get(position);
-        holder.bind(order);
         holder.name.setText(order.getShippingName());
         holder.phone.setText(order.getContactInstructions());
         holder.city.setText(order.getShippingCity());
@@ -48,39 +47,29 @@ import java.util.List;
     public int getItemCount() {
         return orderList.size();
     }
-     public class ViewHolder extends RecyclerView.ViewHolder {
-         private RecyclerView itemRecyclerView;
-         private CartAdapter cartAdapter;
-         private TextView name, city, address, phone, payment, note;
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        private RecyclerView itemRecyclerView;
+        private CartAdapter cartAdapter;
+        private TextView name,city,address,phone,payment,note;
+        public ViewHolder(@NonNull View itemView,ViewGroup parent) {
+            super(itemView);
+            int position = getAdapterPosition(); // Get the current position
+            Order order = orderList.get(position); // Get the order at the current position
+            itemRecyclerView = itemView.findViewById(R.id.foodItemsRecyclerView);
+            name=itemView.findViewById(R.id.shippingNameTextView);
+            city=itemView.findViewById(R.id.shipping_city);
+            phone=itemView.findViewById(R.id.shippingphoneTextView);
+            address=itemView.findViewById(R.id.shippingAddressTextView);
+            payment=itemView.findViewById(R.id.paymentMethodContentTextView);
+            note=itemView.findViewById(R.id.noteContentTextView);
 
-         public ViewHolder(@NonNull View itemView) {
-             super(itemView);
+            // Set up the layout manager for the nested RecyclerView
+            LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext());
+            itemRecyclerView.setLayoutManager(layoutManager);
 
-             itemRecyclerView = itemView.findViewById(R.id.foodItemsRecyclerView);
-             name = itemView.findViewById(R.id.shippingNameTextView);
-             city = itemView.findViewById(R.id.shipping_city);
-             phone = itemView.findViewById(R.id.shippingphoneTextView);
-             address = itemView.findViewById(R.id.shippingAddressTextView);
-             payment = itemView.findViewById(R.id.paymentMethodContentTextView);
-             note = itemView.findViewById(R.id.noteContentTextView);
-
-             // Set up the layout manager for the nested RecyclerView
-             LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext());
-             itemRecyclerView.setLayoutManager(layoutManager);
-
-             // Create and set the adapter for the nested RecyclerView
-             cartAdapter = new CartAdapter(null, itemView.getContext()); // Initialize with null items
-             itemRecyclerView.setAdapter(cartAdapter);
-         }
-
-         public void bind(Order order) {
-             name.setText(order.getShippingName());
-             city.setText(order.getShippingCity());
-             address.setText(order.getShippingAddress());
-             payment.setText(order.getPaymentMethod());
-             note.setText(order.getNote());
-             cartAdapter.setCartItems(order.getItems()); // Set items for the nested RecyclerView
-             cartAdapter.notifyDataSetChanged(); // Notify adapter about data change
-         }
-     }
- }
+            // Create and set the adapter for the nested RecyclerView
+            cartAdapter = new CartAdapter(order.getItems(), itemView.getContext());
+            itemRecyclerView.setAdapter(cartAdapter);
+        }
+    }
+}
