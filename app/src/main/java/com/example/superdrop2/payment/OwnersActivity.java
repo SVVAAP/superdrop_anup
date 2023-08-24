@@ -49,7 +49,7 @@ public class OwnersActivity extends AppCompatActivity {
         orderDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                orderList.clear();
+                orderList.clear(); // Clear the orderList before adding new orders
 
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);

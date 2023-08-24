@@ -29,8 +29,7 @@ public class Order {
         this.note = note;
         this.paymentMethod = paymentMethod;
         this.items = new ArrayList<>(); // Initialize the items list
-        // Add this line to populate the items list with CartItems
-        this.items.add(new CartItem()); // Add a dummy item or items as needed
+        // No need to add a dummy item her
     }
 
     public List<CartItem> getItems() {

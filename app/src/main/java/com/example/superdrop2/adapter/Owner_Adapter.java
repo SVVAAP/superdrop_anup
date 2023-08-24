@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.superdrop2.R;
 import com.example.superdrop2.methods.Order;
 
+import java.util.ArrayList;
 import java.util.List;
 
  public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder> {
@@ -33,14 +34,15 @@ import java.util.List;
     @Override
     public void onBindViewHolder(@NonNull Owner_Adapter.ViewHolder holder, int position) {
         Order order = orderList.get(position);
-        holder.name.setText(order.getShippingName());
-        holder.phone.setText(order.getContactInstructions());
-        holder.city.setText(order.getShippingCity());
-        holder.address.setText(order.getShippingAddress());
-        holder.payment.setText(order.getPaymentMethod());
-        holder.note.setText(order.getNote());
-        holder.cartAdapter.setCartItems(order.getItems());
-
+        // Set default values to prevent NullPointerException
+        holder.name.setText(order.getShippingName() != null ? order.getShippingName() : "N/A");
+        holder.phone.setText(order.getContactInstructions() != null ? order.getContactInstructions() : "N/A");
+        holder.city.setText(order.getShippingCity() != null ? order.getShippingCity() : "N/A");
+        holder.address.setText(order.getShippingAddress() != null ? order.getShippingAddress() : "N/A");
+        holder.payment.setText(order.getPaymentMethod() != null ? order.getPaymentMethod() : "N/A");
+        holder.note.setText(order.getNote() != null ? order.getNote() : "N/A");
+        holder.fooditemadapter = new foodItemAdapter(order.getItems(), context);
+        holder.itemRecyclerView.setAdapter(holder.fooditemadapter);
     }
 
     @Override
@@ -49,27 +51,27 @@ import java.util.List;
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
         private RecyclerView itemRecyclerView;
-        private CartAdapter cartAdapter;
+        private foodItemAdapter fooditemadapter;
         private TextView name,city,address,phone,payment,note;
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
             super(itemView);
-            int position = getAdapterPosition(); // Get the current position
-            Order order = orderList.get(position); // Get the order at the current position
-            itemRecyclerView = itemView.findViewById(R.id.foodItemsRecyclerView);
-            name=itemView.findViewById(R.id.shippingNameTextView);
-            city=itemView.findViewById(R.id.shipping_city);
-            phone=itemView.findViewById(R.id.shippingphoneTextView);
-            address=itemView.findViewById(R.id.shippingAddressTextView);
-            payment=itemView.findViewById(R.id.paymentMethodContentTextView);
-            note=itemView.findViewById(R.id.noteContentTextView);
+            Order order;
+            itemRecyclerView = itemView.findViewById(R.id.ofoodItemsRecyclerView);
+            name=itemView.findViewById(R.id.oshippingNameTextView);
+            city=itemView.findViewById(R.id.oshippingCityTextView);
+            phone=itemView.findViewById(R.id.oshippingphoneTextView);
+            address=itemView.findViewById(R.id.oshippingAddressTextView);
+            payment=itemView.findViewById(R.id.opaymentMethodContentTextView);
+            note=itemView.findViewById(R.id.onoteContentTextView);
 
             // Set up the layout manager for the nested RecyclerView
             LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext());
             itemRecyclerView.setLayoutManager(layoutManager);
 
-            // Create and set the adapter for the nested RecyclerView
-            cartAdapter = new CartAdapter(order.getItems(), itemView.getContext());
-            itemRecyclerView.setAdapter(cartAdapter);
+            fooditemadapter = new foodItemAdapter(new ArrayList<>(), itemView.getContext()); // Initialize cartAdapter with an empty list
+            itemRecyclerView.setAdapter(fooditemadapter);
+
+
         }
     }
 }
