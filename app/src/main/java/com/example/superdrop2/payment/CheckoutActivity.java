@@ -1,6 +1,8 @@
 package com.example.superdrop2.payment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -13,10 +15,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.superdrop2.Cart_Activity;
+import com.example.superdrop2.MainActivity;
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.CartAdapter;
 import com.example.superdrop2.adapter.CartItem;
@@ -42,6 +46,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+
 public class CheckoutActivity extends AppCompatActivity {
 
     private EditText shippingNameEditText, shippingAddressEditText, shippingCityEditText, contactInstructionsEditText, noteEditText;
@@ -53,10 +71,12 @@ public class CheckoutActivity extends AppCompatActivity {
     private CartAdapter adapter;
     private List<CartItem> cartItemList;
     private FirebaseAuth mAuth;
-    private DatabaseReference userCartRef,databaseReference;
+    private DatabaseReference userCartRef, databaseReference;
     private StorageReference storageReference;
     double total = 0.0;
     private DatabaseReference orderDatabaseReference;
+
+    private static final int NOTIFICATION_ID = 123; // Unique ID for the notification
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +91,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         String userId = currentUser.getUid();
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
+
 
         recyclerView = findViewById(R.id.checkout_recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -101,7 +122,8 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle database error
-                Toast.makeText(CheckoutActivity.this, "Error loading data... ", Toast.LENGTH_SHORT).show();;
+                Toast.makeText(CheckoutActivity.this, "Error loading data... ", Toast.LENGTH_SHORT).show();
+                ;
             }
         });
 
@@ -122,13 +144,60 @@ public class CheckoutActivity extends AppCompatActivity {
 
         placeOrderButton = findViewById(R.id.place_order_button);
 
+        // Create a notification channel (as shown earlier)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Channel Name";
+            String description = "Channel Description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("channel_id", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+
+        // Set up the click listener
         placeOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showOrderPlacedNotification();
                 placeOrder();
+
             }
         });
     }
+
+
+    // notification code here
+    private void showOrderPlacedNotification() {
+        // Create a notification builder
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle("Order Placed")
+                .setContentText("Your order has been placed successfully.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        // Attach an intent to open an activity when notification is clicked
+        Intent intent = new Intent(this, OrderPlacedActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+
+        // Display the notification
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (ActivityCompat.checkSelfPermission(CheckoutActivity.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
+
 
     private void placeOrder() {
         String shippingName = shippingNameEditText.getText().toString();
