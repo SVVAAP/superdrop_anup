@@ -20,9 +20,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.superdrop2.SearchActivity;
-import com.example.superdrop2.adapter.delet_Adapter;
-import com.example.superdrop2.upload.Upload;
+import com.example.superdrop_admin.adapter.delet_Adapter;
+import com.example.superdrop_admin.adapter.Upload;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -185,14 +184,14 @@ item_view(data);
     }
 
 
-    public void openSearchActivity() {
-        Intent intent = new Intent(DeleteActivity.this, SearchActivity.class);
-        startActivity(intent);
-
-        // Apply slide-right animation
-        DeleteActivity.this.overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
-
-    }
+//    public void openSearchActivity() {
+//        Intent intent = new Intent(DeleteActivity.this, SearchActivity.class);
+//        startActivity(intent);
+//
+//        // Apply slide-right animation
+//        DeleteActivity.this.overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
+//
+//    }
 
 
     public void item_view(String rest_name) {

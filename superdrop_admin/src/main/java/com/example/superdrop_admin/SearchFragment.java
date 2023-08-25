@@ -14,10 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.superdrop2.BottomSheet;
-import com.example.superdrop2.adapter.rest_Adapter;
-import com.example.superdrop2.adapter.search_menu_adapter;
-import com.example.superdrop2.upload.Upload;
+import com.example.superdrop_admin.adapter.rest_Adapter;
+import com.example.superdrop_admin.adapter.search_menu_adapter;
+import com.example.superdrop_admin.adapter.Upload;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,10 +45,10 @@ public class SearchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(com.example.superdrop2.R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
         mUploads = new ArrayList<>();
         mFilteredUploads = new ArrayList<>();
-        mSearchView = view.findViewById(com.example.superdrop2.R.id.searchView_m);
+        mSearchView = view.findViewById(R.id.searchView_m);
 //        mSearchView.getFocusable();
         Bundle args = getArguments();
         if (args != null) {
@@ -57,7 +56,7 @@ public class SearchFragment extends Fragment {
             mSearchView.setQuery(itemName, false); // Set the item name in the SearchView
         }
 
-        recyclerview = view.findViewById(com.example.superdrop2.R.id.search_recyclerview);
+        recyclerview = view.findViewById(R.id.search_recyclerview);
         recyclerview.setHasFixedSize(true);
         recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         item_view();
@@ -68,12 +67,12 @@ public class SearchFragment extends Fragment {
         
         recyclerview.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener(new rest_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Upload item) {
-                showBottomSheetForItem(item);
-            }
-        });
+//        mAdapter.setOnItemClickListener(new rest_Adapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Upload item) {
+//                showBottomSheetForItem(item);
+//            }
+//        });
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -124,16 +123,6 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void showBottomSheetForItem(Upload item) {
-        BottomSheet bottomSheetFragment = new BottomSheet();
-        Bundle args = new Bundle();
-        args.putString("itemId", item.getItemId()); // Pass the itemId to the BottomSheet
-        args.putString("name", item.getName());
-        args.putString("imageUrl", item.getImageUrl());
-        args.putDouble("price", item.getPrice());
-        bottomSheetFragment.setArguments(args);
-        bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
-    }
     private void filterItems(String query) {
         mFilteredUploads.clear();
 

@@ -1,4 +1,4 @@
-package com.example.superdrop_admin.upload;
+package com.example.superdrop_admin.adapter;
 
 public class Upload {
     private String mitemId; // New field for unique item ID

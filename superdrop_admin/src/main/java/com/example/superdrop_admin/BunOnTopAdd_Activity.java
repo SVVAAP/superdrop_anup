@@ -1,4 +1,4 @@
-package com.example.superdrop_admin.upload;
+package com.example.superdrop_admin;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -22,7 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.superdrop2.R;
+import com.example.superdrop_admin.adapter.Upload;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -34,13 +34,13 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-public class BowlExpressAdd_Activity extends AppCompatActivity {
+public class BunOnTopAdd_Activity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private Button mButtonChooseImage;
     private Button mButtonUpload;
     private TextView mTextViewShowUploads;
-    private EditText mEditTextFileName, mEditTextPrice;
+    private EditText mEditTextFileName,mEditTextPrice;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
 
@@ -52,25 +52,24 @@ public class BowlExpressAdd_Activity extends AppCompatActivity {
     private StorageTask mUploadTask;
     private ActivityResultLauncher<Intent> mGetContentLauncher;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bowl_express_add);
+        setContentView(R.layout.activity_bun_on_top_add);
 
-
-        mButtonChooseImage = findViewById(R.id.bowl_img_bt);
-        mButtonUpload = findViewById(R.id.bowl_upload_bt);
+        mButtonChooseImage = findViewById(R.id.bun_img_bt);
+        mButtonUpload = findViewById(R.id.bun_upload_bt);
         //mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
-        mEditTextFileName = findViewById(R.id.bowl_item_name);
-        mImageView = findViewById(R.id.bowl_item_img);
-        mProgressBar = findViewById(R.id.bowl_progressBar);
-        mEditTextPrice = findViewById(R.id.bowl_item_price);
+        mEditTextFileName = findViewById(R.id.bun_item_name);
+        mImageView = findViewById(R.id.bun_item_img);
+        mProgressBar = findViewById(R.id.bun_progressBar);
+        mEditTextPrice=findViewById(R.id.bun_item_price);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("bowlexpress");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("bowlexpress");
+        mStorageRef = FirebaseStorage.getInstance().getReference("bunontop");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("bunontop");
         sStorageRef = FirebaseStorage.getInstance().getReference("menu");
         sDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
+
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +81,7 @@ public class BowlExpressAdd_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mUploadTask != null && mUploadTask.isInProgress()) {
-                    Toast.makeText(BowlExpressAdd_Activity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BunOnTopAdd_Activity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {// Get the price from the EditText and convert it to double
                     final double price = Double.parseDouble(mEditTextPrice.getText().toString().trim());
 
@@ -131,7 +130,8 @@ public class BowlExpressAdd_Activity extends AppCompatActivity {
         if (mImageUri != null) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
-            String restname="BowlRxpress";
+
+            String restname="BunOnTop";
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -144,7 +144,7 @@ public class BowlExpressAdd_Activity extends AppCompatActivity {
                                 }
                             }, 500);
 
-                            Toast.makeText(BowlExpressAdd_Activity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                            Toast.makeText(BunOnTopAdd_Activity.this, "Upload successful", Toast.LENGTH_LONG).show();
 
                             // Retrieve the download URL and set it as the image URL in the Upload object
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -163,7 +163,7 @@ public class BowlExpressAdd_Activity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(BowlExpressAdd_Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BunOnTopAdd_Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -178,4 +178,9 @@ public class BowlExpressAdd_Activity extends AppCompatActivity {
         }
     }
 
+
+    private void openImagesActivity() {
+      //  Intent intent = new Intent(this, NavActivity.class);
+      //  startActivity(intent);
+    }
 }

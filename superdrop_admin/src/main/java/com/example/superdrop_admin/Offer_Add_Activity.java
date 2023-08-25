@@ -1,4 +1,4 @@
-package com.example.superdrop_admin.upload;
+package com.example.superdrop_admin;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -20,7 +20,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.superdrop2.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;

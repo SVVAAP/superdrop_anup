@@ -1,4 +1,4 @@
-package com.example.superdrop_admin.upload;
+package com.example.superdrop_admin;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -22,8 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.superdrop2.R;
-import com.example.superdrop2.navigation.NavActivity;
+import com.example.superdrop_admin.adapter.Upload;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -35,20 +34,20 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-public class rest_add_Activity extends AppCompatActivity {
+public class StreetWokAdd_Activity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private Button mButtonChooseImage;
     private Button mButtonUpload;
     private TextView mTextViewShowUploads;
-    private EditText mEditTextFileName;
+    private EditText mEditTextFileName, mEditTextPrice;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
 
     private Uri mImageUri;
 
-    private StorageReference mStorageRef;
-    private DatabaseReference mDatabaseRef;
+    private StorageReference mStorageRef,sStorageRef;
+    private DatabaseReference mDatabaseRef,sDatabaseRef;
 
     private StorageTask mUploadTask;
     private ActivityResultLauncher<Intent> mGetContentLauncher;
@@ -56,16 +55,20 @@ public class rest_add_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rest_add);
-        mButtonChooseImage = findViewById(R.id.button_choose_image);
-        mButtonUpload = findViewById(R.id.button_upload);
-        mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
-        mEditTextFileName = findViewById(R.id.edit_text_file_name);
-        mImageView = findViewById(R.id.image_view);
-        mProgressBar = findViewById(R.id.progress_bar);
+        setContentView(R.layout.activity_street_wok_add);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+        mButtonChooseImage = findViewById(R.id.streetwok_img_bt);
+        mButtonUpload = findViewById(R.id.streetwok_upload_bt);
+        //mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
+        mEditTextFileName = findViewById(R.id.street_item_name);
+        mImageView = findViewById(R.id.street_item_img);
+        mProgressBar = findViewById(R.id.street_progressBar);
+        mEditTextPrice = findViewById(R.id.street_item_price);
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("streetwok");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("streetwok");
+        sStorageRef = FirebaseStorage.getInstance().getReference("menu");
+        sDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
 
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,19 +81,21 @@ public class rest_add_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mUploadTask != null && mUploadTask.isInProgress()) {
-                    Toast.makeText(rest_add_Activity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-                } else {
-                    uploadFile();
+                    Toast.makeText(StreetWokAdd_Activity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                } else {// Get the price from the EditText and convert it to double
+                    final double price = Double.parseDouble(mEditTextPrice.getText().toString().trim());
+
+                    uploadFile(price);
                 }
             }
         });
 
-        mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImagesActivity();
-            }
-        });
+//        mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openImagesActivity();
+//            }
+//        });
 
         // Initialize the ActivityResultLauncher here
         mGetContentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -121,11 +126,12 @@ public class rest_add_Activity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void uploadFile() {
+    private void uploadFile(final double price) {
         if (mImageUri != null) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
 
+            String restname="StreetWok";
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -138,15 +144,18 @@ public class rest_add_Activity extends AppCompatActivity {
                                 }
                             }, 500);
 
-                            Toast.makeText(rest_add_Activity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                            Toast.makeText(StreetWokAdd_Activity.this, "Upload successful", Toast.LENGTH_LONG).show();
 
                             // Retrieve the download URL and set it as the image URL in the Upload object
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
-                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString());
-                                    String uploadId = mDatabaseRef.push().getKey();
+                                    String uploadId = mDatabaseRef.push().getKey(); // Generate a unique item ID
+                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price);
+                                    Upload upload2 = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price,restname,uploadId);
+                                    upload.setItemId(uploadId); // Set the unique item ID
                                     mDatabaseRef.child(uploadId).setValue(upload);
+                                    sDatabaseRef.child(uploadId).setValue(upload2);
                                 }
                             });
                         }
@@ -154,7 +163,7 @@ public class rest_add_Activity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(rest_add_Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(StreetWokAdd_Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -169,9 +178,4 @@ public class rest_add_Activity extends AppCompatActivity {
         }
     }
 
-
-    private void openImagesActivity() {
-        Intent intent = new Intent(this, NavActivity.class);
-        startActivity(intent);
-    }
 }
