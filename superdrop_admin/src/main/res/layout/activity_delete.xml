@@ -220,7 +220,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:circularflow_radiusInDP="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/delet_bt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
