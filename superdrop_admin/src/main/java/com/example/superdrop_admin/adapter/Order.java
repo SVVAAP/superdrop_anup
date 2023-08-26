@@ -12,6 +12,7 @@ public class Order {
     private String note;
     private String paymentMethod,grandtotal;
     private List<CartItem> items;
+    private String orderid;
 
     public Order() {
         items = new ArrayList<>();
@@ -28,6 +29,22 @@ public class Order {
         this.paymentMethod = paymentMethod;
         this.items = new ArrayList<>(); // Initialize the items list
         // No need to add a dummy item her
+    }
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public String getOrderId() {
+        return orderid;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderid = orderId;
     }
 
     public List<CartItem> getItems() {

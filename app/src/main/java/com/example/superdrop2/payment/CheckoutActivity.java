@@ -43,10 +43,14 @@ import com.squareup.picasso.Picasso;
 import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -76,7 +80,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private DatabaseReference userCartRef, databaseReference;
     private StorageReference storageReference;
     double total = 0.0;
-    private DatabaseReference orderDatabaseReference;
+    private DatabaseReference orderDatabaseReference,corderDatabaseReference;
 
     private static final int NOTIFICATION_ID = 123; // Unique ID for the notification
 
@@ -131,7 +135,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // Initialize Firebase references
         orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
-
+        corderDatabaseReference= FirebaseDatabase.getInstance().getReference("cust_orders").child(userId);
         // Initialize views
         shippingNameEditText = findViewById(R.id.shipping_name);
         shippingAddressEditText = findViewById(R.id.shipping_address);
@@ -207,6 +211,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
     private void placeOrder() {
+        String orderID = generateOrderID();
         String shippingName = shippingNameEditText.getText().toString();
         String shippingAddress = shippingAddressEditText.getText().toString();
         String shippingCity = shippingCityEditText.getText().toString();
@@ -233,6 +238,13 @@ public class CheckoutActivity extends AppCompatActivity {
         Order order = new Order(shippingName, shippingAddress, shippingCity,
                 contactInstructions, note, paymentMethod);
         order.setItems(cartItemList);
+        order.setOrderId(orderID);
+        corderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
+            }
+        });
         orderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -240,6 +252,15 @@ public class CheckoutActivity extends AppCompatActivity {
                 redirectToOrderPlacedPage();
             }
         });
+    }
+    private String generateOrderID() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault());
+        String timestamp = dateFormat.format(new Date());
+
+        Random random = new Random();
+        int randomDigits = random.nextInt(900000) + 100000; // Generate a 6-digit random number
+
+        return timestamp + randomDigits;
     }
 
     private String calculateTotalAmount() {
