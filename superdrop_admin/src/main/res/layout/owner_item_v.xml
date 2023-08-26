@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Name: "
+            android:text="Name : "
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Address: "
+            android:text="Address : "
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/oshippingCityTextView" />
@@ -77,10 +77,9 @@
             android:id="@+id/oshippingCityTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:layout_marginTop="12dp"
             android:text="City: shippingCity"
-            app:layout_constraintStart_toEndOf="@+id/helper2"
+            app:layout_constraintStart_toEndOf="@+id/helper3"
             app:layout_constraintTop_toBottomOf="@+id/oshippingNameTextView" />
 
         <TextView
@@ -88,7 +87,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="City: "
+            android:text="City : "
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/oshippingNameTextView" />
@@ -99,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Payment Method"
+            android:text="Payment Method :"
             android:textSize="18sp"
             android:textStyle="bold|italic"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Phone Number"
+            android:text="Phone Number :"
             android:textSize="18sp"
             android:textStyle="bold|italic"
             app:layout_constraintStart_toStartOf="parent"
@@ -141,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Note"
+            android:text="Note :"
             android:textSize="18sp"
             android:textStyle="bold|italic"
             app:layout_constraintStart_toStartOf="parent"
@@ -189,7 +188,7 @@
             android:layout_weight="1"
             android:backgroundTint="#00FF00"
             android:text="Accept"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/ocancelButton"

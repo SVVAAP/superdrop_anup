@@ -7,11 +7,22 @@
     android:background="@android:color/white"
     tools:context=".Admin_Activity">
 
+    <ImageView
+        android:id="@+id/logout"
+        android:layout_width="47dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+        app:layout_constraintEnd_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toTopOf="@+id/textView9"
+        app:srcCompat="@drawable/logout" />
+
     <TextView
         android:id="@+id/textView9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
         android:gravity="center"
         android:text="Admin Access"
         android:textSize="24sp"
@@ -100,6 +111,7 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="0dp"
         android:layout_height="65dp"
+        android:layout_margin="20dp"
         android:background="@color/colorPrimary"
         android:padding="10dp"
         android:text="Orders"
@@ -107,7 +119,6 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bowlexpress_add"
-        android:layout_margin="20dp" />
+        app:layout_constraintTop_toBottomOf="@+id/add_rest" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

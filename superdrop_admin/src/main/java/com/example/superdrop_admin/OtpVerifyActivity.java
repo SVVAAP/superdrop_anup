@@ -129,7 +129,7 @@ public class OtpVerifyActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // OTP verification successful, proceed to the next activity
                             // For example, you can redirect to the user's profile or dashboard
-                            Intent intent = new Intent(OtpVerifyActivity.this,Detail_Activity.class);
+                            Intent intent = new Intent(OtpVerifyActivity.this,OwnersActivity.class);
                             intent.putExtra("phoneNumber", phoneNumber1);
                             startActivity(intent);
                             finish();

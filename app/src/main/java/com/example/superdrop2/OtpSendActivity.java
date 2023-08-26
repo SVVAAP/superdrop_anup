@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
+
+import com.example.superdrop2.navigation.NavActivity;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -41,7 +43,7 @@ public class OtpSendActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentuser= mAuth.getCurrentUser();
         if(currentuser!=null) {
-            startActivity(new Intent(OtpSendActivity.this,Admin_Activity.class));
+            startActivity(new Intent(OtpSendActivity.this, NavActivity.class));
             finish();
         }
     }

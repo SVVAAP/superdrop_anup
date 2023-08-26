@@ -20,13 +20,27 @@
             android:padding="16dp">
 
             <!-- Profile Image -->
-            <TextView
-                android:id="@+id/textView20"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Profile"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/logout_bt"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/logout"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
                 android:id="@+id/profile_image"
@@ -128,7 +142,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:text="Admin" />
+                android:text="Admin"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/owner_bt"
                 style="@style/Widget.Material3.Button.ElevatedButton"
@@ -136,16 +152,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:text="Owner_orders" />
-
-            <Button
-                android:id="@+id/logout_bt"
-                style="@style/Widget.Material3.Button.ElevatedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="Logout" />
+                android:text="Owner_orders"
+                android:visibility="gone" />
 
 
         </LinearLayout>

@@ -3,6 +3,8 @@ package com.example.superdrop2.payment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -172,30 +174,35 @@ public class CheckoutActivity extends AppCompatActivity {
     private void showOrderPlacedNotification() {
         // Create a notification builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
-                .setSmallIcon(R.drawable.logo)
+                .setSmallIcon(R.drawable.appicon)
                 .setContentTitle("Order Placed")
                 .setContentText("Your order has been placed successfully.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
+        // Create an image Bitmap and set it to the style
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noti_icon);
+        NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle()
+                .bigPicture(imageBitmap)
+                .bigLargeIcon(null); // Optional: Set a large icon for the expanded notification
+
+        // Attach the style to the builder
+        builder.setStyle(bigPictureStyle);
+
         // Attach an intent to open an activity when notification is clicked
         Intent intent = new Intent(this, OrderPlacedActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(pendingIntent);
 
         // Display the notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         if (ActivityCompat.checkSelfPermission(CheckoutActivity.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            // TODO: Handle permission
             return;
         }
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
+
+
 
 
 

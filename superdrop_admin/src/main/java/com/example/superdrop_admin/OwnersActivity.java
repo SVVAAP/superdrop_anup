@@ -1,6 +1,9 @@
 package com.example.superdrop_admin;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +27,7 @@ public class OwnersActivity extends AppCompatActivity {
     private Owner_Adapter orderAdapter;
     private List<Order> orderList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +41,21 @@ public class OwnersActivity extends AppCompatActivity {
 
         // Retrieve orders from Firebase and populate the list
         retrieveOrdersFromFirebase();
+
+
+
+        // Set OnClickListener on the ImageView to open Admin Activity
+
+        ImageView postImageView = findViewById(R.id.post);
+        postImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open Admin_Activity when ImageView is clicked
+                Intent intent = new Intent(OwnersActivity.this, Admin_Activity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void retrieveOrdersFromFirebase() {

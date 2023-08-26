@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class Admin_Activity extends AppCompatActivity {
     Button add_rest,add_offer,add_bunontop,add_streetwok,add_bowlexpres,orders;
+    ImageView logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,20 @@ public class Admin_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Admin_Activity.this, OwnersActivity.class);
                 startActivity(intent);
+            }
+        });
+
+       //logout
+        // Initialize the logout button
+        logout = findViewById(R.id.logout);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(Admin_Activity.this, OtpSendActivity.class);
+                startActivity(intent);
+                finish(); // Close the current activity after logout
             }
         });
     }

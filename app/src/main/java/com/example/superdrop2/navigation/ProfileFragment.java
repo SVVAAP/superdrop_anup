@@ -51,8 +51,8 @@ public class ProfileFragment extends Fragment {
 
     private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact;
     private RatingBar ratingBar;
-    private Button submitButton, editProfileButton,admin,logout,owner;
-    private ImageView profileImage;
+    private Button submitButton, editProfileButton,admin,owner;
+    private ImageView profileImage,logout;
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
