@@ -142,29 +142,28 @@
             app:layout_constraintTop_toTopOf="@+id/sheet_quantity"
             app:layout_constraintVertical_bias="0.6" />
 
-        <Button
+
+        <ImageView
             android:id="@+id/sheet_order_bt"
-            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="4dp"
             android:fontFamily="@font/calibri"
+            android:src="@drawable/viewcart"
             android:text="View Cart"
             android:textAlignment="center"
-            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/sheet_addtocart_bt" />
 
-
-        <Button
+        <ImageView
             android:id="@+id/sheet_addtocart_bt"
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="4dp"
             android:fontFamily="@font/calibri"
+            android:src="@drawable/addtocart"
             android:text="Add To Cart"
             android:textAlignment="center"
             android:textSize="16sp"
@@ -173,7 +172,6 @@
             app:layout_constraintEnd_toStartOf="@+id/sheet_order_bt"
             app:layout_constraintHorizontal_bias="0.038"
             app:layout_constraintStart_toStartOf="parent" />
-
 
         <TextView
             android:id="@+id/sheet_totalprice"
