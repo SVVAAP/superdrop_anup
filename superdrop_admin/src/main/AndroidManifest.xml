@@ -14,7 +14,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SUPERDROP2"
        >
-
+        <activity
+            android:name=".Offer_Add_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".OwnersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DeleteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Detail_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".OtpSendActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OtpVerifyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Admin_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".BunOnTopAdd_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".BowlExpressAdd_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".StreetWokAdd_Activity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
