@@ -50,8 +50,8 @@ import java.io.ByteArrayOutputStream;
 
 public class BottomSheet extends BottomSheetDialogFragment {
     TextView item_name, item_price, item_quantity, total_price;
-    Button bt_cart,bt_order;
-    ImageView item_img, plus_img, minus_img;
+
+    ImageView item_img, plus_img, minus_img,bt_cart,bt_order;
     int i = 1,newItemCount=0;
     double price;
     String priceWithSymbol, imageUrl,itemId;
