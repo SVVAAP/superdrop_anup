@@ -50,7 +50,7 @@ public class SearchFragment extends Fragment {
         mUploads = new ArrayList<>();
         mFilteredUploads = new ArrayList<>();
         mSearchView = view.findViewById(R.id.searchView_m);
-//        mSearchView.getFocusable();
+        mSearchView.getFocusable();
         Bundle args = getArguments();
         if (args != null) {
             String itemName = args.getString("itemName", "");
