@@ -81,6 +81,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private StorageReference storageReference;
     double total = 0.0;
     private DatabaseReference orderDatabaseReference,corderDatabaseReference;
+    String userId;
 
     private static final int NOTIFICATION_ID = 123; // Unique ID for the notification
 
@@ -95,7 +96,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         }
 
-        String userId = currentUser.getUid();
+        userId = currentUser.getUid();
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
 
 
@@ -205,11 +206,6 @@ public class CheckoutActivity extends AppCompatActivity {
         }
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
-
-
-
-
-
     private void placeOrder() {
         String orderID = generateOrderID();
         String shippingName = shippingNameEditText.getText().toString();
@@ -235,17 +231,17 @@ public class CheckoutActivity extends AppCompatActivity {
         // You can handle more payment methods here
 
         // Store order details in Firebase
-        Order order = new Order(shippingName, shippingAddress, shippingCity,
+        Order order = new Order(orderID,shippingName, shippingAddress, shippingCity,
                 contactInstructions, note, paymentMethod);
         order.setItems(cartItemList);
-        order.setOrderId(orderID);
-        corderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
+        order.setUserId(userId);
+        corderDatabaseReference.child(orderID).push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
             }
         });
-        orderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
+        orderDatabaseReference.child(orderID).push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
@@ -284,13 +280,6 @@ public class CheckoutActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    private void placeOrderInFirebase(String shippingName, String shippingAddress, String shippingCity,
-                                      String contactInstructions, String note, String paymentMethod) {
-        // Store order details in Firebase
-        orderDatabaseReference.push().setValue(new Order(shippingName, shippingAddress, shippingCity,
-                contactInstructions, note, paymentMethod));
-    }
 
     // Inside your CheckoutActivity.java
 

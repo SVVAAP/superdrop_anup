@@ -15,14 +15,17 @@ public class Order {
     private String paymentMethod,grandtotal;
     private List<CartItem> items;
     private String orderid;
+    private String userid;
+    private String status;
 
     public Order() {
         items = new ArrayList<>();
         // Default constructor required for Firebase
     }
 
-    public Order(String shippingName, String shippingAddress, String shippingCity,
+    public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
                  String contactInstructions, String note, String paymentMethod) {
+        this.orderid=orderid;
         this.shippingName = shippingName;
         this.shippingAddress = shippingAddress;
         this.shippingCity = shippingCity;
@@ -32,9 +35,13 @@ public class Order {
         this.items = new ArrayList<>(); // Initialize the items list
         // No need to add a dummy item her
     }
-    private String status;
+    public String getUserId() {
+        return userid;
+    }
 
-
+    public void setUserId(String userid) {
+        this.userid = userid;
+    }
     public String getStatus() {
         return status;
     }

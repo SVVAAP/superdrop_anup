@@ -13,6 +13,7 @@ public class Order {
     private String paymentMethod,grandtotal;
     private List<CartItem> items;
     private String orderid;
+    private String userid;
 
     public Order() {
         items = new ArrayList<>();
@@ -31,6 +32,13 @@ public class Order {
         // No need to add a dummy item her
     }
     private String status;
+    public String getUserId() {
+        return userid;
+    }
+
+    public void setUserId(String userid) {
+        this.userid = userid;
+    }
 
     public String getStatus() {
         return status;
