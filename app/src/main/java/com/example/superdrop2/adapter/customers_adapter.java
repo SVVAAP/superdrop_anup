@@ -93,7 +93,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             address=itemView.findViewById(R.id.cshippingAddressTextView);
             payment=itemView.findViewById(R.id.cpaymentMethodContentTextView);
             note=itemView.findViewById(R.id.cnoteContentTextView);
-            total=itemView.findViewById(R.id.cGrandTotal);
+            total=itemView.findViewById(R.id.ctotal);
             progressBar=itemView.findViewById(R.id.c_progressBar);
             processing=itemView.findViewById(R.id.processing_img);
             cooking=itemView.findViewById(R.id.cooking_img);

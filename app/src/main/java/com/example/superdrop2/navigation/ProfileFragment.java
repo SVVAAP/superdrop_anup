@@ -28,6 +28,7 @@ import com.example.superdrop2.Admin_Activity;
 import com.example.superdrop2.OtpSendActivity;
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.CartItem;
+import com.example.superdrop2.customers_Activity;
 import com.example.superdrop2.methods.User;
 import com.example.superdrop2.payment.OwnersActivity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,7 +53,7 @@ public class ProfileFragment extends Fragment {
     private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact;
     private RatingBar ratingBar;
     private Button submitButton, editProfileButton,admin,owner;
-    private ImageView profileImage,logout;
+    private ImageView profileImage,track;
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
@@ -93,7 +94,7 @@ public class ProfileFragment extends Fragment {
         submitButton = view.findViewById(R.id.Submit);
         editProfileButton = view.findViewById(R.id.edit_Profile);
         profileImage = view.findViewById(R.id.profile_image);
-        logout=view.findViewById(R.id.logout_bt);
+       track=view.findViewById(R.id.track_bt);
         owner=view.findViewById(R.id.owner_bt);
 
         // Initialize Firebase Database and Storage References
@@ -159,11 +160,11 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        logout.setOnClickListener(new View.OnClickListener() {
+        track.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent=new Intent(getActivity(), OtpSendActivity.class);
+                Intent intent=new Intent(getActivity(), customers_Activity.class);
                 startActivity(intent);
             }
         });
