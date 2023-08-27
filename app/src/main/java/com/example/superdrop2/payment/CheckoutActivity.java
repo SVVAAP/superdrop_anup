@@ -213,6 +213,7 @@ public class CheckoutActivity extends AppCompatActivity {
         String shippingCity = shippingCityEditText.getText().toString();
         String contactInstructions = contactInstructionsEditText.getText().toString();
         String note = noteEditText.getText().toString();
+        String newstatus="Ordering";
 
         String paymentMethod = "COD";
 //        int selectedRadioButtonId = paymentMethodsRadioGroup.getCheckedRadioButtonId();
@@ -232,16 +233,16 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // Store order details in Firebase
         Order order = new Order(orderID,shippingName, shippingAddress, shippingCity,
-                contactInstructions, note, paymentMethod);
+                contactInstructions, note, paymentMethod,newstatus);
         order.setItems(cartItemList);
         order.setUserId(userId);
-        corderDatabaseReference.child(orderID).push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
+        corderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
             }
         });
-        orderDatabaseReference.child(orderID).push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
+        orderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();

@@ -24,7 +24,7 @@ public class Order {
     }
 
     public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
-                 String contactInstructions, String note, String paymentMethod) {
+                 String contactInstructions, String note, String paymentMethod,String status) {
         this.orderid=orderid;
         this.shippingName = shippingName;
         this.shippingAddress = shippingAddress;
@@ -32,6 +32,7 @@ public class Order {
         this.contactInstructions = contactInstructions;
         this.note = note;
         this.paymentMethod = paymentMethod;
+        this.status=status;
         this.items = new ArrayList<>(); // Initialize the items list
         // No need to add a dummy item her
     }
