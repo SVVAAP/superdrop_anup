@@ -65,29 +65,32 @@ public class OwnersActivity extends AppCompatActivity {
 
         orderDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                orderList.clear(); // Clear the orderList before adding new orders
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
+                Order order = dataSnapshot.getValue(Order.class);
+                if (order != null) {
+                    // Retrieve the items associated with the order from the "items" node
+                    DataSnapshot itemsSnapshot = dataSnapshot.child("items");
 
-                for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
-                    Order order = orderSnapshot.getValue(Order.class);
-                    if (order != null) {
-                        // Retrieve the items associated with the order from the "items" node
-                        List<CartItem> cartItems = new ArrayList<>();
-                        DataSnapshot itemsSnapshot = orderSnapshot.child("items");
-                        for (DataSnapshot itemSnapshot : itemsSnapshot.getChildren()) {
-                            CartItem cartItem = itemSnapshot.getValue(CartItem.class);
-                            if (cartItem != null) {
-                                cartItems.add(cartItem);
-                            }
+                    List<CartItem> cartItems = new ArrayList<>();
+                    for (DataSnapshot itemSnapshot : itemsSnapshot.getChildren()) {
+                        CartItem cartItem = itemSnapshot.getValue(CartItem.class);
+                        if (cartItem != null) {
+                            cartItems.add(cartItem);
                         }
-
-                        // Set the retrieved cart items to the order
-                        order.setItems(cartItems);
-                        orderList.add(order);
                     }
-                }
 
-                orderAdapter.notifyDataSetChanged();
+                    // Set the retrieved cart items to the order
+                    order.setItems(cartItems);
+                    orderList.add(order);
+
+                    // Notify the adapter about the new order
+                    orderAdapter.notifyItemInserted(orderList.size() - 1);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
+                // Handle changes to existing orders if needed
             }
 
             @Override
@@ -96,4 +99,5 @@ public class OwnersActivity extends AppCompatActivity {
             }
         });
     }
+
 }
