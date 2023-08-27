@@ -52,8 +52,8 @@ public class ProfileFragment extends Fragment {
 
     private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact;
     private RatingBar ratingBar;
-    private Button submitButton, editProfileButton,admin,owner;
-    private ImageView profileImage,track;
+    private Button submitButton, editProfileButton,admin,owner,track;
+    private ImageView profileImage,logout;
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
@@ -94,8 +94,10 @@ public class ProfileFragment extends Fragment {
         submitButton = view.findViewById(R.id.Submit);
         editProfileButton = view.findViewById(R.id.edit_Profile);
         profileImage = view.findViewById(R.id.profile_image);
-       track=view.findViewById(R.id.track_bt);
+        logout=view.findViewById(R.id.logout_bt);
         owner=view.findViewById(R.id.owner_bt);
+        track=view.findViewById(R.id.track_bt);
+
 
         // Initialize Firebase Database and Storage References
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
@@ -160,11 +162,11 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        track.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent=new Intent(getActivity(), customers_Activity.class);
+                Intent intent=new Intent(getActivity(), OtpSendActivity.class);
                 startActivity(intent);
             }
         });
@@ -172,6 +174,13 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getActivity(), OwnersActivity.class);
+                startActivity(intent);
+            }
+        });
+        track.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(), customers_Activity.class);
                 startActivity(intent);
             }
         });
