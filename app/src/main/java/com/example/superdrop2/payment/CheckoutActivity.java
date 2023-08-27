@@ -230,10 +230,11 @@ public class CheckoutActivity extends AppCompatActivity {
 //        }
 
         // You can handle more payment methods here
+        String gtotal=calculateTotalAmount();
 
         // Store order details in Firebase
         Order order = new Order(orderID,shippingName, shippingAddress, shippingCity,
-                contactInstructions, note, paymentMethod,newstatus);
+                contactInstructions, note, paymentMethod,newstatus,gtotal);
         order.setItems(cartItemList);
         order.setUserId(userId);
         corderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {

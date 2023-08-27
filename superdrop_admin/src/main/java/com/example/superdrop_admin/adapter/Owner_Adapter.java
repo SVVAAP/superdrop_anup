@@ -56,6 +56,8 @@ import java.util.List;
         holder.fooditemadapter = new foodItemAdapter(order.getItems(), context);
         holder.itemRecyclerView.setAdapter(holder.fooditemadapter);
         holder.orderid.setText(orderId);
+        String gtotal="₹"+order.getGrandTotal();
+        holder.total.setText(gtotal);
 
         if (currentStatus != null && currentStatus.equals("Ordering"))  {
             holder.acceptButton.setText("Accept");
@@ -206,7 +208,7 @@ import java.util.List;
     public class ViewHolder extends RecyclerView.ViewHolder{
         private RecyclerView itemRecyclerView;
         private foodItemAdapter fooditemadapter;
-        private TextView name,city,address,phone,payment,note,orderid;
+        private TextView name,city,address,phone,payment,note,orderid,total;
         private Button acceptButton,cancelButton;
         private Order order;
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
@@ -221,6 +223,7 @@ import java.util.List;
             acceptButton = itemView.findViewById(R.id.oacceptButton);
             orderid=itemView.findViewById(R.id.shippingorderid);
             cancelButton=itemView.findViewById(R.id.ocancelButton);
+            total=itemView.findViewById(R.id.oGrandTotal);
 
 
             // Set up the layout manager for the nested RecyclerView

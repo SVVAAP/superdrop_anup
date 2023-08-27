@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +29,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
     @NonNull
     @Override
     public customers_adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.owner_item_v, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.customer_item_v, parent, false);
         return new customers_adapter.ViewHolder(view,parent);
     }
 
@@ -43,7 +45,32 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         holder.note.setText(order.getNote() != null ? order.getNote() : "N/A");
         holder.fooditemadapter = new foodItemAdapter(order.getItems(), context);
         holder.itemRecyclerView.setAdapter(holder.fooditemadapter);
+        String gtotal="₹"+order.getGrandTotal();
+        holder.total.setText(gtotal);
 
+
+        String currentStatus=order.getStatus();
+        if (currentStatus != null && currentStatus.equals("Ordering"))  {
+           holder.progressBar.setProgress(0);
+        } else if (currentStatus.equals("Order placed")) {
+            holder.progressBar.setProgress(25);
+            holder.accepted.setVisibility(View.VISIBLE);
+        } else if (currentStatus.equals("Processing")) {
+            holder.progressBar.setProgress(50);
+            holder.accepted.setVisibility(View.VISIBLE);
+            holder.cooking.setVisibility(View.VISIBLE);
+        } else if (currentStatus.equals("Delivering")) {
+            holder.progressBar.setProgress(75);
+            holder.accepted.setVisibility(View.VISIBLE);
+            holder.cooking.setVisibility(View.VISIBLE);
+            holder.delivering.setVisibility(View.VISIBLE);
+        }else if(currentStatus.equals("Delivered")) {
+            holder.progressBar.setProgress(100);
+            holder.accepted.setVisibility(View.VISIBLE);
+            holder.cooking.setVisibility(View.VISIBLE);
+            holder.delivering.setVisibility(View.VISIBLE);
+            holder.delivered.setVisibility(View.VISIBLE);
+            }
     }
 
     @Override
@@ -53,17 +80,26 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder{
         private RecyclerView itemRecyclerView;
         private foodItemAdapter fooditemadapter;
-        private TextView name,city,address,phone,payment,note;
+        private ImageView processing,cooking,delivering,delivered,accepted;
+        private ProgressBar progressBar;
+        private TextView name,city,address,phone,payment,note,total;
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
             super(itemView);
             Order order;
-            itemRecyclerView = itemView.findViewById(R.id.ofoodItemsRecyclerView);
-            name=itemView.findViewById(R.id.oshippingNameTextView);
-            city=itemView.findViewById(R.id.oshippingCityTextView);
-            phone=itemView.findViewById(R.id.oshippingphoneTextView);
-            address=itemView.findViewById(R.id.oshippingAddressTextView);
-            payment=itemView.findViewById(R.id.opaymentMethodContentTextView);
-            note=itemView.findViewById(R.id.onoteContentTextView);
+            itemRecyclerView = itemView.findViewById(R.id.cfoodItemsRecyclerView);
+            name=itemView.findViewById(R.id.cshippingNameTextView);
+            city=itemView.findViewById(R.id.cshippingCityTextView);
+            phone=itemView.findViewById(R.id.cshippingphoneTextView);
+            address=itemView.findViewById(R.id.cshippingAddressTextView);
+            payment=itemView.findViewById(R.id.cpaymentMethodContentTextView);
+            note=itemView.findViewById(R.id.cnoteContentTextView);
+            total=itemView.findViewById(R.id.cGrandTotal);
+            progressBar=itemView.findViewById(R.id.c_progressBar);
+            processing=itemView.findViewById(R.id.processing_img);
+            cooking=itemView.findViewById(R.id.cooking_img);
+            delivered=itemView.findViewById(R.id.delivered_img);
+            delivering=itemView.findViewById(R.id.delivering_img);
+            accepted=itemView.findViewById(R.id.accept_img);
 
             // Set up the layout manager for the nested RecyclerView
             LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext());
