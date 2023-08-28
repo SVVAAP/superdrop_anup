@@ -16,7 +16,8 @@ public class Order {
     private List<CartItem> items;
     private String orderid;
     private String userid;
-    private String status;
+    private String status,date,time;
+
 
     public Order() {
         items = new ArrayList<>();
@@ -37,17 +38,27 @@ public class Order {
         this.items = new ArrayList<>(); // Initialize the items list
         // No need to add a dummy item her
     }
+    public String getDate() {
+        return date;
+    }
+    public void setDate(String date) {
+        this.date = date;
+    }
+    public String getTime() {
+        return time;
+    }
+    public void setTime(String time) {
+        this.time = time;
+    }
     public String getUserId() {
         return userid;
     }
-
     public void setUserId(String userid) {
         this.userid = userid;
     }
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
     }

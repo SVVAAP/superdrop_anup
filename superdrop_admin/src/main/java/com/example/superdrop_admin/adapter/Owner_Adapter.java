@@ -67,11 +67,11 @@ import java.util.List;
             holder.cancelButton.setClickable(true);
             holder.acceptButton.setEnabled(true);
             holder.acceptButton.setClickable(true);
-            int greenColor = ContextCompat.getColor(context, android.R.color.holo_green_dark);
+            int greenColor = ContextCompat.getColor(context, android.R.color.holo_green_light);
             holder.acceptButton.setBackgroundColor(greenColor);
             int redColor = ContextCompat.getColor(context, android.R.color.holo_red_dark);
             holder.cancelButton.setBackgroundColor(redColor);
-        } else if (currentStatus.equals("Order placed")) {
+        } else if (currentStatus.equals("Orderplaced")) {
             holder.acceptButton.setText("Order Processing");
             holder.cancelButton.setVisibility(View.GONE);
         } else if (currentStatus.equals("Processing")) {
@@ -84,7 +84,7 @@ import java.util.List;
             holder.acceptButton.setText("Done");
             holder.cancelButton.setVisibility(View.GONE);
             updateButtonAppearance(holder,holder.acceptButton);
-            int orangeColor = ContextCompat.getColor(context, android.R.color.holo_red_dark);
+            int orangeColor = ContextCompat.getColor(context, android.R.color.holo_orange_light);
             holder.acceptButton.setBackgroundColor(orangeColor);
             holder.acceptButton.setClickable(false);
             holder.acceptButton.setEnabled(false);
@@ -97,11 +97,6 @@ import java.util.List;
             holder.cancelButton.setEnabled(false);
         }
 
-
-        if(currentStatus.equals("Order placed")||currentStatus.equals("Processing")||currentStatus.equals("Order Delivered")){
-            updateButtonAppearance(holder,holder.acceptButton);
-            holder.cancelButton.setVisibility(View.GONE);
-        }
         holder.cancelButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -157,8 +152,8 @@ import java.util.List;
                 // Update order status here
                 String newStatus;
                 if (order.getStatus().equals("Ordering")) {
-                    newStatus = "Order placed";
-                } else if (order.getStatus().equals("Order placed")){
+                    newStatus = "Orderplaced";
+                } else if (order.getStatus().equals("Orderplaced")){
                     newStatus = "Processing";
                 } else if (order.getStatus().equals("Processing")) {
                     newStatus = "Delivering";
