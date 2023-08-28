@@ -61,6 +61,16 @@ import java.util.List;
 
         if (currentStatus != null && currentStatus.equals("Ordering"))  {
             holder.acceptButton.setText("Accept");
+            holder.acceptButton.getLayoutParams().width = holder.itemView.getWidth() / 2;  // Set half width
+            holder.cancelButton.setVisibility(View.VISIBLE);  // Show the cancel button
+            holder.cancelButton.setEnabled(true);
+            holder.cancelButton.setClickable(true);
+            holder.acceptButton.setEnabled(true);
+            holder.acceptButton.setClickable(true);
+            int greenColor = ContextCompat.getColor(context, android.R.color.holo_green_dark);
+            holder.acceptButton.setBackgroundColor(greenColor);
+            int redColor = ContextCompat.getColor(context, android.R.color.holo_red_dark);
+            holder.cancelButton.setBackgroundColor(redColor);
         } else if (currentStatus.equals("Order placed")) {
             holder.acceptButton.setText("Order Processing");
             holder.cancelButton.setVisibility(View.GONE);
@@ -158,7 +168,6 @@ import java.util.List;
                     // Do nothing if the order status is already "Delivered"
                     return;
                 }
-                updateButtonAppearance(holder,holder.acceptButton);
 
                 // Update the status in Firebase database for both "orders" and "cust_orders" nodes
                 String orderId = order.getOrderId();

@@ -1,5 +1,7 @@
 package com.example.superdrop2.adapter;
 
+import android.animation.LayoutTransition;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +39,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
     @Override
     public void onBindViewHolder(@NonNull customers_adapter.ViewHolder holder, int position) {
         Order order = orderList.get(position);
-        // Set default values to prevent NullPointerException
+     // Set default values to prevent NullPointerException
         holder.name.setText(order.getShippingName() != null ? order.getShippingName() : "N/A");
         holder.phone.setText(order.getContactInstructions() != null ? order.getContactInstructions() : "N/A");
         holder.city.setText(order.getShippingCity() != null ? order.getShippingCity() : "N/A");
@@ -48,24 +51,46 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         String gtotal="₹"+order.getGrandTotal();
         holder.total.setText(gtotal);
 
+        // Set initial visibility
+        holder.processing.setVisibility(View.INVISIBLE);
+        holder.accepted.setVisibility(View.INVISIBLE);
+        holder.delivered.setVisibility(View.INVISIBLE);
+        holder.delivering.setVisibility(View.INVISIBLE);
+        holder.cooking.setVisibility(View.INVISIBLE);
+
 
         String currentStatus=order.getStatus();
         if (currentStatus != null && currentStatus.equals("Ordering"))  {
            holder.progressBar.setProgress(0);
+            holder.processing.setVisibility(View.VISIBLE);
+            holder.accepted.setVisibility(View.INVISIBLE);
+            holder.cooking.setVisibility(View.INVISIBLE);
+            holder.delivering.setVisibility(View.INVISIBLE);
+            holder.delivered.setVisibility(View.INVISIBLE);
         } else if (currentStatus.equals("Order placed")) {
             holder.progressBar.setProgress(25);
+            holder.processing.setVisibility(View.VISIBLE);
             holder.accepted.setVisibility(View.VISIBLE);
+            holder.cooking.setVisibility(View.INVISIBLE);
+            holder.delivering.setVisibility(View.INVISIBLE);
+            holder.delivered.setVisibility(View.INVISIBLE);
         } else if (currentStatus.equals("Processing")) {
             holder.progressBar.setProgress(50);
+            holder.processing.setVisibility(View.VISIBLE);
             holder.accepted.setVisibility(View.VISIBLE);
             holder.cooking.setVisibility(View.VISIBLE);
+            holder.delivering.setVisibility(View.INVISIBLE);
+            holder.delivered.setVisibility(View.INVISIBLE);
         } else if (currentStatus.equals("Delivering")) {
             holder.progressBar.setProgress(75);
+            holder.processing.setVisibility(View.VISIBLE);
             holder.accepted.setVisibility(View.VISIBLE);
             holder.cooking.setVisibility(View.VISIBLE);
             holder.delivering.setVisibility(View.VISIBLE);
+            holder.delivered.setVisibility(View.INVISIBLE);
         }else if(currentStatus.equals("Delivered")) {
             holder.progressBar.setProgress(100);
+            holder.processing.setVisibility(View.VISIBLE);
             holder.accepted.setVisibility(View.VISIBLE);
             holder.cooking.setVisibility(View.VISIBLE);
             holder.delivering.setVisibility(View.VISIBLE);
@@ -80,9 +105,10 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder{
         private RecyclerView itemRecyclerView;
         private foodItemAdapter fooditemadapter;
-        private ImageView processing,cooking,delivering,delivered,accepted;
+        private ImageView processing,cooking,delivering,delivered,accepted,toogleimg;
         private ProgressBar progressBar;
-        private TextView name,city,address,phone,payment,note,total;
+        private ConstraintLayout moreinfo;
+        private TextView name,city,address,phone,payment,note,total,toggltext;
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
             super(itemView);
             Order order;
@@ -100,6 +126,32 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             delivered=itemView.findViewById(R.id.delivered_img);
             delivering=itemView.findViewById(R.id.delivering_img);
             accepted=itemView.findViewById(R.id.accept_img);
+            moreinfo=itemView.findViewById(R.id.more_item);
+            toogleimg=itemView.findViewById(R.id.toogle_img);
+            toggltext=itemView.findViewById(R.id.toogle_text);
+            // Set up layout animation for sliding down
+            LayoutTransition layoutTransition = new LayoutTransition();
+            layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
+                    ObjectAnimator.ofFloat(null, "translationY", -moreinfo.getMeasuredHeight(), 0));
+            layoutTransition.setAnimator(LayoutTransition.CHANGE_DISAPPEARING,
+                    ObjectAnimator.ofFloat(null, "translationY", 0, -moreinfo.getMeasuredHeight()));
+
+            moreinfo.setLayoutTransition(layoutTransition);
+
+            toogleimg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Toggle visibility of more_item layout
+                    moreinfo.setVisibility(
+                            moreinfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE
+                    );
+
+                    // Rotate the toggle image
+                    float rotation = moreinfo.getVisibility() == View.VISIBLE ? 180 : 0;
+                    toogleimg.animate().rotation(rotation).start();
+                    toggltext.setText(moreinfo.getVisibility()==View.VISIBLE ? "View Less" : "View More");
+                }
+            });
 
             // Set up the layout manager for the nested RecyclerView
             LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext());
@@ -109,4 +161,5 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             itemRecyclerView.setAdapter(fooditemadapter);
         }
     }
+
 }

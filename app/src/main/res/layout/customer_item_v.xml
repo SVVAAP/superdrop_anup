@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="24dp"
                     android:text="Date :"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -95,18 +95,18 @@
                     app:layout_constraintTop_toTopOf="@+id/textView35" />
 
                 <TextView
-                    android:id="@+id/textView29"
+                    android:id="@+id/toogle_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="View More"
                     android:textSize="16sp"
                     android:textStyle="bold|italic"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView8"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView8"
-                    app:layout_constraintStart_toStartOf="@+id/imageView8" />
+                    app:layout_constraintBottom_toTopOf="@+id/toogle_img"
+                    app:layout_constraintEnd_toEndOf="@+id/toogle_img"
+                    app:layout_constraintStart_toStartOf="@+id/toogle_img" />
 
                 <ImageView
-                    android:id="@+id/imageView8"
+                    android:id="@+id/toogle_img"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="20dp"
@@ -120,7 +120,7 @@
                 android:id="@+id/more_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView36"
@@ -372,146 +372,149 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/textView38"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="21dp"
-                android:text="Delivering Details"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp">
 
                 <TextView
-                    android:id="@+id/helper1"
+                    android:id="@+id/textView38"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Name : "
+                    android:text="Delivering Details"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/cfoodItemsRecyclerView" />
 
-                <TextView
-                    android:id="@+id/cshippingNameTextView"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Name: shippingName"
-                    app:layout_constraintStart_toEndOf="@+id/helper1"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/cshippingAddressTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="12dp"
-                    android:text="Address: shippingAddress"
-                    app:layout_constraintStart_toEndOf="@+id/helper2"
-                    app:layout_constraintTop_toBottomOf="@+id/cshippingCityTextView" />
-
-                <TextView
-                    android:id="@+id/helper2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Address : "
-                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cshippingCityTextView" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView38">
 
-                <TextView
-                    android:id="@+id/cshippingCityTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="City: shippingCity"
-                    app:layout_constraintStart_toEndOf="@+id/helper3"
-                    app:layout_constraintTop_toBottomOf="@+id/cshippingNameTextView" />
+                    <TextView
+                        android:id="@+id/helper1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Name : "
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/helper3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="City : "
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cshippingNameTextView" />
+                    <TextView
+                        android:id="@+id/cshippingNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Name: shippingName"
+                        app:layout_constraintStart_toEndOf="@+id/helper1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/cshippingAddressTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Address: shippingAddress"
+                        app:layout_constraintStart_toEndOf="@+id/helper2"
+                        app:layout_constraintTop_toBottomOf="@+id/cshippingCityTextView" />
+
+                    <TextView
+                        android:id="@+id/helper2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Address : "
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cshippingCityTextView" />
+
+                    <TextView
+                        android:id="@+id/cshippingCityTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="City: shippingCity"
+                        app:layout_constraintStart_toEndOf="@+id/helper3"
+                        app:layout_constraintTop_toBottomOf="@+id/cshippingNameTextView" />
+
+                    <TextView
+                        android:id="@+id/helper3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="City : "
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cshippingNameTextView" />
 
 
-                <TextView
-                    android:id="@+id/textView25"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Payment Method :"
-                    android:textSize="18sp"
-                    android:textStyle="bold|italic"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/helper2" />
+                    <TextView
+                        android:id="@+id/textView25"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Payment Method :"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/helper2" />
 
-                <TextView
-                    android:id="@+id/cpaymentMethodContentTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="16dp"
-                    android:text="paymentMethod"
-                    app:layout_constraintStart_toEndOf="@+id/textView25"
-                    app:layout_constraintTop_toBottomOf="@+id/cshippingAddressTextView" />
+                    <TextView
+                        android:id="@+id/cpaymentMethodContentTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="16dp"
+                        android:text="paymentMethod"
+                        app:layout_constraintStart_toEndOf="@+id/textView25"
+                        app:layout_constraintTop_toBottomOf="@+id/cshippingAddressTextView" />
 
-                <TextView
-                    android:id="@+id/textView23"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Phone Number :"
-                    android:textSize="18sp"
-                    android:textStyle="bold|italic"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView25" />
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Phone Number :"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
-                <TextView
-                    android:id="@+id/cshippingphoneTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:text="contactInstructions"
-                    app:layout_constraintStart_toEndOf="@+id/textView23"
-                    app:layout_constraintTop_toBottomOf="@+id/cpaymentMethodContentTextView" />
+                    <TextView
+                        android:id="@+id/cshippingphoneTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:text="contactInstructions"
+                        app:layout_constraintStart_toEndOf="@+id/textView23"
+                        app:layout_constraintTop_toBottomOf="@+id/cpaymentMethodContentTextView" />
 
-                <TextView
-                    android:id="@+id/textView26"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Note :"
-                    android:textSize="18sp"
-                    android:textStyle="bold|italic"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                    <TextView
+                        android:id="@+id/textView26"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Note :"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
-                <TextView
-                    android:id="@+id/cnoteContentTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="note"
-                    app:layout_constraintStart_toEndOf="@+id/textView26"
-                    app:layout_constraintTop_toBottomOf="@+id/cshippingphoneTextView" />
+                    <TextView
+                        android:id="@+id/cnoteContentTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="note"
+                        app:layout_constraintStart_toEndOf="@+id/textView26"
+                        app:layout_constraintTop_toBottomOf="@+id/cshippingphoneTextView" />
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
