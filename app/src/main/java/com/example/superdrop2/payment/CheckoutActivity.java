@@ -45,6 +45,7 @@ import org.checkerframework.common.returnsreceiver.qual.This;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -213,6 +214,10 @@ public class CheckoutActivity extends AppCompatActivity {
         String shippingCity = shippingCityEditText.getText().toString();
         String contactInstructions = contactInstructionsEditText.getText().toString();
         String note = noteEditText.getText().toString();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        String currentDate = dateFormat.format(Calendar.getInstance().getTime());
+        String currentTime = timeFormat.format(Calendar.getInstance().getTime());
         String newstatus="Ordering";
 
         String paymentMethod = "COD";
@@ -237,6 +242,9 @@ public class CheckoutActivity extends AppCompatActivity {
                 contactInstructions, note, paymentMethod,newstatus,gtotal);
         order.setItems(cartItemList);
         order.setUserId(userId);
+        order.setDate(currentDate); // Set the current date
+        order.setTime(currentTime); // Set the current time
+
         corderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

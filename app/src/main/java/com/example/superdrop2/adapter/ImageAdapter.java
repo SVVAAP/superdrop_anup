@@ -33,7 +33,7 @@ public  ImageAdapter(Context context1,List<postview> uploads){
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
 postview uploadcurrent=mUploads.get(position);
-holder.txtvname.setText(uploadcurrent.getName());
+//holder.txtvname.setText(uploadcurrent.getName());
         Picasso.get().load(uploadcurrent.getImageUrl()).fit().centerCrop().into(holder.simageView);
     }
 
@@ -49,7 +49,7 @@ holder.txtvname.setText(uploadcurrent.getName());
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            txtvname=itemView.findViewById(R.id.posttext);
+//            txtvname=itemView.findViewById(R.id.posttext);
             simageView=itemView.findViewById(R.id.postimage);
         }
     }

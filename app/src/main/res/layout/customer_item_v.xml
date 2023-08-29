@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-   >
+    >
 
     <!-- Shipping Information -->
     <ScrollView
@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#65FF6600"
             android:padding="5px">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,7 +58,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="24dp"
                     android:text="Date :"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -82,13 +81,13 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
                     android:text="Total :"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/order_id" />
 
                 <TextView
-                    android:id="@+id/date"
+                    android:id="@+id/cdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -117,12 +116,16 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:srcCompat="@drawable/ccp_ic_arrow_drop_down" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/more_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/rounded_edge"
+                android:backgroundTint="#E6E5E5"
+                android:padding="21dp"
                 android:visibility="visible">
 
                 <TextView
@@ -131,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="21dp"
                     android:text="Ordered Items"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/status" />
@@ -147,44 +150,49 @@
                     app:reverseLayout="true" />
 
                 <TextView
+                    android:id="@+id/textView31"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
+                    android:layout_marginTop="10dp"
                     android:text="Shipping Information"
                     android:textSize="18sp"
                     android:textStyle="bold|italic"
-                    app:layout_constraintBottom_toTopOf="@+id/textView37"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView37"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="Order Status"
-                    android:textSize="18sp"
-                    android:textStyle="bold|italic"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/status"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="21dp"
+                    android:background="@drawable/rounded_edge"
+                    android:backgroundTint="#D3D3D3"
                     android:orientation="vertical"
+                    android:padding="21dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView37">
+                    app:layout_constraintTop_toBottomOf="@+id/textView31">
+
+                    <TextView
+                        android:id="@+id/textView37"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Order Status"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.497" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout5"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView37"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <ProgressBar
@@ -219,7 +227,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:srcCompat="@drawable/done" />
+                                android:src="@drawable/done" />
 
                             <TextView
                                 android:id="@+id/processing_text"
@@ -253,7 +261,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:srcCompat="@drawable/done" />
+                                android:src="@drawable/done" />
 
                             <TextView
                                 android:id="@+id/accept_txt"
@@ -286,7 +294,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:srcCompat="@drawable/done" />
+                                android:src="@drawable/done" />
 
                             <TextView
                                 android:id="@+id/delivered_text"
@@ -320,7 +328,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:srcCompat="@drawable/done" />
+                                android:src="@drawable/done" />
 
                             <TextView
                                 android:id="@+id/delivering_txt"
@@ -354,7 +362,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:srcCompat="@drawable/done" />
+                                android:src="@drawable/done" />
 
                             <TextView
                                 android:id="@+id/cooking_txt"
@@ -381,8 +389,9 @@
                     android:id="@+id/textView38"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp"
                     android:text="Delivering Details"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cfoodItemsRecyclerView" />
@@ -494,6 +503,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
                         android:text="contactInstructions"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@+id/textView23"
                         app:layout_constraintTop_toBottomOf="@+id/cpaymentMethodContentTextView" />
 
@@ -518,7 +528,32 @@
                         app:layout_constraintStart_toEndOf="@+id/textView26"
                         app:layout_constraintTop_toBottomOf="@+id/cshippingphoneTextView" />
 
+                    <TextView
+                        android:id="@+id/textView29"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="Total :"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+                    <TextView
+                        android:id="@+id/ctotal2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="999"
+                        android:textColor="#FF9800"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView29"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView29" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
@@ -527,5 +562,3 @@
 
 
 </LinearLayout>
-
-
