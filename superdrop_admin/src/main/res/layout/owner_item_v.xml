@@ -248,6 +248,7 @@
             android:backgroundTint="#FF0000"
             android:text="Cancel"
             android:textColor="@android:color/white" />
+
     </LinearLayout>
 
     <!-- Contact Instructions -->
@@ -255,7 +256,12 @@
     <!-- Note -->
 
     <!-- Payment Method -->
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:visibility="visible" />
     <!-- Food Items RecyclerView -->
 
 </LinearLayout>

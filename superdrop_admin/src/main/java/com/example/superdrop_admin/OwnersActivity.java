@@ -40,7 +40,6 @@ public class OwnersActivity extends AppCompatActivity {
     private static final int NOTIFICATION_ID = 123; // Use any unique value you prefer
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,47 +71,13 @@ public class OwnersActivity extends AppCompatActivity {
 
 
     //notification
-
-    // Define the method to show new item notification
-    private void showNewItemNotification(String itemName) {
-        // Create a notification builder
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
-                .setSmallIcon(R.drawable.s_d_logo)
-                .setContentTitle("New Item Added")
-                .setContentText(itemName +" has been added to an order.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        // Create an image Bitmap and set it to the style
-        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.s_d);
-        NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle()
-                .bigPicture(imageBitmap)
-                .bigLargeIcon(null); // Optional: Set a large icon for the expanded notification
-
-        // Attach the style to the builder
-        builder.setStyle(bigPictureStyle);
-
-       // Attach an intent to open an activity when notification is clicked
-        Intent intent = new Intent(this, OwnersActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        builder.setContentIntent(pendingIntent);
-
-        // Display the notification
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        if (ActivityCompat.checkSelfPermission(OwnersActivity.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Handle permission
-            return;
-        }
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
-    }
-
-
     private void retrieveOrdersFromFirebase() {
         DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
 
         orderDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                orderList.clear(); // Clear the orderList before adding new orders
+                orderList.clear();
 
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);
@@ -134,6 +99,11 @@ public class OwnersActivity extends AppCompatActivity {
                         // Set the retrieved cart items to the order
                         order.setItems(cartItems);
                         orderList.add(order);
+                        if (order.getStatus().equals("Ordering")) {
+                            // Assuming the new item's name is stored in itemName
+                            String itemName = "New order"; // Replace this with the actual item name
+                            showNewItemNotification(itemName);
+                        }
                     }
                 }
 
@@ -147,5 +117,33 @@ public class OwnersActivity extends AppCompatActivity {
         });
     }
 
+// Show notification for new items
 
+    private void showNewItemNotification(String itemName) {
+        // Create notification builder
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
+                .setSmallIcon(R.drawable.s_d_logo)
+                .setContentTitle("New Item Added")
+                .setContentText(itemName + " has been added to an order.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        // Create intent for notification click
+        Intent intent = new Intent(this, OwnersActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        builder.setContentIntent(pendingIntent);
+
+        // Show notification
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
 }

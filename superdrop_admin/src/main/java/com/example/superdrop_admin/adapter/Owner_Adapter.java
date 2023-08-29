@@ -2,10 +2,13 @@ package com.example.superdrop_admin.adapter;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,10 +26,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
- public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder> {
+public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder> {
     private List<Order> orderList;
     private Context context;
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    String userid;
     public Owner_Adapter(List<Order> OrderList, Context context) {
         this.orderList = OrderList;
         this.context = context;
@@ -38,13 +47,66 @@ import java.util.List;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.owner_item_v, parent, false);
         return new ViewHolder(view,parent);
     }
+    private class UpdateStatusTask implements Callable<Void> {
+        private final Button button;
+        private final String newStatus;
+        private final String orderId;
+
+        public UpdateStatusTask(Button button, String newStatus, String orderId) {
+            this.button = button;
+            this.newStatus = newStatus;
+            this.orderId = orderId;
+        }
+
+        @Override
+        public Void call() {
+            // Perform your database updates here
+            DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
+            DatabaseReference custOrderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userid);
+
+            orderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            snapshot.getRef().child("status").setValue(newStatus);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle database read error
+                }
+            });
+
+            custOrderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            snapshot.getRef().child("status").setValue(newStatus);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle database read error
+                }
+            });
+
+            // Similar update for custOrderDatabaseReference
+            return null;
+        }
+    }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Order order = orderList.get(position);
         holder.order = order;
         String orderId=order.getOrderId();
-        String userid=order.getUserId();
+         userid=order.getUserId();
         String currentStatus = order.getStatus();
         // Set default values to prevent NullPointerException
         holder.name.setText(order.getShippingName() != null ? order.getShippingName() : "N/A");
@@ -98,109 +160,61 @@ import java.util.List;
         }
 
         holder.cancelButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                updateButtonAppearance(holder,holder.cancelButton);
-                holder.acceptButton.setVisibility(View.GONE);
-                String newStatus;
-                newStatus = "Cancled";
-                String orderId = order.getOrderId();
-                DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
-                DatabaseReference custOrderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userid);
+                // Show progress bar
+                holder.progressBar.setVisibility(View.VISIBLE);
 
-                orderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            // Item already exists, update the quantity and total price
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().child("status").setValue(newStatus);
-                            }
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle database read error
-                    }
-                });
-                custOrderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            // Item already exists, update the quantity and total price
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().child("status").setValue(newStatus);
-                            }
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle database read error
-                    }
-                });
+                // Update status using ExecutorService and Future
+                Future<Void> future = executor.submit(new UpdateStatusTask(holder.cancelButton, "Cancled", order.getOrderId()));
 
-                // Update the button text accordingly
+                // Wait for the background task to complete
+                new Handler().postDelayed(() -> {
+                    try {
+                        future.get();
+                        holder.progressBar.setVisibility(View.GONE); // Hide progress bar
+                        // Update UI as needed
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, 2500); // Delay for the same amount as the background operation
             }
         });
 
-        // Set click listener for the "Accept" button
+// Set click listener for the "Accept" button
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                // Update order status here
+                // Show progress bar
+                holder.progressBar.setVisibility(View.VISIBLE);
+
+                // Determine new status
                 String newStatus;
                 if (order.getStatus().equals("Ordering")) {
                     newStatus = "Orderplaced";
-                } else if (order.getStatus().equals("Orderplaced")){
+                } else if (order.getStatus().equals("Orderplaced")) {
                     newStatus = "Processing";
                 } else if (order.getStatus().equals("Processing")) {
                     newStatus = "Delivering";
                 } else if (order.getStatus().equals("Delivering")) {
                     newStatus = "Delivered";
                 } else {
-                    // Do nothing if the order status is already "Delivered"
                     return;
                 }
 
-                // Update the status in Firebase database for both "orders" and "cust_orders" nodes
-                String orderId = order.getOrderId();
-                DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
-                DatabaseReference custOrderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userid);
+                // Update status using ExecutorService and Future
+                Future<Void> future = executor.submit(new UpdateStatusTask(holder.acceptButton, newStatus, order.getOrderId()));
 
-                orderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            // Item already exists, update the quantity and total price
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().child("status").setValue(newStatus);
-                            }
-                        }
+                // Wait for the background task to complete
+                new Handler().postDelayed(() -> {
+                    try {
+                        future.get();
+                        holder.progressBar.setVisibility(View.GONE); // Hide progress bar
+                        // Update UI as needed
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle database read error
-                    }
-                });
-                custOrderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            // Item already exists, update the quantity and total price
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().child("status").setValue(newStatus);
-                            }
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle database read error
-                    }
-                });
-
-                // Update the button text accordingly
+                }, 2500); // Delay for the same amount as the background operation
             }
         });
     }
@@ -212,6 +226,7 @@ import java.util.List;
     public class ViewHolder extends RecyclerView.ViewHolder{
         private RecyclerView itemRecyclerView;
         private foodItemAdapter fooditemadapter;
+        private ProgressBar progressBar;
         private TextView name,city,address,phone,payment,note,orderid,total;
         private Button acceptButton,cancelButton;
         private Order order;
@@ -228,6 +243,7 @@ import java.util.List;
             orderid=itemView.findViewById(R.id.shippingorderid);
             cancelButton=itemView.findViewById(R.id.ocancelButton);
             total=itemView.findViewById(R.id.oGrandTotal);
+            progressBar=itemView.findViewById(R.id.progressBar);
 
 
             // Set up the layout manager for the nested RecyclerView
@@ -262,4 +278,13 @@ import java.util.List;
          anim.setDuration(400); // Set the duration of the animation in milliseconds
          anim.start();
      }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//
+//        // Shut down the executor service
+//        if (executor != null && !executor.isShutdown()) {
+//            executor.shutdown();
+//        }
+
 }
