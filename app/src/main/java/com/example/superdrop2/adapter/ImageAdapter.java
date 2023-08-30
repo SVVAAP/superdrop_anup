@@ -19,6 +19,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 private Context context;
 private List<postview> mUploads;
 
+    private List<postview> mOffersList;
+
+    public ImageAdapter(List<postview> offersList) {
+        mOffersList = offersList;
+    }
 public  ImageAdapter(Context context1,List<postview> uploads){
     context=context1;
     mUploads=uploads;

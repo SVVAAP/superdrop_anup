@@ -65,8 +65,6 @@ public class HomeFragment extends Fragment {
     SliderView sliderView;
     private List<String> imageURLs = new ArrayList<>();
 
-    private MyMenuAdapter myMenuAdapter;
-
     //animatiopn in homr page
     private View rootView;
     private Animation fadeInAnimation;
@@ -84,7 +82,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView postmodle;
     ArrayList<postview> postviewlist;
-    private ImageAdapter madapter;
+    private ImageAdapter Iadapter;
     private DatabaseReference mdatabaseref;
 
 
@@ -102,32 +100,31 @@ public class HomeFragment extends Fragment {
         rootView = view;
 
 //                               ezy menu code here
+        mRecyclerView = view.findViewById(R.id.offer_recyclerview);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-
-            List<ezyMenuItem> menuItems = new ArrayList<>();
-            menuItems.add(new ezyMenuItem(R.drawable.hamburger, "Burger"));
-            menuItems.add(new ezyMenuItem(R.drawable.fries, "Fries"));
-            menuItems.add(new ezyMenuItem(R.drawable.ice_cream, "ice cream"));
-            menuItems.add(new ezyMenuItem(R.drawable.momo, "Momos"));
-            menuItems.add(new ezyMenuItem(R.drawable.noodles_1, "Noodles"));
-            menuItems.add(new ezyMenuItem(R.drawable.orange_juice, "Juice"));
-            menuItems.add(new ezyMenuItem(R.drawable.pizza_icon, "Pizza"));
-            menuItems.add(new ezyMenuItem(R.drawable.sandwich, "Sandwich"));
-            menuItems.add(new ezyMenuItem(R.drawable.soda, "Soda"));
-             // Add more menu items as needed
-        mRecyclerView = view.findViewById(R.id.ezy_menu_rv);
-            myMenuAdapter = new MyMenuAdapter(menuItems,this);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
-            mRecyclerView.setAdapter(myMenuAdapter);
-
-        myMenuAdapter.setOnItemClickListener(new MyMenuAdapter.OnItemClickListener() {
+        // Retrieve data from Firebase and populate the adapter
+        DatabaseReference offersRef = FirebaseDatabase.getInstance().getReference("Offers");
+        offersRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemClick(String item) {
-                openMenuFragmentsearch(item);
-                Toast.makeText(getActivity(), "clicked..", Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<postview> offersList = new ArrayList<>();
+                for (DataSnapshot offerSnapshot : dataSnapshot.getChildren()) {
+                    postview offer = offerSnapshot.getValue(postview.class);
+                    offersList.add(offer);
+                }
+                Iadapter = new ImageAdapter(offersList);
+                mRecyclerView.setAdapter(Iadapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle the error
             }
         });
+
+
+
 
 
 
@@ -176,8 +173,8 @@ public class HomeFragment extends Fragment {
                     postview upload=postSnapShort.getValue(postview.class);
                     postviewlist.add(upload);
                 }
-                madapter=new ImageAdapter(getActivity(),postviewlist);
-                postmodle.setAdapter(madapter);
+                Iadapter=new ImageAdapter(getActivity(),postviewlist);
+                postmodle.setAdapter(Iadapter);
             }
 
             @Override

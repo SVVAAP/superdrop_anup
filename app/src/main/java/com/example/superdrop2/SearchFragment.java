@@ -15,8 +15,10 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.superdrop2.adapter.MyMenuAdapter;
 import com.example.superdrop2.adapter.rest_Adapter;
 import com.example.superdrop2.adapter.search_menu_adapter;
+import com.example.superdrop2.methods.ezyMenuItem;
 import com.example.superdrop2.upload.Upload;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +32,7 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerview;
+    private MyMenuAdapter myMenuAdapter;
     private search_menu_adapter mAdapter;
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
@@ -38,6 +41,7 @@ public class SearchFragment extends Fragment {
     private List<Upload> mFilteredUploads; // List to hold filtered items
     private search_menu_adapter mFilteredAdapter; // Adapter for filtered items
     private SearchView mSearchView;
+    private RecyclerView mRecyclerView;
 
 
     public SearchFragment() {
@@ -47,6 +51,31 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        List<ezyMenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new ezyMenuItem(R.drawable.hamburger, "Burger"));
+        menuItems.add(new ezyMenuItem(R.drawable.fries, "Fries"));
+        menuItems.add(new ezyMenuItem(R.drawable.ice_cream, "ice cream"));
+        menuItems.add(new ezyMenuItem(R.drawable.momo, "Momos"));
+        menuItems.add(new ezyMenuItem(R.drawable.noodles_1, "Noodles"));
+        menuItems.add(new ezyMenuItem(R.drawable.orange_juice, "Juice"));
+        menuItems.add(new ezyMenuItem(R.drawable.pizza_icon, "Pizza"));
+        menuItems.add(new ezyMenuItem(R.drawable.sandwich, "Sandwich"));
+        menuItems.add(new ezyMenuItem(R.drawable.soda, "Soda"));
+        // Add more menu items as needed
+        mRecyclerView = view.findViewById(R.id.ezy_menu_rv);
+        myMenuAdapter = new MyMenuAdapter(menuItems,this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        mRecyclerView.setAdapter(myMenuAdapter);
+
+
+        myMenuAdapter.setOnItemClickListener(new MyMenuAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String item) {
+               // openMenuFragmentsearch(item);
+                Toast.makeText(getActivity(), "clicked..", Toast.LENGTH_SHORT).show();
+            }
+        });
         mUploads = new ArrayList<>();
         mFilteredUploads = new ArrayList<>();
         mSearchView = view.findViewById(R.id.searchView_m);

@@ -255,6 +255,7 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                sendOrderPlacedNotification();
                 redirectToOrderPlacedPage();
             }
         });
@@ -288,6 +289,27 @@ public class CheckoutActivity extends AppCompatActivity {
         intent.setData(uri);
         intent.setPackage("com.google.android.apps.nbu.paisa.user");
         startActivity(intent);
+    }
+    private void sendOrderPlacedNotification() {
+        // Create a notification builder
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
+                .setSmallIcon(R.drawable.appicon)
+                .setContentTitle("New Order Placed")
+                .setContentText("A new order has been placed.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        // Create an intent to open a specific activity when the notification is clicked
+        Intent intent = new Intent(this, MainActivity.class); // Change to your desired activity
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Set the intent to the notification
+        builder.setContentIntent(pendingIntent);
+
+        // Get an instance of the NotificationManager service
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // Show the notification
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
 

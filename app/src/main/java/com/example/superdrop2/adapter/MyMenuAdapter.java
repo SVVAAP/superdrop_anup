@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.superdrop2.R;
+import com.example.superdrop2.SearchFragment;
 import com.example.superdrop2.methods.ezyMenuItem;
 import com.example.superdrop2.navigation.HomeFragment;
 import com.example.superdrop2.navigation.MenuFragment;
@@ -22,7 +23,7 @@ import java.util.List;
 public class MyMenuAdapter extends RecyclerView.Adapter<MyMenuAdapter.ViewHolder> {
 
     private List<ezyMenuItem> menuItems;
-    private HomeFragment homeFragment;
+    private SearchFragment homeFragment;
     private MyMenuAdapter.OnItemClickListener listener; // Add this line
 
     public interface OnItemClickListener {
@@ -39,7 +40,7 @@ public class MyMenuAdapter extends RecyclerView.Adapter<MyMenuAdapter.ViewHolder
 
 
 
-    public MyMenuAdapter(List<ezyMenuItem> menuItems, HomeFragment homeFragment) {
+    public MyMenuAdapter(List<ezyMenuItem> menuItems, SearchFragment homeFragment) {
         this.menuItems = menuItems;
         this.homeFragment=homeFragment;
 

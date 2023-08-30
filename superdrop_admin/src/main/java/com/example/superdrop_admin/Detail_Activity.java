@@ -14,6 +14,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Detail_Activity extends AppCompatActivity {
 
@@ -31,7 +36,7 @@ public class Detail_Activity extends AppCompatActivity {
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-
+String userid= mAuth.getUid();
         phoneNumberget = getIntent().getStringExtra("phoneNumber");
 
         // Initialize views
@@ -39,6 +44,25 @@ public class Detail_Activity extends AppCompatActivity {
         phoneNumber = findViewById(R.id.phone_number);
         address = findViewById(R.id.address_text);
         signUpButton = findViewById(R.id.signup_button);
+        // Retrieve the device token
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                String ownerToken = task.getResult();
+                // Store the token in Firebase Firestore
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                String ownerId = userid; // Replace with actual owner ID
+                Map<String, Object> tokenData = new HashMap<>();
+                tokenData.put("token", ownerToken);
+
+                db.collection("tokens").document(ownerId).set(tokenData)
+                        .addOnSuccessListener(aVoid -> {
+                            // Token stored successfully
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Token Unsuccessful", Toast.LENGTH_SHORT).show();
+                        });
+            }
+        });
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
