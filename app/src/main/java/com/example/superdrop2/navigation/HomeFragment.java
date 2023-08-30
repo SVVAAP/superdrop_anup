@@ -94,41 +94,29 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         rootView=view;
-
-
-        // Initialize the rootView
-        rootView = view;
-
 //                               ezy menu code here
-        mRecyclerView = view.findViewById(R.id.offer_recyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Retrieve data from Firebase and populate the adapter
-        DatabaseReference offersRef = FirebaseDatabase.getInstance().getReference("Offers");
-        offersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<postview> offersList = new ArrayList<>();
-                for (DataSnapshot offerSnapshot : dataSnapshot.getChildren()) {
-                    postview offer = offerSnapshot.getValue(postview.class);
-                    offersList.add(offer);
-                }
-                Iadapter = new ImageAdapter(offersList);
-                mRecyclerView.setAdapter(Iadapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle the error
-            }
-        });
-
-
-
-
-
-
-
+//        mRecyclerView =view.findViewById(R.id.offer_recyclerview);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//
+//        // Retrieve data from Firebase and populate the adapter
+//        DatabaseReference offersRef = FirebaseDatabase.getInstance().getReference("Offers");
+//        offersRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                List<postview> offersList = new ArrayList<>();
+//                for (DataSnapshot offerSnapshot : dataSnapshot.getChildren()) {
+//                    postview offer = offerSnapshot.getValue(postview.class);
+//                    offersList.add(offer);
+//                }
+//                Iadapter = new ImageAdapter(offersList);
+//                mRecyclerView.setAdapter(Iadapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                // Handle the error
+//            }
+//        });
 //        mRecyclerView.setHasFixedSize(true);
 //        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mProgressCircle = view.findViewById(R.id.progress_circle);
@@ -157,95 +145,49 @@ public class HomeFragment extends Fragment {
             openMenuFragment(bowlexpressData);
         });
 
-        // Other click listeners and code
-        postmodle = view.findViewById(R.id.offer_recyclerview);
-        postviewlist = new ArrayList<>();
-        postmodle.setHasFixedSize(true);
-         postmodle.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-        postviewlist = new ArrayList<>();
-        mdatabaseref= FirebaseDatabase.getInstance().getReference("Offers");
-        mdatabaseref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapShort : snapshot.getChildren()){
-                    postview upload=postSnapShort.getValue(postview.class);
-                    postviewlist.add(upload);
-                }
-                Iadapter=new ImageAdapter(getActivity(),postviewlist);
-                postmodle.setAdapter(Iadapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // animation code here
-        // Load animations
+        // Initialize animations
         fadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         slideUpAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
 
         // Apply animations
         rootView.startAnimation(fadeInAnimation);
-        offerRecyclerView = rootView.findViewById(R.id.offer_recyclerview);
+        offerRecyclerView = view.findViewById(R.id.offer_recyclerview);
         offerRecyclerView.startAnimation(slideUpAnimation);
 
-
-
-//        //here the code for to load menu fragment
-//        // Inside HomeFragment's onCreateView() method or another relevant location
-//        FragmentManager fragmentManager = getChildFragmentManager(); // If using Fragment within a Fragment
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//
-//        MenuFragment menuFragment = new MenuFragment(); // Create an instance of your MenuFragment
-//        fragmentTransaction.replace(R.id.MenuFragmentLayout, menuFragment);
-//        fragmentTransaction.addToBackStack(null); // Optional: Add the transaction to the back stack
-//
-//        fragmentTransaction.commit();
-
-// here the code for offer gif file load
-
+        // Load the GIF image
         ImageView gifImageView = view.findViewById(R.id.gifImageView);
-        gifImageView.setImageResource(R.drawable.offergif);
-
-// Load the GIF image using a GIF-specific library like Glide
         Glide.with(this)
                 .asGif()
                 .load(R.drawable.offergif)
                 .into(gifImageView);
 
-// Optionally, set up looping by setting an AnimationListener
-        Glide.with(this)
-                .asGif()
-                .load(R.drawable.offergif)
-                .listener(new RequestListener<GifDrawable>() {
-                    @Override
-                    public boolean onLoadFailed(
-                            @Nullable GlideException e,
-                            Object model,
-                            Target<GifDrawable> target,
-                            boolean isFirstResource
-                    ) {
-                        return false;
-                    }
+        // Initialize slider view
+        sliderView = view.findViewById(R.id.slider_view);
+        fetchImageURLs();
 
-                    @Override
-                    public boolean onResourceReady(
-                            GifDrawable resource,
-                            Object model,
-                            Target<GifDrawable> target,
-                            DataSource dataSource,
-                            boolean isFirstResource
-                    ) {
-                        // Set looping here
-                        resource.setLoopCount(GifDrawable.LOOP_FOREVER);
-                        return false;
-                    }
-                })
-                .into(gifImageView);
+        // Initialize RecyclerView for offers
+        offerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        Iadapter = new ImageAdapter(new ArrayList<>());
+
+        // Retrieve data from Firebase and populate the adapter
+        mdatabaseref = FirebaseDatabase.getInstance().getReference("Offers");
+        mdatabaseref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<postview> offersList = new ArrayList<>();
+                for (DataSnapshot offerSnapshot : snapshot.getChildren()) {
+                    postview offer = offerSnapshot.getValue(postview.class);
+                    offersList.add(offer);
+                }
+                Iadapter= new ImageAdapter(offersList);
+                offerRecyclerView.setAdapter(Iadapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle the error
+            }
+        });
 
         return view;
     }
@@ -253,10 +195,6 @@ public class HomeFragment extends Fragment {
     private void openMenuFragment(String data) {
         NavActivity navActivity = (NavActivity) requireActivity();
         navActivity.loadMenuFragment(data);
-    }
-    public void openMenuFragmentsearch(String data) {
-        NavActivity navActivity = (NavActivity) requireActivity();
-        navActivity.loadMenuFragmentsearch(data);
     }
     private void fetchImageURLs() {
         // Get a reference to the "uploads" folder in Firebase Storage

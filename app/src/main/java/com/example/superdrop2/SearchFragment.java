@@ -1,5 +1,6 @@
 package com.example.superdrop2;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -94,6 +96,15 @@ public class SearchFragment extends Fragment {
         mAdapter = new search_menu_adapter(getActivity(), mUploads);
 
         mFilteredAdapter = new search_menu_adapter(getActivity(), mFilteredUploads);
+        mSearchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchView.setIconified(false);
+                mSearchView.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mSearchView, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
         
         recyclerview.setAdapter(mAdapter);
 
@@ -106,12 +117,20 @@ public class SearchFragment extends Fragment {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                // Dismiss the keyboard when query is submitted
+                mSearchView.clearFocus();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 // Filter the items based on the user's search input
+                if (newText == null || newText.isEmpty()) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    mRecyclerView.setVisibility(View.GONE);
+                }
                 filterItems(newText);
                 recyclerview.setAdapter(mFilteredAdapter);
                 return true;

@@ -49,12 +49,10 @@ String userid= mAuth.getUid();
             if (task.isSuccessful() && task.getResult() != null) {
                 String ownerToken = task.getResult();
                 // Store the token in Firebase Firestore
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
                 String ownerId = userid; // Replace with actual owner ID
-                Map<String, Object> tokenData = new HashMap<>();
-                tokenData.put("token", ownerToken);
-
-                db.collection("tokens").document(ownerId).set(tokenData)
+                DatabaseReference tokensRef = database.getReference("tokens").child(ownerId);
+                tokensRef.setValue(ownerToken)
                         .addOnSuccessListener(aVoid -> {
                             // Token stored successfully
                         })
@@ -90,7 +88,7 @@ String userid= mAuth.getUid();
             userRef.setValue(userDetails)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(Detail_Activity.this, "Details uploaded successfully!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Detail_Activity.this, Admin_Activity.class));
+                        startActivity(new Intent(Detail_Activity.this, OwnersActivity.class));
                         finish();
 
                     })

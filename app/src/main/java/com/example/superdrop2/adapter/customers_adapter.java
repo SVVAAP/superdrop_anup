@@ -51,6 +51,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         String gtotal="₹"+order.getGrandTotal();
         holder.total.setText(gtotal);
         holder.date.setText(order.getDate());
+        holder.time.setText(order.getTime());
 
         // Set initial visibility
         holder.processing.setVisibility(View.INVISIBLE);
@@ -109,7 +110,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         private ImageView processing,cooking,delivering,delivered,accepted,toogleimg;
         private ProgressBar progressBar;
         private ConstraintLayout moreinfo;
-        private TextView name,city,address,phone,payment,note,total,toggltext,date;
+        private TextView name,city,address,phone,payment,note,total,toggltext,date,time;
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
             super(itemView);
             Order order;
@@ -131,6 +132,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             toogleimg=itemView.findViewById(R.id.toogle_img);
             toggltext=itemView.findViewById(R.id.toogle_text);
             date=itemView.findViewById(R.id.cdate);
+            time=itemView.findViewById(R.id.ctime);
             // Set up layout animation for sliding down
             LayoutTransition layoutTransition = new LayoutTransition();
             layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,

@@ -21,6 +21,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.superdrop2.Cart_Activity;
 import com.example.superdrop2.MainActivity;
 import com.example.superdrop2.R;
@@ -36,11 +39,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import org.checkerframework.common.returnsreceiver.qual.This;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -153,22 +161,12 @@ public class CheckoutActivity extends AppCompatActivity {
         placeOrderButton = findViewById(R.id.place_order_button);
 
         // Create a notification channel (as shown earlier)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Channel Name";
-            String description = "Channel Description";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("channel_id", name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
 
 
         // Set up the click listener
         placeOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOrderPlacedNotification();
                 placeOrder();
 
             }
@@ -255,7 +253,19 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                sendOrderPlacedNotification();
+
+                // Get the owner's device token from your database
+                String ownerToken = "OWNER_DEVICE_TOKEN"; // Replace with actual owner's device token
+
+                // Create a data payload for the notification
+                Map<String, String> notificationData = new HashMap<>();
+                notificationData.put("title", "New Order");
+                notificationData.put("message", "A new order has been placed.");
+
+                // Send the notification to the owner using FCM
+                sendNotificationToAllOwners(notificationData);
+                Intent intent=new Intent(CheckoutActivity.this,OrderPlacedActivity.class);
+                showNotification(CheckoutActivity.this,"New Order","Order Id:"+orderID,intent);
                 redirectToOrderPlacedPage();
             }
         });
@@ -290,28 +300,87 @@ public class CheckoutActivity extends AppCompatActivity {
         intent.setPackage("com.google.android.apps.nbu.paisa.user");
         startActivity(intent);
     }
-    private void sendOrderPlacedNotification() {
-        // Create a notification builder
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
-                .setSmallIcon(R.drawable.appicon)
-                .setContentTitle("New Order Placed")
-                .setContentText("A new order has been placed.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+    public void showNotification(Context context,String title,String message,Intent intent){
+        NotificationManager notificationManager=(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        int notificationid=1;
+        String channelid ="Channel1";
+        String channelName="My Channel";
+        int importance=NotificationManager.IMPORTANCE_HIGH;
 
-        // Create an intent to open a specific activity when the notification is clicked
-        Intent intent = new Intent(this, MainActivity.class); // Change to your desired activity
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationChannel notificationChannel=new NotificationChannel(channelid,channelName,importance);
+        notificationManager.createNotificationChannel(notificationChannel);
 
-        // Set the intent to the notification
-        builder.setContentIntent(pendingIntent);
+        NotificationCompat.Builder mbuilder=new NotificationCompat.Builder(context,channelid)
+                .setSmallIcon(R.drawable.cat_2)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(true);
 
-        // Get an instance of the NotificationManager service
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        PendingIntent intent1=PendingIntent.getActivity(context,1,intent,PendingIntent.FLAG_MUTABLE);
+        mbuilder.setContentIntent(intent1);
+        notificationManager.notify(notificationid,mbuilder.build());
+    }
+    private void sendNotificationToAllOwners(Map<String, String> datan) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference tokensRef = database.getReference("tokens");
 
-        // Show the notification
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        tokensRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> tokens = new ArrayList<>();
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String token = userSnapshot.getValue(String.class);
+                    if (token != null) {
+                        tokens.add(token);
+                    }
+                }
+                // Now you have all the tokens, send notifications using FCM
+                sendNotification(tokens,datan);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+            }
+        });
     }
 
+    private void sendNotification(List<String> tokens, Map<String, String> data) {
+        for (String token : tokens) {
+            JSONObject notification = new JSONObject(data);
+
+            JSONObject body = new JSONObject();
+            try {
+                body.put("to", token);
+                body.put("data", notification);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            String FCM_API = "https://fcm.googleapis.com/fcm/send";
+            String serverKey = "YOUR_FCM_SERVER_KEY"; // Replace with your FCM server key
+            String contentType = "application/json";
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, FCM_API, body,
+                    response -> {
+                        // Notification sent successfully
+                    },
+                    error -> {
+                        // Notification sending failed
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "key=" + serverKey);
+                    headers.put("Content-Type", contentType);
+                    return headers;
+                }
+            };
+
+            // Add the request to the request queue
+            Volley.newRequestQueue(this).add(request);
+        }
+    }
 
     // Inside your CheckoutActivity.java
 

@@ -65,7 +65,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/order_id" />
 
                 <TextView
-                    android:id="@+id/ctotal"
+                    android:id="@+id/ctime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="Total :"
+                    android:text="Time :"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +126,7 @@
                 android:background="@drawable/rounded_edge"
                 android:backgroundTint="#E6E5E5"
                 android:padding="21dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView36"
@@ -541,7 +541,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
                     <TextView
-                        android:id="@+id/ctotal2"
+                        android:id="@+id/ctotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="999"
