@@ -21,6 +21,7 @@ public class MyNotification extends FirebaseMessagingService {
         Intent intent=new Intent(getApplicationContext(),OwnersActivity.class);
         showNotification(getApplicationContext(),message.getNotification().getTitle(),message.getNotification().getBody(),intent);
     }
+    
     public void showNotification(Context context,String title,String message,Intent intent){
         NotificationManager notificationManager=(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationid=1;

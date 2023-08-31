@@ -81,8 +81,8 @@ public class HomeFragment extends Fragment {
 //            R.drawable.one};
 
     RecyclerView postmodle;
-    ArrayList<postview> postviewlist;
-    private ImageAdapter Iadapter;
+    List<postview> postviewlist;
+    private ImageAdapter imageAdapter;
     private DatabaseReference mdatabaseref;
 
 
@@ -94,38 +94,12 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         rootView=view;
-//                               ezy menu code here
-//        mRecyclerView =view.findViewById(R.id.offer_recyclerview);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//
-//        // Retrieve data from Firebase and populate the adapter
-//        DatabaseReference offersRef = FirebaseDatabase.getInstance().getReference("Offers");
-//        offersRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                List<postview> offersList = new ArrayList<>();
-//                for (DataSnapshot offerSnapshot : dataSnapshot.getChildren()) {
-//                    postview offer = offerSnapshot.getValue(postview.class);
-//                    offersList.add(offer);
-//                }
-//                Iadapter = new ImageAdapter(offersList);
-//                mRecyclerView.setAdapter(Iadapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                // Handle the error
-//            }
-//        });
-//        mRecyclerView.setHasFixedSize(true);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mProgressCircle = view.findViewById(R.id.progress_circle);
+ mProgressCircle = view.findViewById(R.id.progress_circle);
         mUploads = new ArrayList<>();
-//        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
-        //slider view
+        postviewlist= new ArrayList<>();
         sliderView = view.findViewById(R.id.slider_view);
-
-        fetchImageURLs();
+        offerRecyclerView=view.findViewById(R.id.offer_recyclerview);
+        offerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         CardView cardBunontop = view.findViewById(R.id.bowlexpress_card);
         cardBunontop.setOnClickListener(v -> {
@@ -165,30 +139,8 @@ public class HomeFragment extends Fragment {
         sliderView = view.findViewById(R.id.slider_view);
         fetchImageURLs();
 
+
         // Initialize RecyclerView for offers
-        offerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        Iadapter = new ImageAdapter(new ArrayList<>());
-
-        // Retrieve data from Firebase and populate the adapter
-        mdatabaseref = FirebaseDatabase.getInstance().getReference("Offers");
-        mdatabaseref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<postview> offersList = new ArrayList<>();
-                for (DataSnapshot offerSnapshot : snapshot.getChildren()) {
-                    postview offer = offerSnapshot.getValue(postview.class);
-                    offersList.add(offer);
-                }
-                Iadapter= new ImageAdapter(offersList);
-                offerRecyclerView.setAdapter(Iadapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle the error
-            }
-        });
-
         return view;
     }
 
@@ -234,7 +186,8 @@ public class HomeFragment extends Fragment {
                                 sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
                                 sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
                                 sliderView.startAutoCycle();
-
+                                ImageAdapter imageAdapter = new ImageAdapter(getActivity(), imageURLs);
+                                offerRecyclerView.setAdapter(imageAdapter);
 
                             }
                         })

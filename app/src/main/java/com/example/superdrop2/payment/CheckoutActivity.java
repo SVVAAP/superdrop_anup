@@ -340,7 +340,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle error
+                Toast.makeText(CheckoutActivity.this, "Token error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -351,7 +351,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
             JSONObject body = new JSONObject();
             try {
-                body.put("to", token);
+                body.put("to", "cbXKK1A-T72FoYJz45enrO:APA91bGo5tiaQC9SNLNSd-96ide0EZafc3n17FPXV0cWe-VUpqB4oyuegn4_PWh5siNO07pt-z5fEfBAA5udiloidiTtmMGbm2FQGhkCErno5TgZcA6mTa8iC-XNgTnin1TOQA0JI9sQ");
                 body.put("data", notification);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -364,9 +364,10 @@ public class CheckoutActivity extends AppCompatActivity {
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, FCM_API, body,
                     response -> {
                         // Notification sent successfully
+                        Toast.makeText(CheckoutActivity.this, "Notification successfull", Toast.LENGTH_SHORT).show();
                     },
                     error -> {
-                        // Notification sending failed
+                        Toast.makeText(this, "Notification Unsuccessfull", Toast.LENGTH_SHORT).show();
                     }) {
                 @Override
                 public Map<String, String> getHeaders() {
