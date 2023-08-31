@@ -358,7 +358,7 @@ public class CheckoutActivity extends AppCompatActivity {
             }
 
             String FCM_API = "https://fcm.googleapis.com/fcm/send";
-            String serverKey = "YOUR_FCM_SERVER_KEY"; // Replace with your FCM server key
+            String serverKey = "AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL"; // Replace with your FCM server key
             String contentType = "application/json";
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, FCM_API, body,
