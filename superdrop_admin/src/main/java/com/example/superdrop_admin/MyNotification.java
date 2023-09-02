@@ -19,6 +19,11 @@ public class MyNotification extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
         Intent intent=new Intent(getApplicationContext(),OwnersActivity.class);
+        if(message.getData().size()>0) {
+            String title = message.getData().get("title");
+            String body=message.getData().get("body");
+            showNotification(getApplicationContext(),title,body,intent);
+        }
         showNotification(getApplicationContext(),message.getNotification().getTitle(),message.getNotification().getBody(),intent);
     }
     

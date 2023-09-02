@@ -1,12 +1,15 @@
 package com.example.superdrop2.payment;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +24,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.superdrop2.Cart_Activity;
@@ -50,6 +52,7 @@ import org.checkerframework.common.returnsreceiver.qual.This;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,6 +77,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 
 public class CheckoutActivity extends AppCompatActivity {
 
@@ -90,7 +99,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private StorageReference storageReference;
     double total = 0.0;
     private DatabaseReference orderDatabaseReference,corderDatabaseReference;
-    String userId;
+    String userId,orderID;
 
     private static final int NOTIFICATION_ID = 123; // Unique ID for the notification
 
@@ -206,7 +215,7 @@ public class CheckoutActivity extends AppCompatActivity {
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
     private void placeOrder() {
-        String orderID = generateOrderID();
+        orderID = generateOrderID();
         String shippingName = shippingNameEditText.getText().toString();
         String shippingAddress = shippingAddressEditText.getText().toString();
         String shippingCity = shippingCityEditText.getText().toString();
@@ -246,7 +255,7 @@ public class CheckoutActivity extends AppCompatActivity {
         corderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
             }
         });
         orderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -256,14 +265,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 // Get the owner's device token from your database
                 String ownerToken = "OWNER_DEVICE_TOKEN"; // Replace with actual owner's device token
-
-                // Create a data payload for the notification
-                Map<String, String> notificationData = new HashMap<>();
-                notificationData.put("title", "New Order");
-                notificationData.put("message", "A new order has been placed.");
-
-                // Send the notification to the owner using FCM
-                sendNotificationToAllOwners(notificationData);
+                sendNotificationToAllOwners();
                 Intent intent=new Intent(CheckoutActivity.this,OrderPlacedActivity.class);
                 showNotification(CheckoutActivity.this,"New Order","Order Id:"+orderID,intent);
                 redirectToOrderPlacedPage();
@@ -320,7 +322,7 @@ public class CheckoutActivity extends AppCompatActivity {
         mbuilder.setContentIntent(intent1);
         notificationManager.notify(notificationid,mbuilder.build());
     }
-    private void sendNotificationToAllOwners(Map<String, String> datan) {
+    private void sendNotificationToAllOwners() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference tokensRef = database.getReference("tokens");
 
@@ -332,10 +334,11 @@ public class CheckoutActivity extends AppCompatActivity {
                     String token = userSnapshot.getValue(String.class);
                     if (token != null) {
                         tokens.add(token);
+                        Log.d("Token", token);
                     }
                 }
                 // Now you have all the tokens, send notifications using FCM
-                sendNotification(tokens,datan);
+                sendNotification(tokens);
             }
 
             @Override
@@ -345,41 +348,57 @@ public class CheckoutActivity extends AppCompatActivity {
         });
     }
 
-    private void sendNotification(List<String> tokens, Map<String, String> data) {
-        for (String token : tokens) {
-            JSONObject notification = new JSONObject(data);
+    private void sendNotification(List<String> tokens) {
+        SendNotificationTask task = new SendNotificationTask(tokens);
+        new Thread(task).start();
+    }
+    private class SendNotificationTask implements Runnable {
+        private List<String> tokens;
 
-            JSONObject body = new JSONObject();
-            try {
-                body.put("to", "cbXKK1A-T72FoYJz45enrO:APA91bGo5tiaQC9SNLNSd-96ide0EZafc3n17FPXV0cWe-VUpqB4oyuegn4_PWh5siNO07pt-z5fEfBAA5udiloidiTtmMGbm2FQGhkCErno5TgZcA6mTa8iC-XNgTnin1TOQA0JI9sQ");
-                body.put("data", notification);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        public SendNotificationTask(List<String> tokens) {
+            this.tokens = tokens;
+        }
 
-            String FCM_API = "https://fcm.googleapis.com/fcm/send";
-            String serverKey = "AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL"; // Replace with your FCM server key
-            String contentType = "application/json";
+        @Override
+        public void run() {
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/json");
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, FCM_API, body,
-                    response -> {
-                        // Notification sent successfully
-                        Toast.makeText(CheckoutActivity.this, "Notification successfull", Toast.LENGTH_SHORT).show();
-                    },
-                    error -> {
-                        Toast.makeText(this, "Notification Unsuccessfull", Toast.LENGTH_SHORT).show();
-                    }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("Authorization", "key=" + serverKey);
-                    headers.put("Content-Type", contentType);
-                    return headers;
+            for (String token : tokens) {
+                JSONObject notification = new JSONObject();
+                JSONObject body = new JSONObject();
+
+                try {
+                    notification.put("title", "New Order");
+                    notification.put("body", "Order Id:" + orderID);
+                    body.put("to", token);
+                    body.put("notification", notification);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("Error", e.toString());
                 }
-            };
 
-            // Add the request to the request queue
-            Volley.newRequestQueue(this).add(request);
+                RequestBody requestBody = RequestBody.create(mediaType, body.toString());
+                Request request = new Request.Builder()
+                        .url("https://fcm.googleapis.com/fcm/send")
+                        .post(requestBody)
+                        .addHeader("Authorization", "key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL") // Replace with your server key
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        // Notification sent successfully
+                        Log.d("Notification", "Notification sent successfully");
+                    } else {
+                        // Notification sending failed
+                        Log.d("Notification", "Notification sending failed");
+                    }
+                } catch (IOException e) {
+                    Log.d("error", e.toString());
+                }
+            }
         }
     }
 
