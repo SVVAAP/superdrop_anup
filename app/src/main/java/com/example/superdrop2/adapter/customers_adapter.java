@@ -76,7 +76,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             holder.cooking.setVisibility(View.INVISIBLE);
             holder.delivering.setVisibility(View.INVISIBLE);
             holder.delivered.setVisibility(View.INVISIBLE);
-        } else if (currentStatus.equals("Processing")) {
+        } else if (currentStatus.equals("Cooking")) {
             holder.progressBar.setProgress(50);
             holder.processing.setVisibility(View.VISIBLE);
             holder.accepted.setVisibility(View.VISIBLE);

@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Detail_Activity extends AppCompatActivity {
 
@@ -23,7 +24,7 @@ public class Detail_Activity extends AppCompatActivity {
     // Firebase references
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
-    private String phoneNumberget;
+    private String phoneNumberget,Token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,14 @@ public class Detail_Activity extends AppCompatActivity {
         phoneNumber = findViewById(R.id.phone_number);
         address = findViewById(R.id.address_text);
         signUpButton = findViewById(R.id.signup_button);
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                String iToken = task.getResult();
+                // Store the token in Firebase Firestore
+                Token=iToken;
+
+            }
+        });
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +70,7 @@ public class Detail_Activity extends AppCompatActivity {
             DatabaseReference userRef = mDatabase.getReference("users").child(userId);
 
             // Create a User object and set the details
-            User userDetails = new User(name,phoneNumberget, phone_optnl, userAddress);
+            User userDetails = new User(name,phoneNumberget, phone_optnl, userAddress,Token);
 
             // Push the user details to the database
             userRef.setValue(userDetails)

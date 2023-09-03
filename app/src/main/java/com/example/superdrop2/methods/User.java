@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User {
-    private String fullName;
+    private String fullName,Token;
     private String phone;
     private String streetAddress;
     private String city;
@@ -26,11 +26,19 @@ public class User {
         this.profileImageUrl=imageurl;
 
     }
-    public User(String fullName, String phoneNumber,String phoneNumberoptl, String address) {
+    public User(String fullName, String phoneNumber,String phoneNumberoptl, String address,String Token) {
         this.fullName = fullName;
         this.phone=phoneNumber;
         this.emergencyContact = phoneNumberoptl;
         this.streetAddress = address;
+        this.Token = Token;
+    }
+    public String getToken() {
+        return Token;
+    }
+
+    public void setToken(String Token) {
+        this.Token = Token;
     }
     public String getFullName() {
         return fullName;

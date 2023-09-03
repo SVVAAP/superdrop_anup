@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -31,11 +36,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder> {
     private List<Order> orderList;
     private Context context;
+    private String orderID,cToken;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
-    String userid;
+    private String userid;
     public Owner_Adapter(List<Order> OrderList, Context context) {
         this.orderList = OrderList;
         this.context = context;
@@ -94,9 +106,10 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
                 public void onCancelled(@NonNull DatabaseError error) {
                     // Handle database read error
                 }
-            });
 
-            // Similar update for custOrderDatabaseReference
+            });
+            sendNotification(cToken,newStatus);
+
             return null;
         }
     }
@@ -136,7 +149,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         } else if (currentStatus.equals("Orderplaced")) {
             holder.acceptButton.setText("Order Processing");
             holder.cancelButton.setVisibility(View.GONE);
-        } else if (currentStatus.equals("Processing")) {
+        } else if (currentStatus.equals("Cooking")) {
             holder.acceptButton.setText("Order Delivering");
             holder.cancelButton.setVisibility(View.GONE);
         } else if (currentStatus.equals("Delivering")) {
@@ -193,8 +206,8 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
                 if (order.getStatus().equals("Ordering")) {
                     newStatus = "Orderplaced";
                 } else if (order.getStatus().equals("Orderplaced")) {
-                    newStatus = "Processing";
-                } else if (order.getStatus().equals("Processing")) {
+                    newStatus = "Cooking";
+                } else if (order.getStatus().equals("Cooking")) {
                     newStatus = "Delivering";
                 } else if (order.getStatus().equals("Delivering")) {
                     newStatus = "Delivered";
@@ -260,10 +273,10 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
     }
      private void updateButtonAppearance(ViewHolder holder,Button abutton) {
          // Set the width of the accept button to match the parent's width
-         animateButtonWidthChange(holder.acceptButton, holder.acceptButton.getWidth(),
+         animateButtonWidthChange(abutton, abutton.getWidth(),
                  holder.itemView.getWidth());
          int orangeColor = ContextCompat.getColor(context, android.R.color.holo_orange_dark);
-         holder.acceptButton.setBackgroundColor(orangeColor);
+         abutton.setBackgroundColor(orangeColor);
 
      }
      private void animateButtonWidthChange(Button button, int startWidth, int endWidth) {
@@ -286,5 +299,83 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
 //        if (executor != null && !executor.isShutdown()) {
 //            executor.shutdown();
 //        }
+private void sendNotification(String tokens,String status) {
+//    SendNotificationTask task = new SendNotificationTask(tokens,status);
+//    new Thread(task).start();
+//}
+//    private class SendNotificationTask implements Runnable {
+//        private String tokens;
+//        private String status;
+//
+//        public SendNotificationTask(String tokens,String status) {
+//            this.tokens = tokens;
+//            this.status =status;
+//        }
+//
+//        @Override
+//        public void run() {
+//            OkHttpClient client = new OkHttpClient();
+//            MediaType mediaType = MediaType.parse("application/json");
+//
+//                JSONObject notification = new JSONObject();
+//                JSONObject body = new JSONObject();
+//
+//                try {
+//                    notification.put("title", "Your Order:" + orderID);
+//                    notification.put("body", "Your order is being "+status);
+//                    body.put("to", tokens);
+//                    body.put("notification", notification);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    Log.d("Error", e.toString());
+//                }
+//
+//                RequestBody requestBody = RequestBody.create(mediaType, body.toString());
+//                Request request = new Request.Builder()
+//                        .url("https://fcm.googleapis.com/fcm/send")
+//                        .post(requestBody)
+//                        .addHeader("Authorization", "key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL") // Replace with your server key
+//                        .addHeader("Content-Type", "application/json")
+//                        .build();
+//
+//                try {
+//                    Response response = client.newCall(request).execute();
+//                    if (response.isSuccessful()) {
+//                        // Notification sent successfully
+//                        Log.d("Notification", "Notification sent successfully");
+//                    } else {
+//                        // Notification sending failed
+//                        Log.d("Notification", "Notification sending failed");
+//                    }
+//                } catch (IOException e) {
+//                    Log.d("error", e.toString());
+//                }
+//            }
+//
+//    }
+    OkHttpClient client=new OkHttpClient();
+    MediaType mediaType=MediaType.parse("application/json");
+        JSONObject notification = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            notification.put("title", "Your Order:" + orderID);
+                    notification.put("body", "Your order is being "+status);
+                   body.put("to","cTNSg2ftTKSITeg-1bB3nc:APA91bEGkyDqkLJcvqShJb_M0WYqJJYv6vkiciT_G72p8q1JCqZapZSH3_mpsOyu6nhhQAJjTeTtz3i3pt3N8ohrwlIxs5S1oecl-fdpykv0yyN_ed1GCSxo_sXoMx5wp6DspkyV-U7v");
+                   body.put("notification", notification);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d("Error",e.toString());
+        }
+        RequestBody requestBody=RequestBody.create(mediaType,body.toString());
+        okhttp3.Request request=new Request.Builder().url("https://fcm.googleapis.com/fcm/send")
+                .post(requestBody)
+                .addHeader("Authorization","key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL")
+                .addHeader("Content-Type","application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+        }catch (IOException e){
+            Log.d("error",e.toString());
+        }
+    }
 
 }

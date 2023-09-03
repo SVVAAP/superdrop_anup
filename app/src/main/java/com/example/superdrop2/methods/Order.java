@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    private String shippingName;
+    private String shippingName,Token;
     private String shippingAddress;
     private String shippingCity;
     private String contactInstructions;
@@ -37,6 +37,13 @@ public class Order {
         this.grandtotal=grandtotal;
         this.items = new ArrayList<>(); // Initialize the items list
         // No need to add a dummy item her
+    }
+    public String getToken() {
+        return Token;
+    }
+
+    public void setToken(String Token) {
+        this.Token = Token;
     }
     public String getDate() {
         return date;

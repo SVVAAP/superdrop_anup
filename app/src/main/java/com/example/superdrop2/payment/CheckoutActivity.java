@@ -99,7 +99,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private StorageReference storageReference;
     double total = 0.0;
     private DatabaseReference orderDatabaseReference,corderDatabaseReference;
-    String userId,orderID;
+    String userId,orderID,cToken;
 
     private static final int NOTIFICATION_ID = 123; // Unique ID for the notification
 
@@ -141,6 +141,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     contactInstructionsEditText.setText(user.getPhone());
                     shippingAddressEditText.setText(user.getStreetAddress());
                     shippingCityEditText.setText(user.getCity());
+                    cToken=user.getToken();
                 }
             }
 
@@ -251,6 +252,7 @@ public class CheckoutActivity extends AppCompatActivity {
         order.setUserId(userId);
         order.setDate(currentDate); // Set the current date
         order.setTime(currentTime); // Set the current time
+        order.setToken(cToken);
 
         corderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
