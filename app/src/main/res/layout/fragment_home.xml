@@ -38,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
                 android:background="@drawable/circle_background"
                 android:backgroundTint="#F6F6F6">
 
@@ -60,6 +61,7 @@
                     android:gravity="top"
                     android:text="Offer Zone"
                     android:textColor="#000000"
+                    android:textFontWeight="1"
                     android:textSize="24sp"
                     android:textStyle="bold|italic"
                     app:layout_constraintBottom_toBottomOf="parent"
