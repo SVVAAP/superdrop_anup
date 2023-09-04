@@ -23,7 +23,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="700dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,20 +50,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <ImageView
+         <ImageView
             android:id="@+id/sheet_img"
             android:layout_width="400dp"
-            android:layout_height="400dp"
-            app:shapeAppearance="@style/Imagestyle_round_corners"
-            android:foregroundGravity="clip_horizontal|center"
+            android:layout_height="200dp"
             android:layout_margin="20dp"
+            android:foregroundGravity="clip_horizontal|center"
             android:src="@drawable/badge_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.541"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.206" />
+            app:layout_constraintVertical_bias="0.206"
+            app:shapeAppearance="@style/Imagestyle_round_corners" />
 
         <TextView
             android:id="@+id/sheet_name"
@@ -177,7 +177,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="28dp"
+            android:layout_marginEnd="36dp"
             android:fontFamily="@font/calibri"
             android:text="TextView"
             android:textAlignment="center"
@@ -187,7 +187,8 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/sheet_order_bt"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sheet_quantity" />
+            app:layout_constraintTop_toBottomOf="@+id/sheet_quantity"
+            app:layout_constraintVertical_bias="0.108" />
 
         <TextView
             android:id="@+id/textView14"
@@ -203,7 +204,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sheet_name"
-            app:layout_constraintVertical_bias="0.196" />
+            app:layout_constraintVertical_bias="0.16" />
 
         <TextView
             android:id="@+id/textView15"
@@ -216,21 +217,19 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/sheet_addtocart_bt"
             app:layout_constraintEnd_toStartOf="@+id/sheet_totalprice"
-            app:layout_constraintHorizontal_bias="0.085"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView14"
-            app:layout_constraintVertical_bias="0.711" />
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
         android:id="@+id/progressbar_bottom"
         style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/progress_bg"
-        android:padding="200dp"
-        android:visibility="invisible"
+        android:layout_width="72dp"
+        android:layout_height="77dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

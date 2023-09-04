@@ -108,7 +108,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
                 }
 
             });
-            sendNotification(cToken,newStatus);
+
 
             return null;
         }
@@ -133,6 +133,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         holder.orderid.setText(orderId);
         String gtotal="₹"+order.getGrandTotal();
         holder.total.setText(gtotal);
+        cToken=order.getToken();
 
         if (currentStatus != null && currentStatus.equals("Ordering"))  {
             holder.acceptButton.setText("Accept");
@@ -165,9 +166,17 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             holder.acceptButton.setEnabled(false);
         } else if (currentStatus.equals("Cancled")) {
             holder.cancelButton.setText("Cancled");
-            updateButtonAppearance(holder,holder.cancelButton);
             int orangeColor = ContextCompat.getColor(context, android.R.color.holo_red_dark);
             holder.cancelButton.setBackgroundColor(orangeColor);
+            ValueAnimator anim = ValueAnimator.ofInt(holder.cancelButton.getWidth(), holder.itemView.getWidth());
+            anim.addUpdateListener(valueAnimator -> {
+                int animatedValue = (int) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = holder.cancelButton.getLayoutParams();
+                layoutParams.width = animatedValue;
+                holder.cancelButton.setLayoutParams(layoutParams);
+            });
+            anim.setDuration(400); // Set the duration of the animation in milliseconds
+            anim.start();
             holder.cancelButton.setClickable(false);
             holder.cancelButton.setEnabled(false);
         }
@@ -177,15 +186,16 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             public void onClick(View view) {
                 // Show progress bar
                 holder.progressBar.setVisibility(View.VISIBLE);
-
+                holder.cancelButton.setEnabled(false);
                 // Update status using ExecutorService and Future
                 Future<Void> future = executor.submit(new UpdateStatusTask(holder.cancelButton, "Cancled", order.getOrderId()));
-
+                sendNotification(cToken,"Cancled",orderId);
                 // Wait for the background task to complete
                 new Handler().postDelayed(() -> {
                     try {
                         future.get();
                         holder.progressBar.setVisibility(View.GONE); // Hide progress bar
+                        holder.cancelButton.setEnabled(true);
                         // Update UI as needed
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -200,6 +210,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             public void onClick(View view) {
                 // Show progress bar
                 holder.progressBar.setVisibility(View.VISIBLE);
+                holder.acceptButton.setEnabled(false);
 
                 // Determine new status
                 String newStatus;
@@ -217,12 +228,13 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
 
                 // Update status using ExecutorService and Future
                 Future<Void> future = executor.submit(new UpdateStatusTask(holder.acceptButton, newStatus, order.getOrderId()));
-
+                sendNotification(cToken,newStatus,orderId);
                 // Wait for the background task to complete
                 new Handler().postDelayed(() -> {
                     try {
                         future.get();
                         holder.progressBar.setVisibility(View.GONE); // Hide progress bar
+                        holder.acceptButton.setEnabled(true);
                         // Update UI as needed
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -299,83 +311,84 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
 //        if (executor != null && !executor.isShutdown()) {
 //            executor.shutdown();
 //        }
-private void sendNotification(String tokens,String status) {
-//    SendNotificationTask task = new SendNotificationTask(tokens,status);
-//    new Thread(task).start();
-//}
-//    private class SendNotificationTask implements Runnable {
-//        private String tokens;
-//        private String status;
-//
-//        public SendNotificationTask(String tokens,String status) {
-//            this.tokens = tokens;
-//            this.status =status;
-//        }
-//
-//        @Override
-//        public void run() {
-//            OkHttpClient client = new OkHttpClient();
-//            MediaType mediaType = MediaType.parse("application/json");
-//
-//                JSONObject notification = new JSONObject();
-//                JSONObject body = new JSONObject();
-//
-//                try {
-//                    notification.put("title", "Your Order:" + orderID);
-//                    notification.put("body", "Your order is being "+status);
-//                    body.put("to", tokens);
-//                    body.put("notification", notification);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    Log.d("Error", e.toString());
-//                }
-//
-//                RequestBody requestBody = RequestBody.create(mediaType, body.toString());
-//                Request request = new Request.Builder()
-//                        .url("https://fcm.googleapis.com/fcm/send")
-//                        .post(requestBody)
-//                        .addHeader("Authorization", "key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL") // Replace with your server key
-//                        .addHeader("Content-Type", "application/json")
-//                        .build();
-//
-//                try {
-//                    Response response = client.newCall(request).execute();
-//                    if (response.isSuccessful()) {
-//                        // Notification sent successfully
-//                        Log.d("Notification", "Notification sent successfully");
-//                    } else {
-//                        // Notification sending failed
-//                        Log.d("Notification", "Notification sending failed");
-//                    }
-//                } catch (IOException e) {
-//                    Log.d("error", e.toString());
-//                }
-//            }
-//
-//    }
-    OkHttpClient client=new OkHttpClient();
-    MediaType mediaType=MediaType.parse("application/json");
-        JSONObject notification = new JSONObject();
-        JSONObject body = new JSONObject();
-        try {
-            notification.put("title", "Your Order:" + orderID);
+private void sendNotification(String tokens,String status,String id) {
+    SendNotificationTask task = new SendNotificationTask(tokens,status,id);
+    new Thread(task).start();
+}
+    private class SendNotificationTask implements Runnable {
+        private String tokens;
+        private String status;
+        private String id;
+        public SendNotificationTask(String tokens,String status,String id) {
+            this.tokens = tokens;
+            this.status =status;
+            this.id =id;
+        }
+
+        @Override
+        public void run() {
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/json");
+
+                JSONObject notification = new JSONObject();
+                JSONObject body = new JSONObject();
+
+                try {
+                    notification.put("title", "Your Order:" + id);
                     notification.put("body", "Your order is being "+status);
-                   body.put("to","cTNSg2ftTKSITeg-1bB3nc:APA91bEGkyDqkLJcvqShJb_M0WYqJJYv6vkiciT_G72p8q1JCqZapZSH3_mpsOyu6nhhQAJjTeTtz3i3pt3N8ohrwlIxs5S1oecl-fdpykv0yyN_ed1GCSxo_sXoMx5wp6DspkyV-U7v");
-                   body.put("notification", notification);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d("Error",e.toString());
-        }
-        RequestBody requestBody=RequestBody.create(mediaType,body.toString());
-        okhttp3.Request request=new Request.Builder().url("https://fcm.googleapis.com/fcm/send")
-                .post(requestBody)
-                .addHeader("Authorization","key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL")
-                .addHeader("Content-Type","application/json").build();
-        try {
-            Response response = client.newCall(request).execute();
-        }catch (IOException e){
-            Log.d("error",e.toString());
-        }
+                    body.put("to", tokens);
+                    body.put("notification", notification);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("Error", e.toString());
+                }
+
+                RequestBody requestBody = RequestBody.create(mediaType, body.toString());
+                Request request = new Request.Builder()
+                        .url("https://fcm.googleapis.com/fcm/send")
+                        .post(requestBody)
+                        .addHeader("Authorization", "key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL") // Replace with your server key
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        // Notification sent successfully
+                        Log.d("Notification", "Notification sent successfully");
+                    } else {
+                        // Notification sending failed
+                        Log.d("Notification", "Notification sending failed");
+                    }
+                } catch (IOException e) {
+                    Log.d("error", e.toString());
+                }
+            }
+
     }
+//    OkHttpClient client=new OkHttpClient();
+//    MediaType mediaType=MediaType.parse("application/json");
+//        JSONObject notification = new JSONObject();
+//        JSONObject body = new JSONObject();
+//        try {
+//            notification.put("title", "Your Order:" + orderID);
+//                    notification.put("body", "Your order is being "+status);
+//                   body.put("to",token);
+//                   body.put("notification", notification);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Log.d("Error",e.toString());
+//        }
+//        RequestBody requestBody=RequestBody.create(mediaType,body.toString());
+//        okhttp3.Request request=new Request.Builder().url("https://fcm.googleapis.com/fcm/send")
+//                .post(requestBody)
+//                .addHeader("Authorization","key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL")
+//                .addHeader("Content-Type","application/json").build();
+//        try {
+//            Response response = client.newCall(request).execute();
+//        }catch (IOException e){
+//            Log.d("error",e.toString());
+//        }
+//    }
 
 }
