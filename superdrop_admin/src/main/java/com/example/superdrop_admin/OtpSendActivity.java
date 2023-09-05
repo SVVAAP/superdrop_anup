@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class OtpSendActivity extends AppCompatActivity {
 
     private EditText etPhone;
-    private Button btnSend;
+    private Button btnSend,btSkip;
     private ProgressBar progressBar;
     private CountryCodePicker countryCodePicker;
     private FirebaseAuth mAuth;
@@ -54,17 +54,18 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         progressBar = findViewById(R.id.progressBar);
         countryCodePicker = findViewById(R.id.ccp);
-        webView = findViewById(R.id.webView);
+        btSkip = findViewById(R.id.skip_bt);
+
         mAuth = FirebaseAuth.getInstance();
 
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                // Intercept the URL and load it in the WebView
-                view.loadUrl(request.getUrl().toString());
-                return true;
-            }
-        });
+//        webView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//                // Intercept the URL and load it in the WebView
+//                view.loadUrl(request.getUrl().toString());
+//                return true;
+//            }
+//        });
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +75,15 @@ public class OtpSendActivity extends AppCompatActivity {
                 String fullPhoneNumber = "+" + countryCode + phoneNumber;
 
                 sendOTP(fullPhoneNumber);
+            }
+        });
+        btSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(OtpSendActivity.this, OwnersActivity.class);
+                startActivity(intent);
+                finish(); // Close the current activity after logout
             }
         });
     }

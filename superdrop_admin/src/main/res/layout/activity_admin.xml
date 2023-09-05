@@ -121,4 +121,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_rest" />
 
+    <Button
+        android:id="@+id/new_o"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:padding="10dp"
+        android:text="new_owner"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/owners_bt" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
