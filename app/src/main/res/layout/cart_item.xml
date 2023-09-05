@@ -9,20 +9,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/rest_img"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:background="@drawable/rounded_edge"
+            android:clipToOutline="true"
             android:contentDescription="Restaurant Image"
             android:src="@drawable/logo"
             app:circularflow_radiusInDP="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:clipToOutline="true"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/cartItemName"
@@ -41,42 +41,64 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/cartItemQuantity"
+            android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="5dp"
             android:padding="2dp"
-            android:text="Qty"
+            android:text="Qty :"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/cartItemPrice"
             app:layout_constraintEnd_toStartOf="@+id/cart_total_price"
             app:layout_constraintHorizontal_bias="0.07"
             app:layout_constraintStart_toEndOf="@+id/rest_img"
             app:layout_constraintTop_toBottomOf="@+id/cartItemName" />
 
         <TextView
+            android:id="@+id/cartItemQuantity2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:padding="2dp"
+            android:text="Qty"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/textView19"
+            app:layout_constraintStart_toEndOf="@+id/textView19"
+            app:layout_constraintTop_toTopOf="@+id/textView19" />
+
+        <TextView
             android:id="@+id/cartItemPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginStart="10dp"
             android:padding="2dp"
             android:text="Price"
             android:textColor="@color/dark_orange"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/cart_total_price"
-            app:layout_constraintHorizontal_bias="0.075"
-            app:layout_constraintStart_toEndOf="@+id/rest_img"
-            app:layout_constraintTop_toBottomOf="@+id/cartItemQuantity" />
+            app:layout_constraintBottom_toBottomOf="@+id/textView40"
+            app:layout_constraintStart_toEndOf="@+id/textView40"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+        <TextView
+            android:id="@+id/textView40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Price :"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView19"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
         <TextView
             android:id="@+id/cart_total_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:text="Total"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
