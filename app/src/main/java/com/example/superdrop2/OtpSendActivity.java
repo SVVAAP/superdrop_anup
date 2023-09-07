@@ -18,6 +18,7 @@ import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
 
 import com.example.superdrop2.navigation.NavActivity;
+import com.example.superdrop2.payment.OwnersActivity;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -30,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class OtpSendActivity extends AppCompatActivity {
 
     private EditText etPhone;
-    private Button btnSend;
+    private Button btnSend,btskip;
     private ProgressBar progressBar;
     private CountryCodePicker countryCodePicker;
     private FirebaseAuth mAuth;
@@ -57,17 +58,9 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         progressBar = findViewById(R.id.progressBar);
         countryCodePicker = findViewById(R.id.ccp);
-        webView = findViewById(R.id.webView);
+        btskip=findViewById(R.id.skip_bt);
         mAuth = FirebaseAuth.getInstance();
 
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                // Intercept the URL and load it in the WebView
-                view.loadUrl(request.getUrl().toString());
-                return true;
-            }
-        });
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +70,13 @@ public class OtpSendActivity extends AppCompatActivity {
                 String fullPhoneNumber = "+" + countryCode + phoneNumber;
 
                 sendOTP(fullPhoneNumber);
+            }
+        });
+       btskip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OtpSendActivity.this, OwnersActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Admin_Activity extends AppCompatActivity {
-    Button add_rest,add_offer,add_bunontop,add_streetwok,add_bowlexpres,orders,owner_n;
+    Button add_rest,add_offer,add_bunontop,add_streetwok,add_bowlexpres,orders,tab;
     ImageView logout;
 
     @Override
@@ -25,7 +25,7 @@ public class Admin_Activity extends AppCompatActivity {
         add_streetwok=findViewById(R.id.streetwok_add);
         add_bowlexpres=findViewById(R.id.bowlexpress_add);
         orders=findViewById(R.id.owners_bt);
-        owner_n=findViewById(R.id.new_o);
+        tab=findViewById(R.id.tab_bt);
 
         add_rest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +70,13 @@ public class Admin_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        tab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Admin_Activity.this, OwnersTabActivity.class);
+                startActivity(intent);
+            }
+        });
 
        //logout
         // Initialize the logout button
@@ -80,15 +87,6 @@ public class Admin_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(Admin_Activity.this, OtpSendActivity.class);
-                startActivity(intent);
-                finish(); // Close the current activity after logout
-            }
-        });
-       owner_n.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(Admin_Activity.this, OwnersActivity2.class);
                 startActivity(intent);
                 finish(); // Close the current activity after logout
             }
