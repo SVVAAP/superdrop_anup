@@ -117,6 +117,16 @@
 
             <!-- Feedback or Rating Section -->
             <!-- Feedback/Rating -->
+            <TextView
+                android:id="@+id/textView41"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Rate The Service"
+                android:textSize="16sp"
+                android:textStyle="bold|italic" />
+
             <RatingBar
                 android:id="@+id/rating_bar"
                 android:layout_width="wrap_content"
@@ -165,8 +175,10 @@
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="left"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/circle_background"
+                android:gravity="center|left"
                 android:text="Track Your Order" />
 
 
