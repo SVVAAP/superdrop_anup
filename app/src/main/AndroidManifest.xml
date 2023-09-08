@@ -22,9 +22,7 @@
         <activity
             android:name=".Track_Order_Activity"
             android:exported="false" />
-        <activity
-            android:name=".payment.OwnersActivity"
-            android:exported="false" />
+
         <activity
             android:name=".DeleteActivity"
             android:exported="false" />

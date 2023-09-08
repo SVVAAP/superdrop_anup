@@ -24,25 +24,36 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:padding="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <SearchView
+            android:id="@+id/menu_searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="4dp"
-            android:layout_marginBottom="5dp"
             android:background="@drawable/circle_background"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ezy_menu_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contextClickable="true"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menu_searchView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
@@ -60,15 +71,15 @@
     </FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/constraintLayout_rest"
         android:layout_width="match_parent"
         android:layout_height="050dp"
-        android:layout_marginTop="72dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/bunontop_card"
@@ -76,10 +87,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="clip_horizontal|center|left"
             android:layout_margin="5dp"
-            android:background="@color/white"
             android:layout_marginStart="5dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
+            android:background="@color/white"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/streetwok_card"
@@ -124,8 +135,8 @@
             android:layout_margin="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:clickable="true"
             android:background="@color/white"
+            android:clickable="true"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -173,8 +184,8 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:clickable="true"
             android:background="@color/white"
+            android:clickable="true"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -223,6 +234,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_rest" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

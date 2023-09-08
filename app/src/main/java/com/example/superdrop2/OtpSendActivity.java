@@ -6,19 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import androidx.webkit.WebViewClientCompat;
-import androidx.webkit.WebViewCompat;
-import androidx.webkit.WebViewFeature;
 
 import com.example.superdrop2.navigation.NavActivity;
-import com.example.superdrop2.payment.OwnersActivity;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -72,13 +67,7 @@ public class OtpSendActivity extends AppCompatActivity {
                 sendOTP(fullPhoneNumber);
             }
         });
-       btskip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(OtpSendActivity.this, OwnersActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
 
     private void sendOTP(String phoneNumber) {

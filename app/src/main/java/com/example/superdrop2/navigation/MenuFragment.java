@@ -3,6 +3,7 @@ package com.example.superdrop2.navigation;
 import static androidx.core.view.ViewGroupKt.setMargins;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,11 +21,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +35,10 @@ import com.example.superdrop2.BottomSheet;
 import com.example.superdrop2.R;
 import com.example.superdrop2.SearchActivity;
 import com.example.superdrop2.SearchFragment;
+import com.example.superdrop2.adapter.MyMenuAdapter;
 import com.example.superdrop2.adapter.rest_Adapter;
+import com.example.superdrop2.adapter.search_menu_adapter;
+import com.example.superdrop2.methods.ezyMenuItem;
 import com.example.superdrop2.upload.Upload;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
@@ -48,17 +54,21 @@ import java.util.List;
 
 public class MenuFragment extends Fragment {
     private String data1 = "bunontop"; //default data
-    private RecyclerView recyclerview;
+    private RecyclerView recyclerview,mRecyclerView;
+    private MyMenuAdapter myMenuAdapter;
     private rest_Adapter mAdapter;
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
-    private List<Upload> mUploads;
+    private List<Upload> mUploads,mUploads2,mFilteredUploads; // List to hold filtered items
+    private search_menu_adapter mFilteredAdapter,mAdapter2; ;
     private Button  button_search;
     private CardView card_bunontop, card_streetwok, card_bowlexpress;
     private FrameLayout container_search;
     private Boolean isEditMode=false;
     ImageView imageView;
+    private SearchView mSearchView;
     private LinearLayout selectedLinearLayout = null;
+    ConstraintLayout menuconstraint;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -69,26 +79,69 @@ public class MenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
         mUploads = new ArrayList<>();
-
+        mUploads2 = new ArrayList<>();
+        mFilteredUploads = new ArrayList<>();
         // Retrieve the data passed from HomeFragment
         Bundle args = getArguments();
         if (args != null) {
             data1 = args.getString("data", "bunontop");
         }
         item_view(data1);
+        List<ezyMenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new ezyMenuItem(R.drawable.hamburger, "Burger"));
+        menuItems.add(new ezyMenuItem(R.drawable.fries, "Fries"));
+        menuItems.add(new ezyMenuItem(R.drawable.ice_cream, "ice cream"));
+        menuItems.add(new ezyMenuItem(R.drawable.momo, "Momos"));
+        menuItems.add(new ezyMenuItem(R.drawable.noodles_1, "Noodles"));
+        menuItems.add(new ezyMenuItem(R.drawable.orange_juice, "Juice"));
+        menuItems.add(new ezyMenuItem(R.drawable.pizza_icon, "Pizza"));
+        menuItems.add(new ezyMenuItem(R.drawable.sandwich, "Sandwich"));
+        menuItems.add(new ezyMenuItem(R.drawable.soda, "Soda"));
+        // Add more menu items as needed
+        mRecyclerView = view.findViewById(R.id.ezy_menu_rv);
+        myMenuAdapter = new MyMenuAdapter(menuItems,this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        mRecyclerView.setAdapter(myMenuAdapter);
 
 
         card_bunontop = view.findViewById(R.id.bunontop_card);
         card_streetwok = view.findViewById(R.id.streetwok_card);
         card_bowlexpress = view.findViewById(R.id.bowlexpress_card);
-        button_search = view.findViewById(R.id.button2);
         container_search=view.findViewById(R.id.search_container);
-        imageView =view.findViewById(R.id.imageView7);
-        handleCardViewSelection(data1);
-
+        mSearchView = view.findViewById(R.id.menu_searchView);
+        menuconstraint=view.findViewById(R.id.constraintLayout_rest);
         recyclerview = view.findViewById(R.id.fooditems_rv);
         recyclerview.setHasFixedSize(true);
-        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));  
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        item_view_search();
+        mAdapter2=new search_menu_adapter(getContext(),mUploads2);
+        mFilteredAdapter=new search_menu_adapter(getContext(),mFilteredUploads);
+        recyclerview.setAdapter(mAdapter);
+        mSearchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchView.setIconified(false);
+                mSearchView.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mSearchView, InputMethodManager.SHOW_IMPLICIT);
+                menuconstraint.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                // Set the adapter to show all menu items when the search view is clicked
+                recyclerview.setAdapter(mAdapter2);
+            }
+        });
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                // Restore the default menu and make the constraint visible again
+                menuconstraint.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+                recyclerview.setAdapter(mAdapter);
+                return false;
+            }
+        });
+
+        handleCardViewSelection(data1);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         SearchFragment searchFragment = new SearchFragment();
@@ -122,46 +175,6 @@ public class MenuFragment extends Fragment {
                 handleCardViewSelection(name);
             }
         });
-        button_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isEditMode) {
-                    show(true);
-                    button_search.setText("Search");
-                    ViewGroup.LayoutParams params = button_search.getLayoutParams();
-                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                    button_search.setLayoutParams(params);
-                    // Align the button to the center
-                    ConstraintSet constraintSet = new ConstraintSet();
-                    constraintSet.clone((ConstraintLayout) view.getParent());
-                    constraintSet.centerHorizontally(R.id.button2, ConstraintSet.PARENT_ID);
-                    constraintSet.applyTo((ConstraintLayout) view.getParent());
-                    button_search.animate()
-                            .translationXBy(0) // Shift to right side
-                            .setDuration(300) // Animation duration in milliseconds
-                            .start();
-                    imageView.setVisibility(View.VISIBLE);
-                    isEditMode = false;
-                } else {
-                    show(false);
-                    isEditMode = true;
-                    ViewGroup.LayoutParams params = button_search.getLayoutParams();
-                    params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    button_search.setLayoutParams(params);
-                    button_search.setText("X");
-                    ConstraintSet constraintSet = new ConstraintSet();
-                    constraintSet.clone((ConstraintLayout) view.getParent());
-                    constraintSet.connect(R.id.button2, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-                    constraintSet.clear(R.id.button2, ConstraintSet.START);
-                    constraintSet.applyTo((ConstraintLayout) view.getParent());
-                    getActivity().overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
-                    imageView.setVisibility(View.GONE);
-                }
-
-            }
-        });
-
-
         mAdapter = new rest_Adapter(getActivity(), mUploads);
         recyclerview.setAdapter(mAdapter);
 
@@ -169,6 +182,40 @@ public class MenuFragment extends Fragment {
             @Override
             public void onItemClick(Upload item) {
                 showBottomSheetForItem(item);
+            }
+        });
+        mFilteredAdapter.setOnItemClickListener(new rest_Adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Upload item) {
+                showBottomSheetForItem(item);
+            }
+        });
+        mAdapter2.setOnItemClickListener(new rest_Adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Upload item) {
+                showBottomSheetForItem(item);
+            }
+        });
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Dismiss the keyboard when query is submitted
+                mSearchView.clearFocus();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Filter the items based on the user's search input
+                if (newText == null || newText.isEmpty()) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+                filterItems(newText);
+                recyclerview.setAdapter(mFilteredAdapter);
+                return true;
             }
         });
 
@@ -255,6 +302,36 @@ public class MenuFragment extends Fragment {
             }
         });
     }
+    public void item_view_search() {
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
+
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            // Inside the ValueEventListener in HomeFragment
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mUploads2.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Upload upload = postSnapshot.getValue(Upload.class);
+                    // Get the download URL from Firebase Storage and set it in the Upload object
+                    upload.setImageUrl(postSnapshot.child("imageUrl").getValue(String.class));
+                    // Retrieve the price from Firebase and set it in the Upload object
+                    Double priceValue = postSnapshot.child("price").getValue(Double.class);
+                    if (priceValue != null) {
+                        upload.setPrice(priceValue);
+                    }
+                   mUploads2.add(upload);
+                }
+              mAdapter2.notifyDataSetChanged();
+//                mAdapter = new rest_Adapter(getActivity(), mUploads);
+//                recyclerview.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public void openMenuFragment(String itemName) {
         Bundle args = new Bundle();
@@ -285,6 +362,21 @@ public class MenuFragment extends Fragment {
         args.putDouble("price", item.getPrice());
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
+    }
+    private void filterItems(String query) {
+        mFilteredUploads.clear();
+
+        if (query.isEmpty()) {
+            mFilteredUploads.addAll(mUploads2); // Show all items when query is empty
+        } else {
+            for (Upload upload : mUploads2) {
+                if (upload.getName().toLowerCase().contains(query.toLowerCase())) {
+                    mFilteredUploads.add(upload);
+                }
+            }
+        }
+
+        mFilteredAdapter.notifyDataSetChanged();
     }
 }
 

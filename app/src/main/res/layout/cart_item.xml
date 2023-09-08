@@ -55,7 +55,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cartItemName" />
 
         <TextView
-            android:id="@+id/cartItemQuantity2"
+            android:id="@+id/cartItemQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -76,12 +76,12 @@
             android:text="Price"
             android:textColor="@color/dark_orange"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView40"
-            app:layout_constraintStart_toEndOf="@+id/textView40"
+            app:layout_constraintBottom_toBottomOf="@+id/htextView40"
+            app:layout_constraintStart_toEndOf="@+id/htextView40"
             app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
         <TextView
-            android:id="@+id/textView40"
+            android:id="@+id/htextView40"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

@@ -1,7 +1,5 @@
 package com.example.superdrop2.navigation;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -27,10 +25,8 @@ import androidx.fragment.app.Fragment;
 import com.example.superdrop2.Admin_Activity;
 import com.example.superdrop2.OtpSendActivity;
 import com.example.superdrop2.R;
-import com.example.superdrop2.adapter.CartItem;
 import com.example.superdrop2.customers_Activity;
 import com.example.superdrop2.methods.User;
-import com.example.superdrop2.payment.OwnersActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,11 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.util.Map;
 
 public class ProfileFragment extends Fragment {
 
@@ -170,13 +162,7 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        owner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), OwnersActivity.class);
-                startActivity(intent);
-            }
-        });
+
         track.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
