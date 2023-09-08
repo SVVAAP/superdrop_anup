@@ -8,4 +8,14 @@
     </style>
 
     <style name="Theme.SUPERDROP2" parent="Base.Theme.SUPERDROP2" />
+    <style name="MyTabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <!-- Define your custom styles here -->
+        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
+    </style>
+
+    <style name="MyTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <!-- Define your text appearance attributes here -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 </resources>
