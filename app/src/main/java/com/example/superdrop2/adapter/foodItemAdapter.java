@@ -60,7 +60,7 @@ public class foodItemAdapter extends RecyclerView.Adapter<foodItemAdapter.foodIt
         public foodItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cartItemImg = itemView.findViewById(R.id.rest_img);
+            cartItemImg = itemView.findViewById(R.id.offer_img);
             cartItemName = itemView.findViewById(R.id.cartItemName);
             cartItemPrice = itemView.findViewById(R.id.offer_temPrice);
             cartItemQuantity = itemView.findViewById(R.id.cartItemQuantity);
