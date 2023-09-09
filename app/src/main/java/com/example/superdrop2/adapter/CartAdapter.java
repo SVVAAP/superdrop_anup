@@ -1,6 +1,5 @@
 package com.example.superdrop2.adapter;
 
-import android.graphics.drawable.Drawable;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +15,6 @@ import com.example.superdrop2.Cart_Activity;
 import com.example.superdrop2.R;
 import android.content.Context;
 
-import com.example.superdrop2.upload.Upload;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -156,9 +152,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
 
             cartItemImg = itemView.findViewById(R.id.rest_img);
             cartItemName = itemView.findViewById(R.id.cartItemName);
-            cartItemPrice = itemView.findViewById(R.id.cartItemPrice);
+            cartItemPrice = itemView.findViewById(R.id.offer_temPrice);
             cartItemQuantity = itemView.findViewById(R.id.cartItemQuantity);
-            CartItemTotalprice=itemView.findViewById(R.id.cart_total_price);
+            CartItemTotalprice=itemView.findViewById(R.id.offer_total_price);
             checkBox = itemView.findViewById(R.id.checkBox);
             itemView.setOnClickListener(this);
 

@@ -1,25 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:padding="5dp"
+    app:cardCornerRadius="10dp"
+    app:circularflow_radiusInDP="10dp">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/postimage"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="193dp"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/Imagestyle_round_corners"
-        app:srcCompat="@drawable/image_banner"
-        app:strokeColor="@color/white"
-        app:strokeWidth="3dp"
-        android:contextClickable="true"
-        android:longClickable="true"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/rest_img"
+            android:layout_width="102dp"
+            android:layout_height="113dp"
+            android:src="@drawable/logo"
+            app:circularflow_radiusInDP="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/rest_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:padding="15px"
+            android:text="Name"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/rest_img"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/offer_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_constraintBottom_toTopOf="@+id/rest_price"
+            android:layout_constraintTop_toBottomOf="@+id/rest_name"
+            android:layout_constraintStart_toStartOf="@+id/rest_name"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:padding="2dp"
+            android:text="total price"
+            android:textDecoration="line-through"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toTopOf="@+id/rest_price"
+            app:layout_constraintStart_toStartOf="@+id/rest_name"
+            app:layout_constraintTop_toBottomOf="@+id/rest_name" />
+
+        <TextView
+            android:id="@+id/rest_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:text="price"
+            android:textColor="@color/dark_orange"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/offer_price" />
+
+
+        <TextView
+            android:id="@+id/discount"
+            android:layout_width="50dp"
+            android:layout_height="37dp"
+            android:text="99%"
+            android:textSize="24sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toBottomOf="@+id/textView43"
+            app:layout_constraintEnd_toStartOf="@+id/textView43"
+            app:layout_constraintTop_toTopOf="@+id/textView43" />
+
+        <TextView
+            android:id="@+id/textView43"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="21dp"
+            android:padding="2dp"
+            android:text="off"
+            android:textSize="24sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/menucheckbox"
+            android:layout_width="61dp"
+            android:layout_height="61dp"
+            android:padding="-10dp"
+            android:translationX="11dp"
+            android:translationY="-11dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
