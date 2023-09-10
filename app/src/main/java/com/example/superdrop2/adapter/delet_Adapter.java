@@ -12,8 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.superdrop2.Cart_Activity;
-import com.example.superdrop2.DeleteActivity;
 import com.example.superdrop2.R;
 import com.example.superdrop2.upload.Upload;
 import com.squareup.picasso.Picasso;
@@ -73,9 +71,9 @@ public class delet_Adapter extends RecyclerView.Adapter<delet_Adapter.RestImageV
         CheckBox checkBox;
         public RestImageVHolder(@NonNull View itemView,delet_Adapter adapter) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.rest_name);
-            imageView = itemView.findViewById(R.id.rest_img);
-            textViewPrice = itemView.findViewById(R.id.rest_price);
+            textViewName = itemView.findViewById(R.id.offer_name);
+            imageView = itemView.findViewById(R.id.offer_img);
+            textViewPrice = itemView.findViewById(R.id.offer_total_price);
             checkBox = itemView.findViewById(R.id.menucheckbox);
 
             checkBox.setOnClickListener(new View.OnClickListener() {

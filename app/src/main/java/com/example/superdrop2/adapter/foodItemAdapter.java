@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,11 +60,11 @@ public class foodItemAdapter extends RecyclerView.Adapter<foodItemAdapter.foodIt
         public foodItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cartItemImg = itemView.findViewById(R.id.rest_img);
+            cartItemImg = itemView.findViewById(R.id.offer_img);
             cartItemName = itemView.findViewById(R.id.cartItemName);
-            cartItemPrice = itemView.findViewById(R.id.cartItemPrice);
+            cartItemPrice = itemView.findViewById(R.id.offer_temPrice);
             cartItemQuantity = itemView.findViewById(R.id.cartItemQuantity);
-            CartItemTotalprice = itemView.findViewById(R.id.cart_total_price);
+            CartItemTotalprice = itemView.findViewById(R.id.offer_total_price);
         }
     }
 }

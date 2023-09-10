@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -77,9 +76,9 @@ public class rest_Adapter extends RecyclerView.Adapter<rest_Adapter.RestImageVHo
         public RestImageVHolder(@NonNull View itemView) {
             super(itemView);
 
-            textViewName = itemView.findViewById(R.id.rest_name);
-            imageView = itemView.findViewById(R.id.rest_img);
-            textViewPrice = itemView.findViewById(R.id.rest_price);
+            textViewName = itemView.findViewById(R.id.offer_name);
+            imageView = itemView.findViewById(R.id.offer_img);
+            textViewPrice = itemView.findViewById(R.id.offer_total_price);
 
             // Set click listener on the whole item view
             itemView.setOnClickListener(this);
