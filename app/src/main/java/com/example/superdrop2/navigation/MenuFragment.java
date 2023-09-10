@@ -5,6 +5,9 @@ import static androidx.core.view.ViewGroupKt.setMargins;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +19,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,10 +72,14 @@ public class MenuFragment extends Fragment {
     private CardView card_bunontop, card_streetwok, card_bowlexpress;
     private FrameLayout container_search;
     private Boolean isEditMode=false;
-    ImageView imageView;
+    private ImageView imageView,no_internet;
     private SearchView mSearchView;
     private LinearLayout selectedLinearLayout = null;
     ConstraintLayout menuconstraint;
+
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
+    private  SwipeRefreshLayout swipeRefreshLayout;
+
 
     public MenuFragment() {
         // Required empty public constructor
@@ -77,7 +88,7 @@ public class MenuFragment extends Fragment {
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+     View view = inflater.inflate(R.layout.fragment_menu, container, false);
         mUploads = new ArrayList<>();
         mUploads2 = new ArrayList<>();
         mFilteredUploads = new ArrayList<>();
@@ -102,7 +113,23 @@ public class MenuFragment extends Fragment {
         myMenuAdapter = new MyMenuAdapter(menuItems,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         mRecyclerView.setAdapter(myMenuAdapter);
+        no_internet=view.findViewById(R.id.mno_internet_layout);
 
+        //no internet check
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+
+        if (networkCapabilities == null || !networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+           no_internet.setVisibility(View.VISIBLE);
+        }
+         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Implement the logic to refresh your data here
+                refreshData();
+            }
+        });
 
         card_bunontop = view.findViewById(R.id.bunontop_card);
         card_streetwok = view.findViewById(R.id.streetwok_card);
@@ -378,5 +405,33 @@ public class MenuFragment extends Fragment {
 
         mFilteredAdapter.notifyDataSetChanged();
     }
+    private void refreshData() {
+        // Implement your data refresh logic here
+        if (getView() == null) {
+            return;
+        }
+        // For example, you can re-fetch your data from Firebase
+        item_view(data1);
+        if (!isNetworkAvailable()) {
+            // No internet connection, display a toast message
+           no_internet.setVisibility(View.VISIBLE);
+        } else {
+            no_internet.setVisibility(View.GONE);
+            // After data is refreshed, stop the refresh animation
+        }
+            mainHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }, 2000); // Delayed for 2 seconds to simulate data loading
+        }
+
+        private boolean isNetworkAvailable() {
+            ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        }
+
 }
 

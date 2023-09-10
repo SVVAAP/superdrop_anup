@@ -2,7 +2,10 @@ package com.example.superdrop2.navigation;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -130,7 +133,12 @@ public class ProfileFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveProfileToFirebase();
+
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                }
+                else {saveProfileToFirebase();}
             }
         });
 
@@ -138,10 +146,16 @@ public class ProfileFragment extends Fragment {
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEditMode) {
-                    saveProfileToFirebase();
-                } else {
-                    setEditMode(true);
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if (isEditMode) {
+                        saveProfileToFirebase();
+                    } else {
+                        setEditMode(true);
+                    }
                 }
             }
         });
@@ -157,9 +171,14 @@ public class ProfileFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent=new Intent(getActivity(), OtpSendActivity.class);
-                startActivity(intent);
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                } else {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getActivity(), OtpSendActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -239,5 +258,10 @@ public class ProfileFragment extends Fragment {
                         }
                     });
         }
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
     }
 }

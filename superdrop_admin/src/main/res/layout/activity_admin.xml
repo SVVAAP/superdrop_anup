@@ -129,7 +129,7 @@
         android:layout_margin="20dp"
         android:background="@color/colorPrimary"
         android:padding="10dp"
-        android:text="Tab"
+        android:text="All Orders"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

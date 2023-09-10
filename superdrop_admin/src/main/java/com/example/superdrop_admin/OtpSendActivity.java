@@ -40,7 +40,7 @@ public class OtpSendActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentuser= mAuth.getCurrentUser();
         if(currentuser!=null) {
-            startActivity(new Intent(OtpSendActivity.this, OwnersActivity.class));
+            startActivity(new Intent(OtpSendActivity.this, OwnersTabActivity.class));
            finish();
         }
     }

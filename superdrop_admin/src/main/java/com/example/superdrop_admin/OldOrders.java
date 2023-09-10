@@ -64,7 +64,7 @@ public class OldOrders extends Fragment {
 
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);
-                    if (order != null && Objects.equals(order.getStatus(), "Delivered")) {
+                    if (order != null && (Objects.equals(order.getStatus(), "Delivered") || Objects.equals(order.getStatus(), "Cancelled"))) {
                         // Retrieve the items associated with the order from the "items" node
                         List<CartItem> cartItems = new ArrayList<>();
                         DataSnapshot itemsSnapshot = orderSnapshot.child("items");

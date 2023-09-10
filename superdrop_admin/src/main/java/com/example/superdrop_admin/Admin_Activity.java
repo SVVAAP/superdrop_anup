@@ -73,7 +73,7 @@ public class Admin_Activity extends AppCompatActivity {
         tab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Admin_Activity.this, OwnersTabActivity.class);
+                Intent intent = new Intent(Admin_Activity.this, OwnersActivity.class);
                 startActivity(intent);
             }
         });

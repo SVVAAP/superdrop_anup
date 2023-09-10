@@ -88,7 +88,7 @@ String userid= mAuth.getUid();
             userRef.setValue(userDetails)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(Detail_Activity.this, "Details uploaded successfully!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Detail_Activity.this, OwnersActivity.class));
+                        startActivity(new Intent(Detail_Activity.this, OwnersTabActivity.class));
                         finish();
 
                     })
