@@ -46,7 +46,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
-            simageView = itemView.findViewById(R.id.postimage);
+            simageView = itemView.findViewById(R.id.offr_img);
         }
     }
 }
