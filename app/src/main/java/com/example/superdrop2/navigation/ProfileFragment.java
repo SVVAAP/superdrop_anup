@@ -2,7 +2,9 @@ package com.example.superdrop2.navigation;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -175,9 +177,34 @@ public class ProfileFragment extends Fragment {
                     // No internet connection, display a toast message
                     Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
                 } else {
-                    FirebaseAuth.getInstance().signOut();
-                    Intent intent = new Intent(getActivity(), OtpSendActivity.class);
-                    startActivity(intent);
+                    // Create an AlertDialog.Builder
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Logout");
+                    builder.setMessage("Are you sure you want to logout?");
+
+                    // Add OK button
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // User clicked OK, perform logout
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(getActivity(), OtpSendActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    // Add Cancel button
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // User clicked Cancel, do nothing
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    // Create and show the AlertDialog
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 }
             }
         });
