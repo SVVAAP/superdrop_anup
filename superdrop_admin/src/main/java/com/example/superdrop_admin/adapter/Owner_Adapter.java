@@ -85,6 +85,9 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             snapshot.getRef().child("status").setValue(newStatus);
+                            if(Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")){
+                                snapshot.getRef().child("orderStatus").setValue("Done");
+                            }
                         }
                     }
                 }
