@@ -34,7 +34,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         String imageUri = mImageUris.get(position);
         if(imageUri!=null) {
-            Picasso.get().load(imageUri).fit().centerCrop().into(holder.simageView);
+            //Picasso.get().load(imageUri).fit().centerCrop().into(holder.simageView);
         }
     }
 

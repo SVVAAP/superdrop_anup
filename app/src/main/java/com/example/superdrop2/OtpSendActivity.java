@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class OtpSendActivity extends AppCompatActivity {
 
     private EditText etPhone;
-    private Button btnSend,btskip;
+    private Button btnSend;
     private ProgressBar progressBar;
     private CountryCodePicker countryCodePicker;
     private FirebaseAuth mAuth;
@@ -53,7 +53,6 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         progressBar = findViewById(R.id.progressBar);
         countryCodePicker = findViewById(R.id.ccp);
-        btskip=findViewById(R.id.skip_bt);
         mAuth = FirebaseAuth.getInstance();
 
 

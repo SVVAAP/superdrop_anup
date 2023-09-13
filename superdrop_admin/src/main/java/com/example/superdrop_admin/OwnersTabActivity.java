@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 public class OwnersTabActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
-    private ViewPager2 viewPager;
+    private ViewPager2 viewPager2;
     private TabAdapter tabAdapter;
 
     @Override
@@ -23,14 +23,14 @@ public class OwnersTabActivity extends AppCompatActivity {
         setContentView(R.layout.activity_owners_tab);
 
         tabLayout =findViewById(R.id.tab_layout);
-        viewPager=findViewById(R.id.view_pager);
+        viewPager2=findViewById(R.id.view_pager);
         tabAdapter=new TabAdapter(this);
-        viewPager.setAdapter(tabAdapter);
+        viewPager2.setAdapter(tabAdapter);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                viewPager2.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -43,7 +43,7 @@ public class OwnersTabActivity extends AppCompatActivity {
 
             }
         });
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
