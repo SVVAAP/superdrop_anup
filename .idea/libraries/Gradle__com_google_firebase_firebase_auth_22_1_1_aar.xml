@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.firebase:firebase-auth:22.1.1@aar">
     <CLASSES>
-      <root url="file://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/transforms-3/f780026499c9825c1ee2c256e7b07e01/transformed/jetified-firebase-auth-22.1.1/AndroidManifest.xml" />
-      <root url="jar://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/transforms-3/f780026499c9825c1ee2c256e7b07e01/transformed/jetified-firebase-auth-22.1.1/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f780026499c9825c1ee2c256e7b07e01/transformed/jetified-firebase-auth-22.1.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f780026499c9825c1ee2c256e7b07e01/transformed/jetified-firebase-auth-22.1.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth/22.1.1/802fd6817b7034cded7579063b25ad0a5cbdf4eb/firebase-auth-22.1.1-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-auth/22.1.1/802fd6817b7034cded7579063b25ad0a5cbdf4eb/firebase-auth-22.1.1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
   </library>

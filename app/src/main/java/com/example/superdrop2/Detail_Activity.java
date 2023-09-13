@@ -41,6 +41,8 @@ public class Detail_Activity extends AppCompatActivity {
         phoneNumber = findViewById(R.id.phone_number);
         address = findViewById(R.id.address_text);
         signUpButton = findViewById(R.id.signup_button);
+
+
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 String iToken = task.getResult();

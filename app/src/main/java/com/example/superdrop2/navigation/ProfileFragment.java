@@ -1,10 +1,11 @@
 package com.example.superdrop2.navigation;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,10 +28,8 @@ import androidx.fragment.app.Fragment;
 import com.example.superdrop2.Admin_Activity;
 import com.example.superdrop2.OtpSendActivity;
 import com.example.superdrop2.R;
-import com.example.superdrop2.adapter.CartItem;
 import com.example.superdrop2.customers_Activity;
 import com.example.superdrop2.methods.User;
-import com.example.superdrop2.payment.OwnersActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,11 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.util.Map;
 
 public class ProfileFragment extends Fragment {
 
@@ -138,7 +133,12 @@ public class ProfileFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveProfileToFirebase();
+
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                }
+                else {saveProfileToFirebase();}
             }
         });
 
@@ -146,10 +146,16 @@ public class ProfileFragment extends Fragment {
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEditMode) {
-                    saveProfileToFirebase();
-                } else {
-                    setEditMode(true);
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if (isEditMode) {
+                        saveProfileToFirebase();
+                    } else {
+                        setEditMode(true);
+                    }
                 }
             }
         });
@@ -165,18 +171,17 @@ public class ProfileFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent=new Intent(getActivity(), OtpSendActivity.class);
-                startActivity(intent);
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                } else {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getActivity(), OtpSendActivity.class);
+                    startActivity(intent);
+                }
             }
         });
-        owner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), OwnersActivity.class);
-                startActivity(intent);
-            }
-        });
+
         track.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -253,5 +258,10 @@ public class ProfileFragment extends Fragment {
                         }
                     });
         }
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
     }
 }

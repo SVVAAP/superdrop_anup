@@ -6,9 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,11 +48,13 @@ public class Cart_Activity extends AppCompatActivity {
     private List<CartItem> cartItemList;
     private TextView totalPriceTextView;
     private FirebaseAuth mAuth;
+    private ImageView no_internet;
     private DatabaseReference userCartRef;
     double total = 0.0;
     ImageView edit_bt, back_bt;
     Button placeorder, deleteButton;
-
+    private  SwipeRefreshLayout swipeRefreshLayout;
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +72,7 @@ public class Cart_Activity extends AppCompatActivity {
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
         totalPriceTextView = findViewById(R.id.cart_grandprice);
         placeorder = findViewById(R.id.cart_order);
-
+no_internet=findViewById(R.id.cno_internet_layout);
         recyclerView = findViewById(R.id.cartRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(Cart_Activity.this));
@@ -88,7 +96,21 @@ public class Cart_Activity extends AppCompatActivity {
                 startActivity(new Intent(Cart_Activity.this, NavActivity.class));
             }
         });
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
 
+        if (networkCapabilities == null || !networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+           no_internet.setVisibility(View.VISIBLE);
+        }
+
+       swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Implement the logic to refresh your data here
+                refreshData();
+            }
+        });
         placeorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,5 +230,30 @@ public class Cart_Activity extends AppCompatActivity {
         if (navActivity != null) {
             navActivity.clear();
         }
+    }
+    private void refreshData() {
+        // Implement your data refresh logic here
+
+        // For example, you can re-fetch your data from Firebas
+         retrieveCartItems();
+        if (!isNetworkAvailable()) {
+            // No internet connection, display a toast message
+           no_internet.setVisibility(View.VISIBLE);
+        } else {
+          no_internet.setVisibility(View.GONE);
+            // After data is refreshed, stop the refresh animation
+        }
+        // After data is refreshed, stop the refresh animation
+        mainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000); // Delayed for 2 seconds to simulate data loading
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
     }
 }

@@ -6,4 +6,14 @@
         <item name="android:statusBarColor">@color/black</item>
         <item name="colorPrimary">@color/dark_orange</item>
     </style>
+    <style name="MyTabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <!-- Define your custom styles here -->
+        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
+    </style>
+
+    <style name="MyTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <!-- Define your text appearance attributes here -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 </resources>

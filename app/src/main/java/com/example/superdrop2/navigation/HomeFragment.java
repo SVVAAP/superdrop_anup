@@ -3,8 +3,12 @@ package com.example.superdrop2.navigation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -70,8 +75,9 @@ public class HomeFragment extends Fragment {
     private Animation fadeInAnimation;
     private Animation slideUpAnimation;
     private RecyclerView offerRecyclerView;
-
-
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
+    private  SwipeRefreshLayout swipeRefreshLayout;
+private ImageView no_internet;
 
 //    private CardView c1,c2,c3;
 //    int[] images ={R.drawable.one,
@@ -98,8 +104,24 @@ public class HomeFragment extends Fragment {
         mUploads = new ArrayList<>();
         postviewlist= new ArrayList<>();
         sliderView = view.findViewById(R.id.slider_view);
+        no_internet=view.findViewById(R.id.hno_internet_layout);
         offerRecyclerView=view.findViewById(R.id.offer_recyclerview);
         offerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+
+        if (networkCapabilities == null || !networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+            no_internet.setVisibility(View.VISIBLE);
+        }
+
+       swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Implement the logic to refresh your data here
+                refreshData();
+            }
+        });
 
         CardView cardBunontop = view.findViewById(R.id.bowlexpress_card);
         cardBunontop.setOnClickListener(v -> {
@@ -208,7 +230,35 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+    private void refreshData() {
+        if (getView() == null) {
+            return;
+        }
+        // Implement your data refresh logic here
+        fetchImageURLs();
 
+
+        // For example, you can re-fetch your data from Firebas
+        if (!isNetworkAvailable()) {
+            // No internet connection, display a toast message
+            no_internet.setVisibility(View.VISIBLE);
+        } else {
+           no_internet.setVisibility(View.GONE);
+            // After data is refreshed, stop the refresh animation
+        }
+        // After data is refreshed, stop the refresh animation
+        mainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000); // Delayed for 2 seconds to simulate data loading
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    }
 
 }
 

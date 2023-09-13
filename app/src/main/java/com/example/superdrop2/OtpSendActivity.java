@@ -6,16 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import androidx.webkit.WebViewClientCompat;
-import androidx.webkit.WebViewCompat;
-import androidx.webkit.WebViewFeature;
 
 import com.example.superdrop2.navigation.NavActivity;
 import com.google.firebase.FirebaseException;
@@ -57,17 +53,8 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         progressBar = findViewById(R.id.progressBar);
         countryCodePicker = findViewById(R.id.ccp);
-        webView = findViewById(R.id.webView);
         mAuth = FirebaseAuth.getInstance();
 
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                // Intercept the URL and load it in the WebView
-                view.loadUrl(request.getUrl().toString());
-                return true;
-            }
-        });
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +66,7 @@ public class OtpSendActivity extends AppCompatActivity {
                 sendOTP(fullPhoneNumber);
             }
         });
+
     }
 
     private void sendOTP(String phoneNumber) {

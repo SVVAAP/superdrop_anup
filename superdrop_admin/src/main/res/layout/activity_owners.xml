@@ -47,7 +47,7 @@
                 android:backgroundTint="#FFFFFF"
                 android:padding="10dp"
                 android:src="@drawable/add_item"
-                android:tint="#FAFAFA" />
+                app:tint="#FAFAFA" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>

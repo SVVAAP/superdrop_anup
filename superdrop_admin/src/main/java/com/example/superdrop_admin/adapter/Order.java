@@ -16,6 +16,7 @@ public class Order {
     private String userid;
     private String status;
     private String date,time;
+    private String orderStatus;
 
     public Order() {
         items = new ArrayList<>();
@@ -33,6 +34,12 @@ public class Order {
         this.paymentMethod = paymentMethod;
         this.items = new ArrayList<>(); // Initialize the items list
         // No need to add a dummy item her
+    }
+    public String getOrderStatus(){
+        return orderStatus;
+    }
+    public void setOrderStatus(String orderStatus){
+        this.orderStatus=orderStatus;
     }
     public String getToken() {
         return Token;

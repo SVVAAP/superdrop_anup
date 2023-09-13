@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.superdrop2'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.superdrop2"
         minSdk 29
-        targetSdk 34
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -67,6 +67,8 @@ dependencies {
 
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0' // Adjust version as needed
 
 
 }

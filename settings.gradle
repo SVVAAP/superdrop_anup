@@ -17,4 +17,3 @@ dependencyResolutionManagement {
 rootProject.name = "SUPER DROP2"
 include ':app'
 include ':superdrop_admin'
-include ':superdrop_admin'

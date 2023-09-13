@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +61,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         holder.delivered.setVisibility(View.INVISIBLE);
         holder.delivering.setVisibility(View.INVISIBLE);
         holder.cooking.setVisibility(View.INVISIBLE);
+        holder.textcancle.setVisibility(View.GONE);
 
 
         String currentStatus=order.getStatus();
@@ -97,7 +100,17 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             holder.cooking.setVisibility(View.VISIBLE);
             holder.delivering.setVisibility(View.VISIBLE);
             holder.delivered.setVisibility(View.VISIBLE);
-            }
+            }else if(currentStatus.equals("Cancled")) {
+            holder.progressBar.setVisibility(View.INVISIBLE);
+            holder.processing.setVisibility(View.INVISIBLE);
+            holder.accepted.setVisibility(View.INVISIBLE);
+            holder.delivered.setVisibility(View.INVISIBLE);
+            holder.delivering.setVisibility(View.INVISIBLE);
+            holder.cooking.setVisibility(View.INVISIBLE);
+            holder.itembackground.setBackgroundResource(R.drawable.red_rounded_edge);
+            holder.textcancle.setVisibility(View.VISIBLE);
+            holder.linearLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -109,8 +122,9 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         private foodItemAdapter fooditemadapter;
         private ImageView processing,cooking,delivering,delivered,accepted,toogleimg;
         private ProgressBar progressBar;
-        private ConstraintLayout moreinfo;
-        private TextView name,city,address,phone,payment,note,total,toggltext,date,time;
+        private ConstraintLayout moreinfo,itembackground;
+        private LinearLayout linearLayout;
+        private TextView name,city,address,phone,payment,note,total,toggltext,date,time,textcancle;
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
             super(itemView);
             Order order;
@@ -133,6 +147,9 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             toggltext=itemView.findViewById(R.id.toogle_text);
             date=itemView.findViewById(R.id.cdate);
             time=itemView.findViewById(R.id.ctime);
+            textcancle=itemView.findViewById(R.id.cancle_text);
+            itembackground=itemView.findViewById(R.id.citem_background);
+            linearLayout=itemView.findViewById(R.id.linear_status);
             // Set up layout animation for sliding down
             LayoutTransition layoutTransition = new LayoutTransition();
             layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,

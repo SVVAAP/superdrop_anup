@@ -1,8 +1,11 @@
 package com.example.superdrop2;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.CartItem;
+import com.example.superdrop2.payment.CheckoutActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -127,18 +131,24 @@ public class Cart_BottomSheet extends BottomSheetDialogFragment {
         bt_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String itemName = item_name.getText().toString().trim();
-                double itemPrice = price;
-                int quantity = i;
-                String totalPriceText = total_price.getText().toString().trim();
-                totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
-                double totalprice = Double.parseDouble(totalPriceText);
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String itemName = item_name.getText().toString().trim();
+                    double itemPrice = price;
+                    int quantity = i;
+                    String totalPriceText = total_price.getText().toString().trim();
+                    totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
+                    double totalprice = Double.parseDouble(totalPriceText);
 
-                // Update the item in the Firebase database
-                updateCartItemInDatabase(itemId, quantity, totalprice);
+                    // Update the item in the Firebase database
+                    updateCartItemInDatabase(itemId, quantity, totalprice);
 
-                // Close the bottom sheet
-                dismiss();
+                    // Close the bottom sheet
+                    dismiss();
+                }
             }
         });
 //        bt_order.setOnClickListener(new View.OnClickListener() {
@@ -200,5 +210,10 @@ public class Cart_BottomSheet extends BottomSheetDialogFragment {
                 // Handle database read error
             }
         });
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
     }
 }

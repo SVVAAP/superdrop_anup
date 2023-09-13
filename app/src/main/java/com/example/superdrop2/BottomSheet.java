@@ -1,9 +1,12 @@
 package com.example.superdrop2;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -38,7 +41,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.Context;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -51,12 +53,11 @@ import java.io.ByteArrayOutputStream;
 public class BottomSheet extends BottomSheetDialogFragment {
     TextView item_name, item_price, item_quantity, total_price;
 
-    ImageView item_img, plus_img, minus_img,bt_cart,bt_order;
+    ImageView item_img, plus_img, minus_img;
     int i = 1,newItemCount=0;
     double price;
     String priceWithSymbol, imageUrl,itemId;
-    Bitmap imageBitmap;
-    byte[] data;
+    private Button bt_cart,bt_order;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     private StorageTask mUploadTask;
@@ -136,14 +137,20 @@ public class BottomSheet extends BottomSheetDialogFragment {
         bt_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String itemName = item_name.getText().toString().trim();
-                double itemPrice = price;
-                int quantity = i;
-                String totalPriceText = total_price.getText().toString().trim();
-                totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
-                totalprice = Double.parseDouble(totalPriceText);
-                addToUserCart(itemId,itemName, imageUrl, itemPrice, quantity,totalprice);
-                progressBar.setVisibility(View.VISIBLE);
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String itemName = item_name.getText().toString().trim();
+                    double itemPrice = price;
+                    int quantity = i;
+                    String totalPriceText = total_price.getText().toString().trim();
+                    totalPriceText = totalPriceText.replace("₹", ""); // Remove the currency symbol
+                    totalprice = Double.parseDouble(totalPriceText);
+                    addToUserCart(itemId, itemName, imageUrl, itemPrice, quantity, totalprice);
+                    progressBar.setVisibility(View.VISIBLE);
+                }
             }
         });
         bt_order.setOnClickListener(new View.OnClickListener() {
@@ -222,6 +229,11 @@ public class BottomSheet extends BottomSheetDialogFragment {
         if (navActivity != null) {
             navActivity.updateBadgeNumber(newItemCount);
         }
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
     }
 
 }
