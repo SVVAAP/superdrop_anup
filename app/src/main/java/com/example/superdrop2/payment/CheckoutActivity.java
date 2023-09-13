@@ -252,10 +252,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // You can handle more payment methods here
         String gtotal=calculateTotalAmount();
+        String orderStatus="Pending";
 
         // Store order details in Firebase
         Order order = new Order(orderID,shippingName, shippingAddress, shippingCity,
-                contactInstructions, note, paymentMethod,newstatus,gtotal);
+                contactInstructions, note, paymentMethod,newstatus,gtotal,orderStatus);
         order.setItems(cartItemList);
         order.setUserId(userId);
         order.setDate(currentDate); // Set the current date

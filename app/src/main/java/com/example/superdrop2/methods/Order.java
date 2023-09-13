@@ -17,6 +17,7 @@ public class Order {
     private String orderid;
     private String userid;
     private String status,date,time;
+    private String orderStatus;
 
 
     public Order() {
@@ -25,7 +26,7 @@ public class Order {
     }
 
     public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
-                 String contactInstructions, String note, String paymentMethod,String status,String grandtotal) {
+                 String contactInstructions, String note, String paymentMethod,String status,String grandtotal,String oredrStatus) {
         this.orderid=orderid;
         this.shippingName = shippingName;
         this.shippingAddress = shippingAddress;
@@ -37,6 +38,13 @@ public class Order {
         this.grandtotal=grandtotal;
         this.items = new ArrayList<>(); // Initialize the items list
         // No need to add a dummy item her
+        this.orderStatus=oredrStatus;
+    }
+    public String getOrderStatus(){
+        return orderStatus;
+    }
+    public void setOrderStatus(String orderStatus){
+        this.orderStatus=orderStatus;
     }
     public String getToken() {
         return Token;

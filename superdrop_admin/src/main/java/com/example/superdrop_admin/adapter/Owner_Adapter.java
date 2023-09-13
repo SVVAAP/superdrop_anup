@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -100,6 +101,9 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             snapshot.getRef().child("status").setValue(newStatus);
+                            if(Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")){
+                                snapshot.getRef().child("orderStatus").setValue("Done");
+                            }
                         }
                     }
                 }
@@ -371,30 +375,6 @@ private void sendNotification(String tokens,String status,String id) {
             }
 
     }
-//    OkHttpClient client=new OkHttpClient();
-//    MediaType mediaType=MediaType.parse("application/json");
-//        JSONObject notification = new JSONObject();
-//        JSONObject body = new JSONObject();
-//        try {
-//            notification.put("title", "Your Order:" + orderID);
-//                    notification.put("body", "Your order is being "+status);
-//                   body.put("to",token);
-//                   body.put("notification", notification);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.d("Error",e.toString());
-//        }
-//        RequestBody requestBody=RequestBody.create(mediaType,body.toString());
-//        okhttp3.Request request=new Request.Builder().url("https://fcm.googleapis.com/fcm/send")
-//                .post(requestBody)
-//                .addHeader("Authorization","key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL")
-//                .addHeader("Content-Type","application/json").build();
-//        try {
-//            Response response = client.newCall(request).execute();
-//        }catch (IOException e){
-//            Log.d("error",e.toString());
-//        }
-//    }
 private boolean isNetworkAvailable() {
     ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
