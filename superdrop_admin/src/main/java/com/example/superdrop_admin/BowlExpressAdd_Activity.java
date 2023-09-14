@@ -59,13 +59,13 @@ public class BowlExpressAdd_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_bowl_express_add);
 
 
-        mButtonChooseImage = findViewById(R.id.bowl_img_bt);
-        mButtonUpload = findViewById(R.id.bowl_upload_bt);
+        mButtonChooseImage = findViewById(R.id.offer_img_bt);
+        mButtonUpload = findViewById(R.id.offer_upload_bt);
         //mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
-        mEditTextFileName = findViewById(R.id.bowl_item_name);
-        mImageView = findViewById(R.id.bowl_item_img);
-        mProgressBar = findViewById(R.id.bowl_progressBar);
-        mEditTextPrice = findViewById(R.id.bowl_item_price);
+        mEditTextFileName = findViewById(R.id.offer_item_name);
+        mImageView = findViewById(R.id.offer_item_img);
+        mProgressBar = findViewById(R.id.offer_progressBar);
+        mEditTextPrice = findViewById(R.id.offer_item_price);
 
         mStorageRef = FirebaseStorage.getInstance().getReference("bowlexpress");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("bowlexpress");
