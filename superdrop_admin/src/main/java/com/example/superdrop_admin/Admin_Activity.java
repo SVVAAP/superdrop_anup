@@ -1,10 +1,16 @@
 package com.example.superdrop_admin;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -85,11 +91,45 @@ public class Admin_Activity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(Admin_Activity.this, OtpSendActivity.class);
-                startActivity(intent);
-                finish(); // Close the current activity after logout
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(Admin_Activity.this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Create an AlertDialog.Builder
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Admin_Activity.this);
+                    builder.setTitle("Logout");
+                    builder.setMessage("Are you sure you want to logout?");
+
+                    // Add OK button
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // User clicked OK, perform logout
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(Admin_Activity.this, OtpSendActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    // Add Cancel button
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // User clicked Cancel, do nothing
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    // Create and show the AlertDialog
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
             }
         });
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
     }
 }

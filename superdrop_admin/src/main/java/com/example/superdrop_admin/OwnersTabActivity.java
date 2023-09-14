@@ -6,7 +6,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.superdrop_admin.adapter.TabAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -41,6 +44,15 @@ public class OwnersTabActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+        ImageView postImageView = findViewById(R.id.upload_bt);
+        postImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open Admin_Activity when ImageView is clicked
+                Intent intent = new Intent(OwnersTabActivity.this, Admin_Activity.class);
+                startActivity(intent);
             }
         });
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

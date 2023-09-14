@@ -85,6 +85,9 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             snapshot.getRef().child("status").setValue(newStatus);
+                            if(Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")){
+                                snapshot.getRef().child("orderStatus").setValue("Done");
+                            }
                         }
                     }
                 }
@@ -165,20 +168,25 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         }else if(currentStatus.equals("Delivered")) {
             holder.acceptButton.setText("Done");
             holder.cancelButton.setVisibility(View.GONE);
-            updateButtonAppearance(holder,holder.acceptButton);
+            updateButtonAppearance(holder, holder.acceptButton);
             int orangeColor = ContextCompat.getColor(context, android.R.color.holo_orange_light);
             holder.acceptButton.setBackgroundColor(orangeColor);
             holder.acceptButton.setClickable(false);
             holder.acceptButton.setEnabled(false);
-        } else if (currentStatus.equals("Cancled")) {
-            holder.cancelButton.setText("Cancled");
-            updateButtonAppearance(holder,holder.cancelButton);
-            int orangeColor = ContextCompat.getColor(context, android.R.color.holo_red_dark);
-            holder.cancelButton.setBackgroundColor(orangeColor);
-            holder.cancelButton.setClickable(false);
-            holder.cancelButton.setEnabled(false);
-   //         holder.cancelButton.getTranslationX(-25dp);
         }
+       else if (currentStatus.equals("Cancled")) {
+            holder.cancelButton.setText("Cancled");
+            holder.acceptButton.setVisibility(View.GONE);
+               // holder.acceptButton.setText("Cancled");
+                // Set the width of the cancel button to match_parent
+                ViewGroup.LayoutParams cancelButtonLayoutParams = holder.cancelButton.getLayoutParams();
+                cancelButtonLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                holder.cancelButton.setLayoutParams(cancelButtonLayoutParams);
+                int orangeColor = ContextCompat.getColor(context, android.R.color.holo_red_dark);
+                holder.cancelButton.setBackgroundColor(orangeColor);
+                holder.cancelButton.setClickable(false);
+                holder.cancelButton.setEnabled(false);
+            }
 
         holder.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
