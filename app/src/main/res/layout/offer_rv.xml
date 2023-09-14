@@ -60,6 +60,7 @@
             android:id="@+id/offer_total_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:gravity="center|left"
             android:text="price"
             android:textColor="@color/dark_orange"

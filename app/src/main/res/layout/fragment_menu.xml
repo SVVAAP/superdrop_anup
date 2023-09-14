@@ -235,25 +235,26 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fooditems_rv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="60dp"
-            android:padding="10dp"
-            android:paddingBottom="70dp"
-            app:circularflow_radiusInDP="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout_rest" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fooditems_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="60dp"
+        android:background="#FFFFFF"
+        android:padding="10dp"
+        android:paddingBottom="70dp"
+        app:circularflow_radiusInDP="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_rest" />
 
 
     <ImageView
         android:id="@+id/mno_internet_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="#FDF7E3"
         android:src="@drawable/no_internet"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
