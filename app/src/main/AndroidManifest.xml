@@ -17,9 +17,6 @@
         android:theme="@style/Theme.SUPERDROP2"
         tools:targetApi="31">
         <activity
-            android:name=".upload.OfferItemUpload"
-            android:exported="false" />
-        <activity
             android:name=".customers_Activity"
             android:exported="false" />
         <activity

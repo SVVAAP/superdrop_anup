@@ -235,12 +235,6 @@
 
             </androidx.cardview.widget.CardView>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="70dp"
-                    android:visibility="visible">
-
                     <TextView
                         android:id="@+id/textView18"
                         android:layout_width="match_parent"
@@ -257,22 +251,10 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/offer_recyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fadeScrollbars="true"
-                        android:padding="10dp"
-                        app:fastScrollEnabled="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView18">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/offer_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
     </ScrollView>
