@@ -79,7 +79,7 @@ public class customers_Activity extends AppCompatActivity {
 
                         // Set the retrieved cart items to the order
                         order.setItems(cartItems);
-                        orderList.add(order);
+                        orderList.add(0,order);
                     }
                 }
 
