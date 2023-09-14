@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.viewpager2:viewpager2:1.1.0-beta02@aar">
+    <ANNOTATIONS>
+      <root url="jar://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/transforms-3/de50720599160ecf8817666241cd3a28/transformed/jetified-viewpager2-1.1.0-beta02/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/transforms-3/de50720599160ecf8817666241cd3a28/transformed/jetified-viewpager2-1.1.0-beta02/jars/classes.jar!/" />
+      <root url="file://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/transforms-3/de50720599160ecf8817666241cd3a28/transformed/jetified-viewpager2-1.1.0-beta02/res" />
+      <root url="file://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/transforms-3/de50720599160ecf8817666241cd3a28/transformed/jetified-viewpager2-1.1.0-beta02/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/modules-2/files-2.1/androidx.viewpager2/viewpager2/1.1.0-beta02/e6b214fdb6728bde9ce154c610dfb1388658cad7/viewpager2-1.1.0-beta02-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
