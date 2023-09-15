@@ -43,6 +43,16 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
+            android:id="@+id/textView40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="----------------------"
+            app:layout_constraintBottom_toBottomOf="@+id/offer_price"
+            app:layout_constraintEnd_toEndOf="@+id/offer_price"
+            app:layout_constraintStart_toStartOf="@+id/offer_price"
+            app:layout_constraintTop_toTopOf="@+id/offer_price" />
+
+        <TextView
             android:id="@+id/offer_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
