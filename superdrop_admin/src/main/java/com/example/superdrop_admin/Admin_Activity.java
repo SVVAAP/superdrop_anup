@@ -87,7 +87,7 @@ public class Admin_Activity extends AppCompatActivity {
         Offeradd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Admin_Activity.this, OwnersActivity.class);
+                Intent intent = new Intent(Admin_Activity.this, Offer_item_addActivity.class);
                 startActivity(intent);
             }
         });
