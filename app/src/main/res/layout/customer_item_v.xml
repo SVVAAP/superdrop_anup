@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    >
+    android:padding="3dp">
 
     <!-- Shipping Information -->
     <ScrollView
@@ -18,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="5px">
+            android:padding="1dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/citem_background"
@@ -127,7 +125,7 @@
                 android:background="@drawable/rounded_edge"
                 android:backgroundTint="#E6E5E5"
                 android:padding="21dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView36"
@@ -180,8 +178,8 @@
                         android:id="@+id/linear_status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:gravity="center"
+                        android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -585,7 +583,6 @@
 
         </LinearLayout>
     </ScrollView>
-
 
 
 </LinearLayout>
