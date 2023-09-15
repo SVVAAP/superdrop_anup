@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Admin_Activity extends AppCompatActivity {
-    Button add_rest,add_offer,add_bunontop,add_streetwok,add_bowlexpres,orders,tab;
+    Button add_rest,add_offer,add_bunontop,add_streetwok,add_bowlexpres,orders,tab,Offeradd;
     ImageView logout;
 
     @Override
@@ -32,6 +32,7 @@ public class Admin_Activity extends AppCompatActivity {
         add_bowlexpres=findViewById(R.id.bowlexpress_add);
         orders=findViewById(R.id.owners_bt);
         tab=findViewById(R.id.tab_bt);
+        Offeradd=findViewById(R.id.offer_item_add);
 
         add_rest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +78,13 @@ public class Admin_Activity extends AppCompatActivity {
             }
         });
         tab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Admin_Activity.this, OwnersActivity.class);
+                startActivity(intent);
+            }
+        });
+        Offeradd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Admin_Activity.this, OwnersActivity.class);
