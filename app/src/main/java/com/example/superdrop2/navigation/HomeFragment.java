@@ -35,6 +35,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.superdrop2.BottomSheet;
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.ImageAdapter;
 import com.example.superdrop2.adapter.MyMenuAdapter;
@@ -163,6 +164,15 @@ public class HomeFragment extends Fragment {
         sliderView = view.findViewById(R.id.slider_view);
         fetchImageURLs();
         item_view();
+        imageAdapter = new ImageAdapter(getActivity(), mUploads);
+        offerRecyclerView.setAdapter(imageAdapter);
+        imageAdapter.setOnItemClickListener(new ImageAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Upload item) {
+                showBottomSheetForItem(item);
+            }
+        });
+
         // Initialize RecyclerView for offers
         return view;
     }
@@ -273,9 +283,8 @@ public class HomeFragment extends Fragment {
                     }
                     mUploads.add(upload);
                 }
-                mAdapter.notifyDataSetChanged();
-              ImageAdapter imageAdapter = new ImageAdapter(getActivity(), mUploads);
-                                offerRecyclerView.setAdapter(imageAdapter);
+                imageAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -288,6 +297,16 @@ public class HomeFragment extends Fragment {
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
         return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    }
+    private void showBottomSheetForItem(Upload item) {
+        BottomSheet bottomSheetFragment = new BottomSheet();
+        Bundle args = new Bundle();
+        args.putString("itemId", item.getItemId()); // Pass the itemId to the BottomSheet
+        args.putString("name", item.getName());
+        args.putString("imageUrl", item.getImageUrl());
+        args.putDouble("price", Double.parseDouble(item.getDiscountPrice()));
+        bottomSheetFragment.setArguments(args);
+        bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
     }
 
 }
