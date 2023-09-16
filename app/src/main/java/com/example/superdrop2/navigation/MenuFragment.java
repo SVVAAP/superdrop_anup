@@ -69,7 +69,7 @@ public class MenuFragment extends Fragment {
     private List<Upload> mUploads,mUploads2,mFilteredUploads; // List to hold filtered items
     private search_menu_adapter mFilteredAdapter,mAdapter2; ;
     private Button  button_search;
-    private CardView card_bunontop, card_streetwok, card_bowlexpress;
+    private CardView card_bunontop, card_streetwok, card_bowlexpress,card_vadapavexpress,card_kfc;
     private FrameLayout container_search;
     private Boolean isEditMode=false;
     private ImageView imageView,no_internet;
@@ -134,6 +134,8 @@ public class MenuFragment extends Fragment {
         card_bunontop = view.findViewById(R.id.bunontop_card);
         card_streetwok = view.findViewById(R.id.streetwok_card);
         card_bowlexpress = view.findViewById(R.id.bowlexpress_card);
+        card_vadapavexpress=view.findViewById(R.id.mvadapavexpress_card);
+        card_kfc= view.findViewById(R.id.mkfc_card);
         container_search=view.findViewById(R.id.search_container);
         mSearchView = view.findViewById(R.id.menu_searchView);
         menuconstraint=view.findViewById(R.id.constraintLayout_rest);
@@ -198,6 +200,24 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String name = "bowlexpress";
+                item_view(name);
+                handleCardViewSelection(name);
+            }
+        });
+
+        card_vadapavexpress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = "vadapavexpress";
+                item_view(name);
+                handleCardViewSelection(name);
+            }
+        });
+
+        card_kfc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = "KFC";
                 item_view(name);
                 handleCardViewSelection(name);
             }
