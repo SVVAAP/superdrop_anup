@@ -19,17 +19,17 @@ import java.util.List;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
     private Context rcontext;
     private List<Upload> mitems;
-    private rest_Adapter.OnItemClickListener listener; // Add this line
+    private ImageAdapter.OnItemClickListener listener; // Add this line
 
     public interface OnItemClickListener {
         void onItemClick(Upload item);
     }
 
     // Member variable to hold the click listener
-    private rest_Adapter.OnItemClickListener mListener;
+    private ImageAdapter.OnItemClickListener mListener;
 
     // Method to set the click listener
-    public void setOnItemClickListener(rest_Adapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(ImageAdapter.OnItemClickListener listener) {
         mListener = listener;
     }
 
