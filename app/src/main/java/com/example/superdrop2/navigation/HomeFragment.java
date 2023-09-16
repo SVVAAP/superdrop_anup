@@ -273,7 +273,7 @@ public class HomeFragment extends Fragment {
                     }
                     mUploads.add(upload);
                 }
-                mAdapter.notifyDataSetChanged();
+//                mAdapter.notifyDataSetChanged();
               ImageAdapter imageAdapter = new ImageAdapter(getActivity(), mUploads);
                                 offerRecyclerView.setAdapter(imageAdapter);
             }
