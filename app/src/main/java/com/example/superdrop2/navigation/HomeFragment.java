@@ -162,8 +162,7 @@ public class HomeFragment extends Fragment {
         // Initialize slider view
         sliderView = view.findViewById(R.id.slider_view);
         fetchImageURLs();
-
-
+        item_view();
         // Initialize RecyclerView for offers
         return view;
     }
