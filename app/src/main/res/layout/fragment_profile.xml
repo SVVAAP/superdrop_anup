@@ -73,15 +73,25 @@
                 android:textColor="#000000" />
 
             <!-- Delivery Address Section -->
+
+            <!-- Street Address -->
+            <TextView
+                android:id="@+id/textView42"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Delivery Address"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delivery Address"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:text="Note [For Now Delivery only avalable from shirva to belman And nitte]"
+                android:textSize="14sp"
+                android:textStyle="italic" />
 
-            <!-- Street Address -->
             <EditText
                 android:id="@+id/edit_street_address"
                 android:layout_width="match_parent"
@@ -105,6 +115,15 @@
 
             <!-- Emergency Contact Section -->
             <!-- Emergency Contact -->
+            <EditText
+                android:id="@+id/landmark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Landmark"
+                android:inputType="text"
+                android:textColor="#000000" />
+
             <EditText
                 android:id="@+id/edit_emergency_contact"
                 android:layout_width="match_parent"

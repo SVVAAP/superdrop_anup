@@ -20,6 +20,45 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <TextView
+        android:id="@+id/createText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:padding="8dp"
+        android:text="OrderNow"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="@color/lavender"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout6"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_margin="21dp"
+        android:background="@drawable/red_rounded_edge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createText">
+
+        <ImageView
+            android:id="@+id/sheet_img"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginBottom="1dp"
+            android:foregroundGravity="clip_horizontal|center"
+            android:src="@drawable/badge_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_background" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
@@ -29,41 +68,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
 
-        <TextView
-            android:id="@+id/createText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:fontFamily="sans-serif-black"
-            android:padding="8dp"
-            android:text="OrderNow"
-            android:textAlignment="viewStart"
-            android:textAllCaps="false"
-            android:textColor="@color/lavender"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/sheet_img"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <ImageView
-            android:id="@+id/sheet_img"
-            android:layout_width="400dp"
-            android:layout_height="200dp"
-            android:layout_margin="20dp"
-            android:foregroundGravity="clip_horizontal|center"
-            android:src="@drawable/badge_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.541"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.206"
-            app:srcCompat="@drawable/hamburger" />
 
         <TextView
             android:id="@+id/sheet_name"
@@ -84,7 +90,6 @@
             android:id="@+id/sheet_price"
             android:layout_width="103dp"
             android:layout_height="33dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/gotham"
             android:gravity="center|left"
@@ -93,7 +98,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sheet_img" />
+            app:layout_constraintTop_toTopOf="@+id/sheet_name" />
 
         <ImageView
             android:id="@+id/sheet_minus_bt"
@@ -142,38 +147,81 @@
             app:layout_constraintVertical_bias="0.6" />
 
 
-        <Button
-            android:id="@+id/sheet_order_bt"
-            style="@style/Widget.Material3.Button.ElevatedButton"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/rounded_edge"
-            android:fontFamily="@font/calibri"
-
-            android:text="View Cart"
-            android:textAlignment="center"
-            android:textStyle="bold"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="21dp"
+            android:background="@drawable/red_rounded_edge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/sheet_addtocart_bt" />
+            app:layout_constraintTop_toBottomOf="@+id/sheet_totalprice">
 
-        <Button
-            android:id="@+id/sheet_addtocart_bt"
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="5dp"
+                android:src="@drawable/shopping_cart"
+                app:layout_constraintBottom_toBottomOf="@+id/sheet_order_bt"
+                app:layout_constraintEnd_toStartOf="@+id/sheet_order_bt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/sheet_order_bt" />
+
+            <Button
+                android:id="@+id/sheet_order_bt"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/rounded_edge"
+                android:fontFamily="@font/calibri"
+                android:text="View Cart"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="@font/calibri"
-            android:src="@drawable/addtocart"
-            android:text="Add To Cart"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/sheet_order_bt"
-            app:layout_constraintHorizontal_bias="0.038"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:background="@drawable/red_rounded_edge"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout7"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout7">
+
+            <Button
+                android:id="@+id/sheet_addtocart_bt"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edge"
+                android:fontFamily="@font/calibri"
+                android:src="@drawable/addtocart"
+                android:text="Add To Cart"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:backgroundTint="#FFFFFF"
+                android:padding="5dp"
+                android:src="@drawable/add_to_basket"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/sheet_addtocart_bt"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/sheet_totalprice"
@@ -181,7 +229,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="28dp"
-            android:layout_marginBottom="8dp"
             android:fontFamily="@font/calibri"
             android:text="TextView"
             android:textAlignment="center"
@@ -189,10 +236,9 @@
             android:textColor="@color/dark_orange"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/sheet_order_bt"
+            app:layout_constraintBottom_toBottomOf="@+id/textView15"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sheet_quantity"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/sheet_quantity" />
 
         <TextView
             android:id="@+id/textView14"

@@ -1,5 +1,6 @@
 package com.example.superdrop_admin;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -39,11 +40,12 @@ public class DeleteActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private List<Upload> mUploads;
     private Button  button_search,delete;
-    private CardView card_bunontop, card_streetwok, card_bowlexpress;
+    private CardView card_bunontop, card_streetwok, card_bowlexpress,card_vadapavexpress,card_kfc,card_offer;
     private FrameLayout container_search;
     private Boolean isEditMode=false;
     ImageView imageView;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,9 @@ public class DeleteActivity extends AppCompatActivity {
         card_bunontop = findViewById(R.id.bunontop_card);
         card_streetwok = findViewById(R.id.streetwok_card);
         card_bowlexpress =findViewById(R.id.bowlexpress_card);
+        card_vadapavexpress=findViewById(R.id.mvadapavexpress_card);
+        card_kfc= findViewById(R.id.mkfc_card);
+        card_offer= findViewById(R.id.offer_card);
         button_search = findViewById(R.id.button2);
         container_search=findViewById(R.id.search_container);
         imageView =findViewById(R.id.imageView7);
@@ -91,6 +96,33 @@ item_view(data);
             @Override
             public void onClick(View view) {
                 String name = "bowlexpress";
+                data=name;
+                item_view(name);
+            }
+        });
+        card_vadapavexpress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = "vadapavexpress";
+                data=name;
+                item_view(name);
+
+            }
+        });
+
+        card_kfc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = "KFC";
+                data=name;
+                item_view(name);
+            }
+        });
+
+        card_offer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = "offers";
                 data=name;
                 item_view(name);
             }
