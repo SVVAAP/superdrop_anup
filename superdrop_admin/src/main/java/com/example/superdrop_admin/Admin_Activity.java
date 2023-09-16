@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Admin_Activity extends AppCompatActivity {
-    Button add_rest,add_offer,add_bunontop,add_streetwok,add_bowlexpres,orders,tab,Offeradd;
+    Button add_rest,add_offer,add_bunontop,add_streetwok,add_bowlexpres,orders,tab,Offeradd,add_vadapav,add_kfc;
     ImageView logout;
 
     @Override
@@ -33,6 +33,8 @@ public class Admin_Activity extends AppCompatActivity {
         orders=findViewById(R.id.owners_bt);
         tab=findViewById(R.id.tab_bt);
         Offeradd=findViewById(R.id.offer_item_add);
+        add_vadapav=findViewById(R.id.vadapav_add_bt);
+        add_kfc=findViewById(R.id.kfc_add_bt);
 
         add_rest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +90,20 @@ public class Admin_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Admin_Activity.this, Offer_item_addActivity.class);
+                startActivity(intent);
+            }
+        });
+        add_vadapav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Admin_Activity.this, VadaPav_Add_Activity.class);
+                startActivity(intent);
+            }
+        });
+        add_kfc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Admin_Activity.this, KFC_Add_Activity.class);
                 startActivity(intent);
             }
         });

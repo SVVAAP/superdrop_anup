@@ -63,33 +63,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+
     private RecyclerView mRecyclerView;
     private rest_Adapter mAdapter;
     private ProgressBar mProgressCircle;
     private List<Upload> mUploads;
     SliderView sliderView;
     private List<String> imageURLs = new ArrayList<>();
-
-    //animatiopn in homr page
     private View rootView;
     private Animation fadeInAnimation;
     private Animation slideUpAnimation;
     private RecyclerView offerRecyclerView;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
     private  SwipeRefreshLayout swipeRefreshLayout;
-private ImageView no_internet;
-
-//    private CardView c1,c2,c3;
-//    int[] images ={R.drawable.one,
-//            R.drawable.one,
-//            R.drawable.one,
-//            R.drawable.one,
-//            R.drawable.one};
-
-    RecyclerView postmodle;
+    private ImageView no_internet;
     List<postview> postviewlist;
     private ImageAdapter imageAdapter;
-    private DatabaseReference mdatabaseref;
+    private DatabaseReference mdatabaseref, mDatabaseRef;
 
 
     public HomeFragment() {
@@ -139,6 +129,18 @@ private ImageView no_internet;
         cardBowlexpress.setOnClickListener(v -> {
             String bowlexpressData = "bunontop";
             openMenuFragment(bowlexpressData);
+        });
+
+        CardView cardVadaPavexpress = view.findViewById(R.id.vadpavexpress_card);
+        cardVadaPavexpress.setOnClickListener(v -> {
+            String vadapavData = "vadapavexpress";
+            openMenuFragment(vadapavData);
+        });
+
+        CardView cardKFC = view.findViewById(R.id.kfc_card);
+        cardKFC.setOnClickListener(v -> {
+            String kfcData = "vadapavexpress";
+            openMenuFragment(kfcData);
         });
 
         // Initialize animations
@@ -208,8 +210,7 @@ private ImageView no_internet;
                                 sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
                                 sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
                                 sliderView.startAutoCycle();
-                                ImageAdapter imageAdapter = new ImageAdapter(getActivity(), imageURLs);
-                                offerRecyclerView.setAdapter(imageAdapter);
+
 
                             }
                         })
@@ -253,6 +254,36 @@ private ImageView no_internet;
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 2000); // Delayed for 2 seconds to simulate data loading
+    }
+    public void item_view() {
+
+            mDatabaseRef = FirebaseDatabase.getInstance().getReference("Offer_item");
+            mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            // Inside the ValueEventListener in HomeFragment
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mUploads.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Upload upload = postSnapshot.getValue(Upload.class);
+                    // Get the download URL from Firebase Storage and set it in the Upload object
+                    upload.setImageUrl(postSnapshot.child("imageUrl").getValue(String.class));
+                    // Retrieve the price from Firebase and set it in the Upload object
+                    Double priceValue = postSnapshot.child("price").getValue(Double.class);
+                    if (priceValue != null) {
+                        upload.setPrice(priceValue);
+                    }
+                    mUploads.add(upload);
+                }
+                mAdapter.notifyDataSetChanged();
+              ImageAdapter imageAdapter = new ImageAdapter(getActivity(), mUploads);
+                                offerRecyclerView.setAdapter(imageAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
