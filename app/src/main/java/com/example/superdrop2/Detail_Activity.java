@@ -48,7 +48,7 @@ public class Detail_Activity extends AppCompatActivity {
         signUpButton = findViewById(R.id.signup_button);
 
         // Define your city options as an array of strings
-        String[] cityOptions = {"Shirva", "Belman", "Nitte","Moodebelle","Mudrangadi" };
+        String[] cityOptions = {"Shirva", "Belman", "Nitte","Moodebelle","Mudrangadi"};
 
         // Initialize the ArrayAdapter
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityOptions);
@@ -70,7 +70,12 @@ public class Detail_Activity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadDetails();
+                // Check if all required fields are filled
+                if (areFieldsValid()) {
+                    uploadDetails();
+                } else {
+                    Toast.makeText(Detail_Activity.this, "Please fill out all required fields.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -102,5 +107,13 @@ public class Detail_Activity extends AppCompatActivity {
                         Toast.makeText(Detail_Activity.this, "Failed to upload details.", Toast.LENGTH_SHORT).show();
                     });
         }
+    }
+
+    private boolean areFieldsValid() {
+        // Check if all required fields are filled
+        return !fullName.getText().toString().isEmpty()
+                && !phoneNumber.getText().toString().isEmpty()
+                && !address.getText().toString().isEmpty()
+                && !landmark.getText().toString().isEmpty();
     }
 }
