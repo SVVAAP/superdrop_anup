@@ -105,14 +105,14 @@ public class HomeFragment extends Fragment {
             no_internet.setVisibility(View.VISIBLE);
         }
 
-      // swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                // Implement the logic to refresh your data here
-//                refreshData();
-//            }
-//        });
+       swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Implement the logic to refresh your data here
+                refreshData();
+            }
+        });
 
         CardView cardBunontop = view.findViewById(R.id.bowlexpress_card);
         cardBunontop.setOnClickListener(v -> {
