@@ -117,11 +117,15 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/city_text"
+        <Spinner
+            android:id="@+id/city_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             android:hint="City/Town" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
