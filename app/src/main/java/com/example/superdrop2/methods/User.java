@@ -7,7 +7,7 @@ public class User {
     private String fullName,Token;
     private String phone;
     private String streetAddress;
-    private String city;
+    private String city,landmark;
     private String emergencyContact;
     private float rating;
     private String profileImageUrl; // New attribute to store image URL
@@ -16,21 +16,24 @@ public class User {
         // Default constructor required for Firebase
     }
 
-    public User(String fullName,String phone,String streetAddress,String city,String emergencyContact,float rating,String imageurl){
+    public User(String fullName,String phone,String streetAddress,String city,String landmark_profile_text,String emergencyContact,float rating,String imageurl){
         this.fullName=fullName;
         this.phone=phone;
         this.streetAddress=streetAddress;
         this.city=city;
+        this.landmark=landmark_profile_text;
         this.emergencyContact=emergencyContact;
         this.rating=rating;
         this.profileImageUrl=imageurl;
 
     }
-    public User(String fullName, String phoneNumber,String phoneNumberoptl, String address,String Token) {
+    public User(String fullName, String phoneNumber,String phoneNumberoptl, String address,String cityAddress,String landmarkAddress,String Token) {
         this.fullName = fullName;
         this.phone=phoneNumber;
         this.emergencyContact = phoneNumberoptl;
         this.streetAddress = address;
+        this.city = cityAddress;
+        this.landmark = landmarkAddress;
         this.Token = Token;
     }
     public String getToken() {
@@ -97,4 +100,11 @@ public class User {
     }
 
 
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
 }

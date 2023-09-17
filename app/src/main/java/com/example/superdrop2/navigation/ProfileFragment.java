@@ -47,7 +47,7 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
 
-    private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact;
+    private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact,editlandmark;
     private RatingBar ratingBar;
     private Button submitButton, editProfileButton,admin,owner,track;
     private ImageView profileImage,logout;
@@ -86,6 +86,7 @@ public class ProfileFragment extends Fragment {
         editPhone = view.findViewById(R.id.edit_phone);
         editStreetAddress = view.findViewById(R.id.edit_street_address);
         editCity = view.findViewById(R.id.edit_city);
+        editlandmark= view.findViewById(R.id.edit_landmark);
         editEmergencyContact = view.findViewById(R.id.edit_emergency_contact);
         ratingBar = view.findViewById(R.id.rating_bar);
         submitButton = view.findViewById(R.id.Submit);
@@ -111,6 +112,7 @@ public class ProfileFragment extends Fragment {
                     editPhone.setText(user.getPhone());
                     editStreetAddress.setText(user.getStreetAddress());
                     editCity.setText(user.getCity());
+                    editlandmark.setText(user.getLandmark());
                     editEmergencyContact.setText(user.getEmergencyContact());
                     ratingBar.setRating(user.getRating());
 
@@ -239,6 +241,7 @@ public class ProfileFragment extends Fragment {
         editPhone.setEnabled(editMode);
         editStreetAddress.setEnabled(editMode);
         editCity.setEnabled(editMode);
+        editlandmark.setEnabled(editMode);
         editEmergencyContact.setEnabled(editMode);
         submitButton.setVisibility(editMode ? View.VISIBLE : View.GONE);
         editProfileButton.setVisibility(editMode?View.GONE:View.VISIBLE);
@@ -257,6 +260,7 @@ public class ProfileFragment extends Fragment {
         String phone = editPhone.getText().toString();
         String streetAddress = editStreetAddress.getText().toString();
         String city = editCity.getText().toString();
+        String landmark = editlandmark.getText().toString();
         String emergencyContact = editEmergencyContact.getText().toString();
         float rating = ratingBar.getRating();
         String imageurl=profileImage.toString();
@@ -269,7 +273,7 @@ public class ProfileFragment extends Fragment {
 
             // Save the user data to Firebase using the databaseReference
             // Replace "users" with your database reference
-            User user = new User(fullName, phone, streetAddress, city, emergencyContact,rating,imageurl);
+            User user = new User(fullName, phone, streetAddress, city,landmark, emergencyContact,rating,imageurl);
             databaseReference.setValue(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

@@ -116,7 +116,7 @@
             <!-- Emergency Contact Section -->
             <!-- Emergency Contact -->
             <EditText
-                android:id="@+id/landmark"
+                android:id="@+id/edit_landmark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

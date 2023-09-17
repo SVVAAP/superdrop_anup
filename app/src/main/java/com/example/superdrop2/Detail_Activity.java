@@ -19,7 +19,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Detail_Activity extends AppCompatActivity {
 
-    private EditText fullName, phoneNumber, address;
+    private EditText fullName, phoneNumber, address,city,landmark;
     private Button signUpButton;
     // Firebase references
     private FirebaseAuth mAuth;
@@ -40,6 +40,8 @@ public class Detail_Activity extends AppCompatActivity {
         fullName = findViewById(R.id.fullname);
         phoneNumber = findViewById(R.id.phone_number);
         address = findViewById(R.id.address_text);
+        city = findViewById(R.id.city_text);
+        landmark =findViewById(R.id.landmark_text);
         signUpButton = findViewById(R.id.signup_button);
 
 
@@ -67,12 +69,15 @@ public class Detail_Activity extends AppCompatActivity {
             String name = fullName.getText().toString();
             String phone_optnl = phoneNumber.getText().toString();
             String userAddress = address.getText().toString();
+            String cityAddress = city.getText().toString();
+            String landmarkAddress = landmark.getText().toString();
+
 
             // Reference to the "users" node in Firebase Database
             DatabaseReference userRef = mDatabase.getReference("users").child(userId);
 
             // Create a User object and set the details
-            User userDetails = new User(name,phoneNumberget, phone_optnl, userAddress,Token);
+            User userDetails = new User(name,phoneNumberget, phone_optnl, userAddress,cityAddress,landmarkAddress,Token);
 
             // Push the user details to the database
             userRef.setValue(userDetails)
