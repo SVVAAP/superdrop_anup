@@ -118,6 +118,13 @@
                 android:hint="Phone Number"
                 android:inputType="textMultiLine" />
 
+            <Spinner
+                android:id="@+id/ccity_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:entries="@array/city_options" />
+
 
             <!-- note -->
             <Button
@@ -322,7 +329,7 @@
                     android:id="@+id/checkout_grandtotal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Total Price"
+                    android:text="0.00"
                     android:textAlignment="textEnd"
                     android:textColor="#D74315"
                     android:textSize="30sp"

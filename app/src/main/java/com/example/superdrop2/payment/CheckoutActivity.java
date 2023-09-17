@@ -13,10 +13,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,6 +98,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CartAdapter adapter;
     private List<CartItem> cartItemList;
+    private Spinner citySpinner;
     private FirebaseAuth mAuth;
     private DatabaseReference userCartRef, databaseReference;
     private StorageReference storageReference;
@@ -115,7 +118,13 @@ public class CheckoutActivity extends AppCompatActivity {
             // Handle user not authenticated
 
         }
-
+        shippingNameEditText = findViewById(R.id.shipping_name);
+        shippingAddressEditText = findViewById(R.id.shipping_address);
+        shippingCityEditText = findViewById(R.id.shipping_city);
+        contactInstructionsEditText = findViewById(R.id.contact_instructions);
+        noteEditText = findViewById(R.id.note);
+        totalPriceTextView = findViewById(R.id.checkout_grandtotal);
+        citySpinner = findViewById(R.id.ccity_spinner);
         userId = currentUser.getUid();
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
 
@@ -142,8 +151,19 @@ public class CheckoutActivity extends AppCompatActivity {
                     shippingNameEditText.setText(user.getFullName());
                     contactInstructionsEditText.setText(user.getPhone());
                     shippingAddressEditText.setText(user.getStreetAddress());
-                    shippingCityEditText.setText(user.getCity());
                     cToken=user.getToken();
+                    String selectedCityFromFirebase = user.getCity(); // Replace with the actual retrieved value
+
+// Find the index of the selected city in the string array
+                    ArrayAdapter<String> cityAdapter = (ArrayAdapter<String>) citySpinner.getAdapter();
+                    int position = cityAdapter.getPosition(selectedCityFromFirebase);
+
+// Set the selected item in the citySpinner
+                    if (position != -1) {
+                        citySpinner.setSelection(position);
+                    } else {
+
+                    }
                 }
             }
 
@@ -159,12 +179,14 @@ public class CheckoutActivity extends AppCompatActivity {
         orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
         corderDatabaseReference= FirebaseDatabase.getInstance().getReference("cust_orders").child(userId);
         // Initialize views
-        shippingNameEditText = findViewById(R.id.shipping_name);
-        shippingAddressEditText = findViewById(R.id.shipping_address);
-        shippingCityEditText = findViewById(R.id.shipping_city);
-        contactInstructionsEditText = findViewById(R.id.contact_instructions);
-        noteEditText = findViewById(R.id.note);
-        totalPriceTextView = findViewById(R.id.checkout_grandtotal);
+
+        ArrayAdapter ctadapter = ArrayAdapter.createFromResource(this, R.array.city_options, android.R.layout.simple_spinner_item);
+
+        // Set the dropdown layout style
+        ctadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set the ArrayAdapter to the Spinner
+        citySpinner.setAdapter(ctadapter);
 
 //        paymentMethodsRadioGroup = findViewById(R.id.payment_methods_radio_group);
 //        gpayUPIRadioButton = findViewById(R.id.gpay_upi);
@@ -227,7 +249,7 @@ public class CheckoutActivity extends AppCompatActivity {
         orderID = generateOrderID();
         String shippingName = shippingNameEditText.getText().toString();
         String shippingAddress = shippingAddressEditText.getText().toString();
-        String shippingCity = shippingCityEditText.getText().toString();
+        String shippingCity = citySpinner.getSelectedItem().toString();
         String contactInstructions = contactInstructionsEditText.getText().toString();
         String note = noteEditText.getText().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

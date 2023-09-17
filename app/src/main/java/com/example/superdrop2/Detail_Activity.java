@@ -47,17 +47,14 @@ public class Detail_Activity extends AppCompatActivity {
         landmark = findViewById(R.id.landmark_text);
         signUpButton = findViewById(R.id.signup_button);
 
-        // Define your city options as an array of strings
-        String[] cityOptions = {"Shirva", "Belman", "Nitte","Moodebelle","Mudrangadi"};
-
         // Initialize the ArrayAdapter
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityOptions);
+        ArrayAdapter ctadapter = ArrayAdapter.createFromResource(this, R.array.city_options, android.R.layout.simple_spinner_item);
 
         // Set the dropdown layout style
-        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ctadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Set the ArrayAdapter to the Spinner
-        citySpinner.setAdapter(cityAdapter);
+        citySpinner.setAdapter(ctadapter);
 
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
@@ -114,6 +111,7 @@ public class Detail_Activity extends AppCompatActivity {
         return !fullName.getText().toString().isEmpty()
                 && !phoneNumber.getText().toString().isEmpty()
                 && !address.getText().toString().isEmpty()
-                && !landmark.getText().toString().isEmpty();
+                && !landmark.getText().toString().isEmpty()
+                && citySpinner.getSelectedItemPosition() != 0;
     }
 }

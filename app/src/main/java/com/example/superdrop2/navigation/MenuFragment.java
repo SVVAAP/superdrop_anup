@@ -288,6 +288,10 @@ public class MenuFragment extends Fragment {
             clickedLinearLayout = card_streetwok.findViewById(R.id.linear_streetwok_card);
         } else if ("bowlexpress".equals(folderName)) {
             clickedLinearLayout = card_bowlexpress.findViewById(R.id.linear_bowlexpress_card);
+        } else if ("KFC".equals(folderName)) {
+            clickedLinearLayout = card_bowlexpress.findViewById(R.id.linear_kfc_card);
+        } else if ("vadapavexpress".equals(folderName)) {
+            clickedLinearLayout = card_bowlexpress.findViewById(R.id.linear_vadapavexpress_card);
         }
 
         if (clickedLinearLayout != null) {
