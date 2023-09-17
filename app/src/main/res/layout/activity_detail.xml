@@ -110,23 +110,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
+    <!--*******City Selection**********-->
+    <Spinner
+        android:id="@+id/city_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp">
-
-        <Spinner
-            android:id="@+id/city_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:hint="City/Town" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+       android:layout_margin="15dp"
+        android:prompt="City"
+        android:entries="@array/city_options" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"

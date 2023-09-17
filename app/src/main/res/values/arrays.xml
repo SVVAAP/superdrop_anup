@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="city_options">
+        <item>Shirva</item>
+        <item>Belman</item>
+        <item>Nitte</item>
+        <item>Kapu</item>
+        <item>Moodubelle</item>
+        <item>Mudarangadi</item>
+    </string-array>
+</resources>
