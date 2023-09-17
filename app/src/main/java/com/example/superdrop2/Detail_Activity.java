@@ -48,7 +48,7 @@ public class Detail_Activity extends AppCompatActivity {
         signUpButton = findViewById(R.id.signup_button);
 
         // Define your city options as an array of strings
-        String[] cityOptions = {"Shirva", "Belman", "Nitte"};
+        String[] cityOptions = {"Shirva", "Belman", "Nitte","Moodebelle","Mudrangadi" };
 
         // Initialize the ArrayAdapter
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityOptions);
