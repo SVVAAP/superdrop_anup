@@ -537,7 +537,7 @@ public class CheckoutActivity extends AppCompatActivity {
             userRef.setValue(userDetails)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(CheckoutActivity.this, "Details uploaded successfully!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(CheckoutActivity.this, NavActivity.class));
+                        setEditMode(false);
                         finish();
                     })
                     .addOnFailureListener(e -> {
