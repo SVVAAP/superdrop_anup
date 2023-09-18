@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment {
         mUploads = new ArrayList<>();
         postviewlist= new ArrayList<>();
         sliderView = view.findViewById(R.id.slider_view);
-        no_internet=view.findViewById(R.id.hno_internet_layout);
+       // no_internet=view.findViewById(R.id.hno_internet_layout);
         offerRecyclerView=view.findViewById(R.id.offer_recyclerview);
         offerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
