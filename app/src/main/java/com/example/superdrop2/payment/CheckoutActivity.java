@@ -229,7 +229,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 intdeliveryCharge = 75;
                 break;
         }
-        deliveryCharge.setText(String.valueOf(intdeliveryCharge));
+        deliveryCharge.setText("₹" + new DecimalFormat("0.00").format(intdeliveryCharge));
     }
 
 
