@@ -169,6 +169,12 @@ public class MenuFragment extends Fragment {
                 return false;
             }
         });
+        no_internet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Please connect to your network!!!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         handleCardViewSelection(data1);
         FragmentManager fm = getChildFragmentManager();

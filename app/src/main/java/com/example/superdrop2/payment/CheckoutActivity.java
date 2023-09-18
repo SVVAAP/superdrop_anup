@@ -97,9 +97,10 @@ public class CheckoutActivity extends AppCompatActivity {
     private RadioGroup paymentMethodsRadioGroup;
     private RadioButton gpayUPIRadioButton, cashOnDeliveryRadioButton;
     private TextView totalPriceTextView, deliveryCharge;
-    private Button placeOrderButton;
+    private Button placeOrderButton,changeAddress;
     private RecyclerView recyclerView;
     private CartAdapter adapter;
+    private boolean isEditMode = false;
     private List<CartItem> cartItemList;
     private Spinner citySpinner;
     private FirebaseAuth mAuth;
@@ -134,9 +135,10 @@ public class CheckoutActivity extends AppCompatActivity {
         citySpinner = findViewById(R.id.ccity_spinner);
         userId = currentUser.getUid();
         back_img = findViewById(R.id.backarrow_img);
-        ContactOptialEditText=findViewById(R.id.contact_optional);
+        ContactOptialEditText = findViewById(R.id.contact_optional);
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
         deliveryCharge = findViewById(R.id.delivery_charge);
+        changeAddress = findViewById(R.id.change_address_btn);
 
 
         recyclerView = findViewById(R.id.checkout_recyclerview);
@@ -230,6 +232,25 @@ public class CheckoutActivity extends AppCompatActivity {
 
             }
         });
+
+        changeAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (isEditMode) {
+                        uploaduserdetails();
+                        changedeliverycharge();
+                    } else {
+                        setEditMode(true);
+                    }
+                }
+            }
+        });
+    }
+    private void changedeliverycharge(){
         String selecteditem = citySpinner.getSelectedItem().toString();
         switch (selecteditem) {
             case "Shirva":
@@ -249,10 +270,15 @@ public class CheckoutActivity extends AppCompatActivity {
         }
         deliveryCharge.setText("₹" + new DecimalFormat("0.00").format(intdeliveryCharge));
     }
-
-
-    // notification code here
-
+    private void setEditMode(boolean editMode) {
+        isEditMode = editMode;
+        shippingNameEditText.setEnabled(editMode);
+        contactInstructionsEditText.setEnabled(editMode);
+       shippingAddressEditText.setEnabled(editMode);
+       ContactOptialEditText.setEnabled(editMode);
+        shippinglandmark.setEnabled(editMode);
+        citySpinner.setEnabled(editMode);
+    }
     private void placeOrder() {
         orderID = generateOrderID();
         String shippingName = shippingNameEditText.getText().toString();

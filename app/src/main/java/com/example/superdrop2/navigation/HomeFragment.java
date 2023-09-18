@@ -102,7 +102,7 @@ public class HomeFragment extends Fragment {
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
 
         if (networkCapabilities == null || !networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-            no_internet.setVisibility(View.VISIBLE);
+//            no_internet.setVisibility(View.VISIBLE);
         }
 
        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
