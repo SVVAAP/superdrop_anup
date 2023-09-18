@@ -343,7 +343,7 @@
                     android:id="@+id/offer_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="70dp"
+                    android:layout_marginBottom="20dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="35dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -360,4 +360,16 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/hno_internet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FDF7E3"
+        android:src="@drawable/no_internet"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/no_internet" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
