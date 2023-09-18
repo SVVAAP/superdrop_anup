@@ -2,6 +2,7 @@ package com.example.superdrop2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -29,7 +30,8 @@ private RecyclerView  offerRecyclerView;
         setContentView(R.layout.activity_offer);
         mUploads = new ArrayList<>();
         offerRecyclerView.findViewById(R.id.offer_recyclerview2);
-
+        offerRecyclerView.setHasFixedSize(true);
+        offerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         item_view();
         imageAdapter = new ImageAdapter(this, mUploads);
         offerRecyclerView.setAdapter(imageAdapter);

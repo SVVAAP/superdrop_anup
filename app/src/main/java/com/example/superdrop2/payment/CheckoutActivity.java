@@ -148,7 +148,7 @@ public class CheckoutActivity extends AppCompatActivity {
         cartItemList = new ArrayList<>();
         adapter = new CartAdapter(cartItemList, this);
         recyclerView.setAdapter(adapter);
-
+        setEditMode(false);
         retrieveCartItems();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
         storageReference = FirebaseStorage.getInstance().getReference("users").child(userId);
@@ -163,7 +163,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     shippingNameEditText.setText(user.getFullName());
                     contactInstructionsEditText.setText(user.getPhone());
                     shippingAddressEditText.setText(user.getStreetAddress());
-
+                    ContactOptialEditText.setText(user.getEmergencyContact());
                     cToken = user.getToken();
                     shippinglandmark.setText(user.getLandmark());
                     String selectedCityFromFirebase = user.getCity(); // Replace with the actual retrieved value
