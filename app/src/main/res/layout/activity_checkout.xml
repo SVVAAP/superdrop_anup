@@ -34,7 +34,7 @@
                 android:layout_marginBottom="21dp">
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/backarrow_img"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -116,6 +116,15 @@
                 android:layout_marginStart="10dp"
                 android:gravity="start|top"
                 android:hint="Phone Number"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/contact_optional"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:gravity="start|top"
+                android:hint="Phone Number(optional)"
                 android:inputType="textMultiLine" />
 
             <Spinner

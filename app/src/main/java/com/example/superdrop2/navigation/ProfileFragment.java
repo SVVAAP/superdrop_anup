@@ -13,10 +13,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -51,7 +53,7 @@ public class ProfileFragment extends Fragment {
     private RatingBar ratingBar;
     private Button submitButton, editProfileButton,admin,owner,track;
     private ImageView profileImage,logout;
-
+    private Spinner citySpinner;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
 
@@ -72,6 +74,14 @@ public class ProfileFragment extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
         String userId = user.getUid();
         admin = view.findViewById(R.id.adminbt);
+        citySpinner = view.findViewById(R.id.pcity_spinner);
+        ArrayAdapter ctadapter = ArrayAdapter.createFromResource(getContext(), R.array.city_options, android.R.layout.simple_spinner_item);
+
+        // Set the dropdown layout style
+        ctadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set the ArrayAdapter to the Spinner
+        citySpinner.setAdapter(ctadapter);
 
         admin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,10 +121,20 @@ public class ProfileFragment extends Fragment {
                     editFullName.setText(user.getFullName());
                     editPhone.setText(user.getPhone());
                     editStreetAddress.setText(user.getStreetAddress());
-                    editCity.setText(user.getCity());
+//                    editCity.setText(user.getCity());
                     editlandmark.setText(user.getLandmark());
                     editEmergencyContact.setText(user.getEmergencyContact());
                     ratingBar.setRating(user.getRating());
+                    String selectedCityFromFirebase=user.getCity();
+                    ArrayAdapter<String> cityAdapter = (ArrayAdapter<String>) citySpinner.getAdapter();
+                    int position = cityAdapter.getPosition(selectedCityFromFirebase);
+
+// Set the selected item in the citySpinner
+                    if (position != -1) {
+                        citySpinner.setSelection(position);
+                    } else {
+
+                    }
 
                     // Load and display profile image using Picasso
                     if (user.getProfileImageUrl() != null) {
@@ -243,6 +263,7 @@ public class ProfileFragment extends Fragment {
         editCity.setEnabled(editMode);
         editlandmark.setEnabled(editMode);
         editEmergencyContact.setEnabled(editMode);
+        citySpinner.setEnabled(editMode);
         submitButton.setVisibility(editMode ? View.VISIBLE : View.GONE);
         editProfileButton.setVisibility(editMode?View.GONE:View.VISIBLE);
     }
@@ -259,7 +280,7 @@ public class ProfileFragment extends Fragment {
         String fullName = editFullName.getText().toString();
         String phone = editPhone.getText().toString();
         String streetAddress = editStreetAddress.getText().toString();
-        String city = editCity.getText().toString();
+        String city = citySpinner.getSelectedItem().toString();
         String landmark = editlandmark.getText().toString();
         String emergencyContact = editEmergencyContact.getText().toString();
         float rating = ratingBar.getRating();

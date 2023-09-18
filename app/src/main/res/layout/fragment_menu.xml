@@ -44,12 +44,14 @@
 
             <SearchView
                 android:id="@+id/menu_searchView"
+                style="@android:style/Widget.Material.SearchView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="4dp"
                 android:background="@drawable/circle_background"
+                android:queryHint="Order,Enjoy,Repeat!!"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -359,6 +361,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FDF7E3"
+        android:clickable="true"
         android:src="@drawable/no_internet"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
