@@ -181,6 +181,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Don't get the OTP?"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/tvResendBtn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -196,6 +197,7 @@
             android:text="RESEND OTP"
             android:textColor="@color/red_400"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/textView7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -215,6 +217,15 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <TextView
+            android:id="@+id/textView44"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(please don't copy  paste the code)"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMobile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

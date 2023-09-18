@@ -32,12 +32,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.superdrop2.Cart_Activity;
+import com.example.superdrop2.Detail_Activity;
 import com.example.superdrop2.MainActivity;
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.CartAdapter;
 import com.example.superdrop2.adapter.CartItem;
 import com.example.superdrop2.methods.Order;
 import com.example.superdrop2.methods.User;
+import com.example.superdrop2.navigation.NavActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -91,21 +93,22 @@ import okhttp3.Response;
 
 public class CheckoutActivity extends AppCompatActivity {
 
-    private EditText shippingNameEditText, shippingAddressEditText, shippingCityEditText,shippinglandmark, contactInstructionsEditText, noteEditText;
+    private EditText shippingNameEditText, shippingAddressEditText, shippingCityEditText, shippinglandmark, contactInstructionsEditText, noteEditText,ContactOptialEditText;
     private RadioGroup paymentMethodsRadioGroup;
     private RadioButton gpayUPIRadioButton, cashOnDeliveryRadioButton;
-    private TextView totalPriceTextView,deliveryCharge;
+    private TextView totalPriceTextView, deliveryCharge;
     private Button placeOrderButton;
     private RecyclerView recyclerView;
     private CartAdapter adapter;
     private List<CartItem> cartItemList;
     private Spinner citySpinner;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
     private DatabaseReference userCartRef, databaseReference;
     private StorageReference storageReference;
     double total = 0.0;
-    private DatabaseReference orderDatabaseReference,corderDatabaseReference;
-    private String userId,orderID,cToken;
+    private DatabaseReference orderDatabaseReference, corderDatabaseReference;
+    private String userId, orderID, cToken;
     int intdeliveryCharge;
     private ImageView back_img;
 
@@ -125,12 +128,13 @@ public class CheckoutActivity extends AppCompatActivity {
         shippingAddressEditText = findViewById(R.id.shipping_address);
         shippingCityEditText = findViewById(R.id.shipping_city);
         contactInstructionsEditText = findViewById(R.id.contact_instructions);
-        shippinglandmark=findViewById(R.id.shipping_landmark);
+        shippinglandmark = findViewById(R.id.shipping_landmark);
         noteEditText = findViewById(R.id.note);
         totalPriceTextView = findViewById(R.id.checkout_grandtotal);
         citySpinner = findViewById(R.id.ccity_spinner);
         userId = currentUser.getUid();
-        back_img=findViewById(R.id.backarrow_img);
+        back_img = findViewById(R.id.backarrow_img);
+        ContactOptialEditText=findViewById(R.id.contact_optional);
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
         deliveryCharge = findViewById(R.id.delivery_charge);
 
@@ -157,6 +161,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     shippingNameEditText.setText(user.getFullName());
                     contactInstructionsEditText.setText(user.getPhone());
                     shippingAddressEditText.setText(user.getStreetAddress());
+
                     cToken = user.getToken();
                     shippinglandmark.setText(user.getLandmark());
                     String selectedCityFromFirebase = user.getCity(); // Replace with the actual retrieved value
@@ -202,7 +207,7 @@ public class CheckoutActivity extends AppCompatActivity {
         back_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(CheckoutActivity.this,Cart_Activity.class);
+                Intent intent = new Intent(CheckoutActivity.this, Cart_Activity.class);
                 startActivity(intent);
             }
         });
@@ -246,37 +251,8 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
 
-        // notification code here
-    private void showOrderPlacedNotification() {
-        // Create a notification builder
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
-                .setSmallIcon(R.drawable.appicon)
-                .setContentTitle("Order Placed")
-                .setContentText("Your order has been placed successfully.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+    // notification code here
 
-        // Create an image Bitmap and set it to the style
-        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noti_icon);
-        NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle()
-                .bigPicture(imageBitmap)
-                .bigLargeIcon(null); // Optional: Set a large icon for the expanded notification
-
-        // Attach the style to the builder
-        builder.setStyle(bigPictureStyle);
-
-        // Attach an intent to open an activity when notification is clicked
-        Intent intent = new Intent(this, OrderPlacedActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        builder.setContentIntent(pendingIntent);
-
-        // Display the notification
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        if (ActivityCompat.checkSelfPermission(CheckoutActivity.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Handle permission
-            return;
-        }
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
-    }
     private void placeOrder() {
         orderID = generateOrderID();
         String shippingName = shippingNameEditText.getText().toString();
@@ -284,12 +260,12 @@ public class CheckoutActivity extends AppCompatActivity {
         String shippingCity = citySpinner.getSelectedItem().toString();
         String contactInstructions = contactInstructionsEditText.getText().toString();
         String note = noteEditText.getText().toString();
-        String landmark=shippinglandmark.getText().toString();
+        String landmark = shippinglandmark.getText().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String currentDate = dateFormat.format(Calendar.getInstance().getTime());
         String currentTime = timeFormat.format(Calendar.getInstance().getTime());
-        String newstatus="Ordering";
+        String newstatus = "Ordering";
 
         String paymentMethod = "COD";
 //        int selectedRadioButtonId = paymentMethodsRadioGroup.getCheckedRadioButtonId();
@@ -306,12 +282,12 @@ public class CheckoutActivity extends AppCompatActivity {
 //        }
 
         // You can handle more payment methods here
-        String gtotal=calculateTotalAmount();
-        String orderStatus="Pending";
+        String gtotal = calculateTotalAmount();
+        String orderStatus = "Pending";
 
         // Store order details in Firebase
-        Order order = new Order(orderID,shippingName, shippingAddress, shippingCity,
-                contactInstructions, note, paymentMethod,newstatus,gtotal,orderStatus,landmark);
+        Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
+                contactInstructions, note, paymentMethod, newstatus, gtotal, orderStatus, landmark);
         order.setItems(cartItemList);
         order.setUserId(userId);
         order.setDate(currentDate); // Set the current date
@@ -332,12 +308,13 @@ public class CheckoutActivity extends AppCompatActivity {
                 // Get the owner's device token from your database
                 String ownerToken = "OWNER_DEVICE_TOKEN"; // Replace with actual owner's device token
                 sendNotificationToAllOwners();
-                Intent intent=new Intent(CheckoutActivity.this,OrderPlacedActivity.class);
-                showNotification(CheckoutActivity.this,"New Order","Order Id:"+orderID,intent);
+                Intent intent = new Intent(CheckoutActivity.this, OrderPlacedActivity.class);
+                showNotification(CheckoutActivity.this, "New Order", "Order Id:" + orderID, intent);
                 redirectToOrderPlacedPage();
             }
         });
     }
+
     private String generateOrderID() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault());
         String timestamp = dateFormat.format(new Date());
@@ -349,7 +326,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private String calculateTotalAmount() {
-       String grandtotal=String.valueOf(total);
+        String grandtotal = String.valueOf(total);
         return grandtotal; // Replace with your actual total amount
     }
 
@@ -368,26 +345,28 @@ public class CheckoutActivity extends AppCompatActivity {
         intent.setPackage("com.google.android.apps.nbu.paisa.user");
         startActivity(intent);
     }
-    public void showNotification(Context context,String title,String message,Intent intent){
-        NotificationManager notificationManager=(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        int notificationid=1;
-        String channelid ="Channel1";
-        String channelName="My Channel";
-        int importance=NotificationManager.IMPORTANCE_HIGH;
 
-        NotificationChannel notificationChannel=new NotificationChannel(channelid,channelName,importance);
+    public void showNotification(Context context, String title, String message, Intent intent) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        int notificationid = 1;
+        String channelid = "Channel1";
+        String channelName = "My Channel";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
+        NotificationChannel notificationChannel = new NotificationChannel(channelid, channelName, importance);
         notificationManager.createNotificationChannel(notificationChannel);
 
-        NotificationCompat.Builder mbuilder=new NotificationCompat.Builder(context,channelid)
+        NotificationCompat.Builder mbuilder = new NotificationCompat.Builder(context, channelid)
                 .setSmallIcon(R.drawable.cat_2)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true);
 
-        PendingIntent intent1=PendingIntent.getActivity(context,1,intent,PendingIntent.FLAG_MUTABLE);
+        PendingIntent intent1 = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_MUTABLE);
         mbuilder.setContentIntent(intent1);
-        notificationManager.notify(notificationid,mbuilder.build());
+        notificationManager.notify(notificationid, mbuilder.build());
     }
+
     private void sendNotificationToAllOwners() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference tokensRef = database.getReference("tokens");
@@ -418,6 +397,7 @@ public class CheckoutActivity extends AppCompatActivity {
         SendNotificationTask task = new SendNotificationTask(tokens);
         new Thread(task).start();
     }
+
     private class SendNotificationTask implements Runnable {
         private List<String> tokens;
 
@@ -475,6 +455,7 @@ public class CheckoutActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // Optional: Close the current activity if needed
     }
+
     private void retrieveCartItems() {
         userCartRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -492,7 +473,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
 
                 adapter.notifyDataSetChanged();
-                total=total+intdeliveryCharge;
+                total = total + intdeliveryCharge;
                 totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
             }
 
@@ -502,9 +483,40 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
         return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    }
+
+    public void uploaduserdetails() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            String userId = user.getUid();
+            String name = shippingNameEditText.getText().toString();
+            String phone = contactInstructionsEditText.getText().toString();
+            String phone_optnl=ContactOptialEditText.getText().toString();
+            String userAddress = shippingAddressEditText.getText().toString();
+            String selectedCity = citySpinner.getSelectedItem().toString(); // Get the selected city from the Spinner
+            String landmarkAddress = shippinglandmark.getText().toString();
+
+            // Reference to the "users" node in Firebase Database
+            DatabaseReference userRef = mDatabase.getReference("users").child(userId);
+
+            // Create a User object and set the details including the selected city
+            User userDetails = new User(name, phone, phone_optnl, userAddress, selectedCity, landmarkAddress);
+
+            // Push the user details to the database
+            userRef.setValue(userDetails)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(CheckoutActivity.this, "Details uploaded successfully!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(CheckoutActivity.this, NavActivity.class));
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(CheckoutActivity.this, "Failed to upload details.", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 }

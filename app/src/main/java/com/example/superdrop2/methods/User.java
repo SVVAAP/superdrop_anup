@@ -36,6 +36,14 @@ public class User {
         this.landmark = landmarkAddress;
         this.Token = Token;
     }
+    public User(String fullName, String phoneNumber,String phoneNumberoptl, String address,String cityAddress,String landmarkAddress) {
+        this.fullName = fullName;
+        this.phone=phoneNumber;
+        this.emergencyContact = phoneNumberoptl;
+        this.streetAddress = address;
+        this.city = cityAddress;
+        this.landmark = landmarkAddress;
+    }
     public String getToken() {
         return Token;
     }
