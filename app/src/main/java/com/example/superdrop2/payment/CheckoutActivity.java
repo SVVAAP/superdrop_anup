@@ -528,7 +528,7 @@ public class CheckoutActivity extends AppCompatActivity {
             String landmarkAddress = shippinglandmark.getText().toString();
 
             // Reference to the "users" node in Firebase Database
-            DatabaseReference userRef = mDatabase.getReference("users").child(userId);
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
 
             // Create a User object and set the details including the selected city
             User userDetails = new User(name, phone, phone_optnl, userAddress, selectedCity, landmarkAddress);

@@ -54,7 +54,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         holder.textViewPrice.setText(priceWithSymbol); // Display the price with ₹ symbol
         String PDiscount=uploadCurrent.getDiscount()+"%";
         holder.discount.setText(PDiscount);
-        holder.discountprice.setText(uploadCurrent.getDiscountPrice());
+        String DiscountPrice="₹" + String.valueOf(uploadCurrent.getDiscountPrice());
+        holder.discountprice.setText(DiscountPrice);
 
         // Set click listener for the item view
         holder.itemView.setOnClickListener(new View.OnClickListener() {

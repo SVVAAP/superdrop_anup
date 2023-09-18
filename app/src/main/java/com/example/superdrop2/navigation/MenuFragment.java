@@ -295,9 +295,9 @@ public class MenuFragment extends Fragment {
         } else if ("bowlexpress".equals(folderName)) {
             clickedLinearLayout = card_bowlexpress.findViewById(R.id.linear_bowlexpress_card);
         } else if ("KFC".equals(folderName)) {
-            clickedLinearLayout = card_bowlexpress.findViewById(R.id.linear_kfc_card);
+            clickedLinearLayout = card_kfc.findViewById(R.id.linear_kfc_card);
         } else if ("vadapavexpress".equals(folderName)) {
-            clickedLinearLayout = card_bowlexpress.findViewById(R.id.linear_vadapavexpress_card);
+            clickedLinearLayout = card_vadapavexpress.findViewById(R.id.linear_vadapavexpress_card);
         }
 
         if (clickedLinearLayout != null) {
