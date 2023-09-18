@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="city_options">
-        <item>Shirva</item>
-        <item>Belman</item>
-        <item>Nitte</item>
-        <item>Kapu</item>
-        <item>Moodubelle</item>
-        <item>Mudarangadi</item>
+        <item>Shirva</item> <!--//set price 50-->
+        <item>Belman</item><!--//set price 100-->
+        <item>Nitte</item><!--//set price 150-->
+        <item>Kapu</item><!--//set price 150-->
+        <item>Moodubelle</item><!--//set price 75-->
+        <item>Mudarangadi</item><!--//set price 100-->
     </string-array>
 </resources>

@@ -116,7 +116,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
        android:layout_margin="15dp"
-        android:prompt="City"
         android:entries="@array/city_options" />
 
     <com.google.android.material.textfield.TextInputLayout

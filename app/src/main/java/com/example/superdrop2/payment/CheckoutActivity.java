@@ -93,7 +93,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private EditText shippingNameEditText, shippingAddressEditText, shippingCityEditText, contactInstructionsEditText, noteEditText;
     private RadioGroup paymentMethodsRadioGroup;
     private RadioButton gpayUPIRadioButton, cashOnDeliveryRadioButton;
-    private TextView totalPriceTextView;
+    private TextView totalPriceTextView,deliveryCharge;
     private Button placeOrderButton;
     private RecyclerView recyclerView;
     private CartAdapter adapter;
@@ -105,6 +105,7 @@ public class CheckoutActivity extends AppCompatActivity {
     double total = 0.0;
     private DatabaseReference orderDatabaseReference,corderDatabaseReference;
     String userId,orderID,cToken;
+    int intdeliveryCharge;
 
     private static final int NOTIFICATION_ID = 123; // Unique ID for the notification
 
@@ -127,6 +128,7 @@ public class CheckoutActivity extends AppCompatActivity {
         citySpinner = findViewById(R.id.ccity_spinner);
         userId = currentUser.getUid();
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
+        deliveryCharge = findViewById(R.id.delivery_charge);
 
 
         recyclerView = findViewById(R.id.checkout_recyclerview);
@@ -151,7 +153,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     shippingNameEditText.setText(user.getFullName());
                     contactInstructionsEditText.setText(user.getPhone());
                     shippingAddressEditText.setText(user.getStreetAddress());
-                    cToken=user.getToken();
+                    cToken = user.getToken();
                     String selectedCityFromFirebase = user.getCity(); // Replace with the actual retrieved value
 
 // Find the index of the selected city in the string array
@@ -177,7 +179,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // Initialize Firebase references
         orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
-        corderDatabaseReference= FirebaseDatabase.getInstance().getReference("cust_orders").child(userId);
+        corderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userId);
         // Initialize views
 
         ArrayAdapter ctadapter = ArrayAdapter.createFromResource(this, R.array.city_options, android.R.layout.simple_spinner_item);
@@ -204,17 +206,34 @@ public class CheckoutActivity extends AppCompatActivity {
                 if (!isNetworkAvailable()) {
                     // No internet connection, display a toast message
                     Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     placeOrder();
                 }
 
             }
         });
+        String selecteditem = citySpinner.getSelectedItem().toString();
+        switch (selecteditem) {
+            case "Shirva":
+                intdeliveryCharge = 50;
+                break;
+            case "Belman":
+            case "Mudarangadi":
+                intdeliveryCharge = 100;
+                break;
+            case "Nitte":
+            case "Kapu":
+                intdeliveryCharge = 150;
+                break;
+            case "Moodubelle":
+                intdeliveryCharge = 75;
+                break;
+        }
+        deliveryCharge.setText(String.valueOf(intdeliveryCharge));
     }
 
 
-    // notification code here
+        // notification code here
     private void showOrderPlacedNotification() {
         // Create a notification builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
@@ -459,6 +478,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
 
                 adapter.notifyDataSetChanged();
+                total=total+intdeliveryCharge;
                 totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
             }
 
