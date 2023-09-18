@@ -2,6 +2,7 @@ package com.example.superdrop2.navigation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -21,6 +22,7 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -36,6 +38,7 @@ import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.superdrop2.BottomSheet;
+import com.example.superdrop2.OfferActivity;
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.ImageAdapter;
 import com.example.superdrop2.adapter.MyMenuAdapter;
@@ -97,6 +100,7 @@ public class HomeFragment extends Fragment {
         sliderView = view.findViewById(R.id.slider_view);
         no_internet=view.findViewById(R.id.hno_internet_layout);
         offerRecyclerView=view.findViewById(R.id.offer_recyclerview);
+        ConstraintLayout gifLayout = view.findViewById(R.id.offers); // Replace with your actual ID
         offerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
@@ -104,6 +108,24 @@ public class HomeFragment extends Fragment {
         if (networkCapabilities == null || !networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
             no_internet.setVisibility(View.VISIBLE);
         }
+
+        // Set OnClickListener for SliderView
+        sliderView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle slider view click, open the Offer activity here
+                openOfferActivity();
+            }
+        });
+
+        // Set OnClickListener for ConstraintLayout containing gifImageView
+        gifLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle GIF layout click, open the Offer activity here
+                openOfferActivity();
+            }
+        });
 
        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -263,6 +285,12 @@ public class HomeFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 2000); // Delayed for 2 seconds to simulate data loading
+    }
+    private void openOfferActivity() {
+        // Implement the logic to open your Offer activity here
+        // For example:
+        Intent offerIntent = new Intent(getActivity(), OfferActivity.class);
+        startActivity(offerIntent);
     }
     public void item_view() {
 
