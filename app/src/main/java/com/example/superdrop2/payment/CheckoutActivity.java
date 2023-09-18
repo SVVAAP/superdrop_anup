@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -90,7 +91,7 @@ import okhttp3.Response;
 
 public class CheckoutActivity extends AppCompatActivity {
 
-    private EditText shippingNameEditText, shippingAddressEditText, shippingCityEditText, contactInstructionsEditText, noteEditText;
+    private EditText shippingNameEditText, shippingAddressEditText, shippingCityEditText,shippinglandmark, contactInstructionsEditText, noteEditText;
     private RadioGroup paymentMethodsRadioGroup;
     private RadioButton gpayUPIRadioButton, cashOnDeliveryRadioButton;
     private TextView totalPriceTextView,deliveryCharge;
@@ -104,8 +105,9 @@ public class CheckoutActivity extends AppCompatActivity {
     private StorageReference storageReference;
     double total = 0.0;
     private DatabaseReference orderDatabaseReference,corderDatabaseReference;
-    String userId,orderID,cToken;
+    private String userId,orderID,cToken;
     int intdeliveryCharge;
+    private ImageView back_img;
 
     private static final int NOTIFICATION_ID = 123; // Unique ID for the notification
 
@@ -123,10 +125,12 @@ public class CheckoutActivity extends AppCompatActivity {
         shippingAddressEditText = findViewById(R.id.shipping_address);
         shippingCityEditText = findViewById(R.id.shipping_city);
         contactInstructionsEditText = findViewById(R.id.contact_instructions);
+        shippinglandmark=findViewById(R.id.shipping_landmark);
         noteEditText = findViewById(R.id.note);
         totalPriceTextView = findViewById(R.id.checkout_grandtotal);
         citySpinner = findViewById(R.id.ccity_spinner);
         userId = currentUser.getUid();
+        back_img=findViewById(R.id.backarrow_img);
         userCartRef = FirebaseDatabase.getInstance().getReference("user_carts").child(userId);
         deliveryCharge = findViewById(R.id.delivery_charge);
 
@@ -154,6 +158,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     contactInstructionsEditText.setText(user.getPhone());
                     shippingAddressEditText.setText(user.getStreetAddress());
                     cToken = user.getToken();
+                    shippinglandmark.setText(user.getLandmark());
                     String selectedCityFromFirebase = user.getCity(); // Replace with the actual retrieved value
 
 // Find the index of the selected city in the string array
@@ -193,6 +198,14 @@ public class CheckoutActivity extends AppCompatActivity {
 //        paymentMethodsRadioGroup = findViewById(R.id.payment_methods_radio_group);
 //        gpayUPIRadioButton = findViewById(R.id.gpay_upi);
 //        cashOnDeliveryRadioButton = findViewById(R.id.cash_on_delivery);
+
+        back_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(CheckoutActivity.this,Cart_Activity.class);
+                startActivity(intent);
+            }
+        });
 
         placeOrderButton = findViewById(R.id.place_order_button);
 
@@ -271,6 +284,7 @@ public class CheckoutActivity extends AppCompatActivity {
         String shippingCity = citySpinner.getSelectedItem().toString();
         String contactInstructions = contactInstructionsEditText.getText().toString();
         String note = noteEditText.getText().toString();
+        String landmark=shippinglandmark.getText().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String currentDate = dateFormat.format(Calendar.getInstance().getTime());
@@ -297,7 +311,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // Store order details in Firebase
         Order order = new Order(orderID,shippingName, shippingAddress, shippingCity,
-                contactInstructions, note, paymentMethod,newstatus,gtotal,orderStatus);
+                contactInstructions, note, paymentMethod,newstatus,gtotal,orderStatus,landmark);
         order.setItems(cartItemList);
         order.setUserId(userId);
         order.setDate(currentDate); // Set the current date

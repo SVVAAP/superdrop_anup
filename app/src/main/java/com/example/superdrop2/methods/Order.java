@@ -26,7 +26,7 @@ public class Order {
     }
 
     public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
-                 String contactInstructions, String note, String paymentMethod,String status,String grandtotal,String oredrStatus) {
+                 String contactInstructions, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark) {
         this.orderid=orderid;
         this.shippingName = shippingName;
         this.shippingAddress = shippingAddress;
@@ -39,6 +39,7 @@ public class Order {
         this.items = new ArrayList<>(); // Initialize the items list
         // No need to add a dummy item her
         this.orderStatus=oredrStatus;
+        this.landmark=landmark;
     }
     public String getOrderStatus(){
         return orderStatus;
