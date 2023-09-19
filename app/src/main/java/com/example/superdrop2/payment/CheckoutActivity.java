@@ -111,7 +111,7 @@ public class CheckoutActivity extends AppCompatActivity {
     double total = 0.0;
     private DatabaseReference orderDatabaseReference, corderDatabaseReference;
     private String userId, orderID, cToken;
-    int intdeliveryCharge;
+    int intdeliveryCharge, ctotal;
     private ImageView back_img;
 
     private static final int NOTIFICATION_ID = 123; // Unique ID for the notification
@@ -287,7 +287,8 @@ public class CheckoutActivity extends AppCompatActivity {
                 break;
         }
         deliveryCharge.setText("₹" + new DecimalFormat("0.00").format(intdeliveryCharge));
-
+        total = ctotal + intdeliveryCharge;
+        totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
     }
     private void setEditMode(boolean editMode) {
         isEditMode = editMode;
@@ -515,12 +516,12 @@ public class CheckoutActivity extends AppCompatActivity {
                     if (cartItem != null) {
                         cartItem.setItemId(itemId); // Set the item ID
                         cartItemList.add(cartItem);
-                        total += (cartItem.getTotalprice());
+                        ctotal += (cartItem.getTotalprice());
                     }
                 }
 
                 adapter.notifyDataSetChanged();
-                total = total + intdeliveryCharge;
+                total = ctotal + intdeliveryCharge;
                 totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
             }
 
