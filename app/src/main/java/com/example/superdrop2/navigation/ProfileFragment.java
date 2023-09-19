@@ -234,8 +234,13 @@ public class ProfileFragment extends Fragment {
         track.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), customers_Activity.class);
-                startActivity(intent);
+                if (!isNetworkAvailable()) {
+                    // No internet connection, display a toast message
+                    Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getActivity(), customers_Activity.class);
+                    startActivity(intent);
+                }
             }
         });
         mGetContentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
