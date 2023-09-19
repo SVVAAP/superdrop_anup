@@ -116,18 +116,41 @@
 
             </com.smarteist.autoimageslider.SliderView>
 
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="21dp"
                 android:layout_marginBottom="10dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="Restaurant"
-                android:textAlignment="textStart"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/textView46"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Restaurant"
+                    android:textAlignment="textStart"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold|italic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/more"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="21dp"
+                    android:clickable="true"
+                    android:src="@drawable/more"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/bunontop_card"
@@ -327,8 +350,7 @@
                     android:id="@+id/textView18"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_margin="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="21dp"
                     android:paddingStart="10dp"
                     android:text="Offers"
                     android:textColor="#000000"
