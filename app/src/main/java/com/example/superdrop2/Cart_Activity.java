@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class Cart_Activity extends AppCompatActivity {
     private ImageView no_internet;
     private DatabaseReference userCartRef;
     double total = 0.0;
+    private MediaPlayer mediaPlayer;
     ImageView edit_bt, back_bt;
     Button placeorder, deleteButton;
     private  SwipeRefreshLayout swipeRefreshLayout;
@@ -135,6 +137,18 @@ no_internet=findViewById(R.id.cno_internet_layout);
                 showBottomSheetForItem(item);
             }
         });
+
+        // Initialize MediaPlayer
+        mediaPlayer = MediaPlayer.create(this, R.raw.addtocart_music); // Replace with your audio file
+
+    }
+
+
+    // Call this method whenever an item is added to the cart
+    private void playItemAddedSound() {
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+        }
     }
 
     public void showDeleteButton() {

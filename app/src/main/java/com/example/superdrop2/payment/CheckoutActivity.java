@@ -191,7 +191,7 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle database error
                 Toast.makeText(CheckoutActivity.this, "Error loading data... ", Toast.LENGTH_SHORT).show();
-                ;
+
             }
         });
 
@@ -234,8 +234,8 @@ public class CheckoutActivity extends AppCompatActivity {
                     Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
-                    builder.setTitle("Logout");
-                    builder.setMessage("Are you sure you want to logout?");
+                    builder.setTitle("Place Order");
+                    builder.setMessage("Conform Your Order!  \t  just for verification!");
                     builder.setIcon(R.drawable.pizza_icon);
 
                     // Add OK button

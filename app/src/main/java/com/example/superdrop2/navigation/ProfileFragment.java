@@ -49,10 +49,10 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
 
-    private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact,editlandmark;
+    private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact, editlandmark;
     private RatingBar ratingBar;
-    private Button submitButton, editProfileButton,admin,owner,track;
-    private ImageView profileImage,logout;
+    private Button submitButton, editProfileButton, admin, owner, track;
+    private ImageView profileImage, logout;
     private Spinner citySpinner;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
@@ -96,16 +96,15 @@ public class ProfileFragment extends Fragment {
         editPhone = view.findViewById(R.id.edit_phone);
         editStreetAddress = view.findViewById(R.id.edit_street_address);
         editCity = view.findViewById(R.id.edit_city);
-        editlandmark= view.findViewById(R.id.edit_landmark);
+        editlandmark = view.findViewById(R.id.edit_landmark);
         editEmergencyContact = view.findViewById(R.id.edit_emergency_contact);
         ratingBar = view.findViewById(R.id.rating_bar);
         submitButton = view.findViewById(R.id.Submit);
         editProfileButton = view.findViewById(R.id.edit_Profile);
         profileImage = view.findViewById(R.id.profile_image);
-        logout=view.findViewById(R.id.logout_bt);
-        owner=view.findViewById(R.id.owner_bt);
-        track=view.findViewById(R.id.track_bt);
-
+        logout = view.findViewById(R.id.logout_bt);
+        owner = view.findViewById(R.id.owner_bt);
+        track = view.findViewById(R.id.track_bt);
 
         // Initialize Firebase Database and Storage References
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
@@ -121,24 +120,24 @@ public class ProfileFragment extends Fragment {
                     editFullName.setText(user.getFullName());
                     editPhone.setText(user.getPhone());
                     editStreetAddress.setText(user.getStreetAddress());
-//                    editCity.setText(user.getCity());
                     editlandmark.setText(user.getLandmark());
                     editEmergencyContact.setText(user.getEmergencyContact());
                     ratingBar.setRating(user.getRating());
-                    String selectedCityFromFirebase=user.getCity();
+                    String selectedCityFromFirebase = user.getCity();
                     ArrayAdapter<String> cityAdapter = (ArrayAdapter<String>) citySpinner.getAdapter();
                     int position = cityAdapter.getPosition(selectedCityFromFirebase);
 
-// Set the selected item in the citySpinner
+                    // Set the selected item in the citySpinner
                     if (position != -1) {
                         citySpinner.setSelection(position);
                     } else {
-
+                        // Handle the case where the city is not in the spinner
                     }
 
                     // Load and display profile image using Picasso
-                    if (user.getProfileImageUrl() != null) {
-                        Picasso.get().load(user.getProfileImageUrl()).into(profileImage);
+                    String profileImageUrl = user.getProfileImageUrl();
+                    if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                        loadProfileImage(profileImageUrl);
                     }
                 }
             }
@@ -161,8 +160,9 @@ public class ProfileFragment extends Fragment {
                 if (!isNetworkAvailable()) {
                     // No internet connection, display a toast message
                     Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+                } else {
+                    saveProfileToFirebase();
                 }
-                else {saveProfileToFirebase();}
             }
         });
 
@@ -173,8 +173,7 @@ public class ProfileFragment extends Fragment {
                 if (!isNetworkAvailable()) {
                     // No internet connection, display a toast message
                     Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     if (isEditMode) {
                         saveProfileToFirebase();
                     } else {
@@ -235,7 +234,7 @@ public class ProfileFragment extends Fragment {
         track.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), customers_Activity.class);
+                Intent intent = new Intent(getActivity(), customers_Activity.class);
                 startActivity(intent);
             }
         });
@@ -266,7 +265,7 @@ public class ProfileFragment extends Fragment {
         editEmergencyContact.setEnabled(editMode);
         citySpinner.setEnabled(editMode);
         submitButton.setVisibility(editMode ? View.VISIBLE : View.GONE);
-        editProfileButton.setVisibility(editMode?View.GONE:View.VISIBLE);
+        editProfileButton.setVisibility(editMode ? View.GONE : View.VISIBLE);
     }
 
     private void openImageChooser() {
@@ -275,6 +274,14 @@ public class ProfileFragment extends Fragment {
         mGetContentLauncher.launch(intent);
     }
 
+    private void loadProfileImage(String profileImageUrl) {
+        // Load and display profile image using Picasso and cache it
+        Picasso.get()
+                .load(profileImageUrl)
+                .placeholder(R.drawable.profile_icon) // Placeholder image while loading
+                .error(R.drawable.profile_icon) // Error image if loading fails
+                .into(profileImage);
+    }
 
     private void saveProfileToFirebase() {
         // Get the profile data from the EditText fields and RatingBar
@@ -285,7 +292,6 @@ public class ProfileFragment extends Fragment {
         String landmark = editlandmark.getText().toString();
         String emergencyContact = editEmergencyContact.getText().toString();
         float rating = ratingBar.getRating();
-        String imageurl=profileImage.toString();
 
         // Get the current user's ID
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -295,7 +301,7 @@ public class ProfileFragment extends Fragment {
 
             // Save the user data to Firebase using the databaseReference
             // Replace "users" with your database reference
-            User user = new User(fullName, phone, streetAddress, city,landmark, emergencyContact,rating,imageurl);
+            User user = new User(fullName, phone, streetAddress, city, landmark, emergencyContact, rating, mImageUri.toString());
             databaseReference.setValue(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -312,6 +318,7 @@ public class ProfileFragment extends Fragment {
                     });
         }
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());

@@ -165,7 +165,7 @@
             android:id="@+id/cno_internet_layout"
             android:src="@drawable/no_internet"
             android:background="#FDF7E3"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
