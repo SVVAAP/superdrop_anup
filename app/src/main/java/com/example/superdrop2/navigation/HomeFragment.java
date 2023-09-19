@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment {
     private rest_Adapter mAdapter;
     private ProgressBar mProgressCircle;
     private List<Upload> mUploads;
-    SliderView sliderView;
+    private SliderView sliderView;
     private List<String> imageURLs = new ArrayList<>();
     private View rootView;
     private Animation fadeInAnimation;

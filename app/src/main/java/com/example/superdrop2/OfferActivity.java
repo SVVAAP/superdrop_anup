@@ -5,16 +5,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.superdrop2.adapter.ImageAdapter;
+import com.example.superdrop2.adapter.SliderAdapter;
 import com.example.superdrop2.upload.Upload;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +38,9 @@ private RecyclerView  offerRecyclerView;
     private DatabaseReference mDatabaseRef;
     private List<Upload> mUploads;
     private ImageAdapter imageAdapter;
+    private ProgressBar mProgressCircle;
+    private SliderView sliderView;
+    private List<String> imageURLs = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +51,9 @@ private RecyclerView  offerRecyclerView;
         offerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         item_view();
         imageAdapter = new ImageAdapter(this, mUploads);
+        mProgressCircle = findViewById(R.id.oprogress_circle);
+        sliderView = findViewById(R.id.oslider_view);
+        fetchImageURLs();
         offerRecyclerView.setAdapter(imageAdapter);
         imageAdapter.setOnItemClickListener(new ImageAdapter.OnItemClickListener() {
             @Override
@@ -82,6 +102,65 @@ private RecyclerView  offerRecyclerView;
         args.putDouble("price", Double.parseDouble(item.getDiscountPrice()));
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+    }
+    private void fetchImageURLs() {
+        // Get a reference to the "uploads" folder in Firebase Storage
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference("Offers");
+
+        // Fetch the images from Firebase Storage
+        storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                imageURLs.clear(); // Clear the existing URLs before adding new ones
+
+                // Iterate through the list of items (images) and add their URLs to the list
+                List<StorageReference> items = listResult.getItems();
+                List<Task<Uri>> downloadUrlTasks = new ArrayList<>();
+
+                for (StorageReference item : items) {
+                    downloadUrlTasks.add(item.getDownloadUrl());
+                }
+
+                // Wait for all downloadUrlTasks to complete
+                Tasks.whenAllComplete(downloadUrlTasks)
+                        .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                            @Override
+                            public void onSuccess(List<Task<?>> tasks) {
+                                // Extract the URLs from the completed tasks
+                                for (Task<Uri> task : downloadUrlTasks) {
+                                    if (task.isSuccessful()) {
+                                        Uri uri = task.getResult();
+                                        imageURLs.add(uri.toString());
+//                                        mAdapter=new rest_Adapter(imageURLs)
+//                                        mRecyclerView.setAdapter(mAdapter);
+                                    }
+                                }
+                                SliderAdapter slideadapter = new SliderAdapter(imageURLs);
+                                sliderView.setSliderAdapter(slideadapter);
+                                mProgressCircle.setVisibility(View.INVISIBLE);
+                                sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+                                sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
+                                sliderView.startAutoCycle();
+
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Handle any errors that may occur while fetching URLs
+                                Toast.makeText(OfferActivity.this, "Failed to fetch image URLs", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Handle any errors that may occur while listing items in Firebase Storage
+                Toast.makeText(OfferActivity.this, "Failed to fetch image URLs", Toast.LENGTH_SHORT).show();
+                mProgressCircle.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
 }

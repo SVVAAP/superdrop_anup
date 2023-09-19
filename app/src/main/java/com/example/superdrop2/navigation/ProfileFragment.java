@@ -203,6 +203,7 @@ public class ProfileFragment extends Fragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Logout");
                     builder.setMessage("Are you sure you want to logout?");
+                    builder.setIcon(R.drawable.logo);
 
                     // Add OK button
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
