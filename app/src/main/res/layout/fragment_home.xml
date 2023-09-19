@@ -119,6 +119,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="21dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1">
 
                 <TextView
@@ -348,8 +350,7 @@
                     android:id="@+id/textView18"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_margin="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="21dp"
                     android:paddingStart="10dp"
                     android:text="Offers"
                     android:textColor="#000000"
