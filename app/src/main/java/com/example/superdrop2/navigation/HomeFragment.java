@@ -102,6 +102,7 @@ public class HomeFragment extends Fragment {
         offerRecyclerView=view.findViewById(R.id.offer_recyclerview);
         ConstraintLayout gifLayout = view.findViewById(R.id.offers); // Replace with your actual ID
         offerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
 

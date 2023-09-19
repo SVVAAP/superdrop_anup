@@ -43,6 +43,6 @@ public class MainActivity extends AppCompatActivity {
              //  startActivity(new Intent(MainActivity.this, NavActivity.class));
                 finish();
             }
-        },2000);
+        },1000);
     }
 }

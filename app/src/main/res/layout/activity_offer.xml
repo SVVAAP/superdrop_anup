@@ -26,14 +26,13 @@
                 android:layout_height="730dp">
 
                 <ImageView
-                    android:id="@+id/imageView13"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView12"
+                    android:layout_width="0dp"
+                    android:layout_height="400dp"
+                    android:src="@drawable/offer_image"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/offer_image" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/offer_recyclerview2"
@@ -43,7 +42,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView13" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView12" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

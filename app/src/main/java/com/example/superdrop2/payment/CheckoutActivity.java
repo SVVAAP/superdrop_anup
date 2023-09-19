@@ -1,7 +1,9 @@
 package com.example.superdrop2.payment;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -35,6 +37,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.superdrop2.Cart_Activity;
 import com.example.superdrop2.Detail_Activity;
 import com.example.superdrop2.MainActivity;
+import com.example.superdrop2.OtpSendActivity;
 import com.example.superdrop2.R;
 import com.example.superdrop2.adapter.CartAdapter;
 import com.example.superdrop2.adapter.CartItem;
@@ -230,9 +233,33 @@ public class CheckoutActivity extends AppCompatActivity {
                     // No internet connection, display a toast message
                     Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
                 } else {
-                    placeOrder();
-                }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
+                    builder.setTitle("Logout");
+                    builder.setMessage("Are you sure you want to logout?");
+                    builder.setIcon(R.drawable.pizza_icon);
 
+                    // Add OK button
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // User clicked OK, perform logout
+                           placeOrder();
+                        }
+                    });
+
+                    // Add Cancel button
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // User clicked Cancel, do nothing
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    // Create and show the AlertDialog
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
             }
         });
 

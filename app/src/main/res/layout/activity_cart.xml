@@ -164,8 +164,8 @@
             android:layout_height="match_parent"
             android:id="@+id/cno_internet_layout"
             android:src="@drawable/no_internet"
-            android:background="@color/white"
-            android:visibility="gone"
+            android:background="#FDF7E3"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -173,4 +173,5 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
