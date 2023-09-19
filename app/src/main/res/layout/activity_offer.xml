@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4E3DB"
     tools:context=".OfferActivity">
 
     <ScrollView
@@ -30,12 +29,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham"
-                android:text="Fresh Offers"
+                android:text="Offer Zone"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="#EF552E"
-                android:textSize="48sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <com.smarteist.autoimageslider.SliderView
@@ -81,6 +78,7 @@
                 android:id="@+id/offer_recyclerview2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

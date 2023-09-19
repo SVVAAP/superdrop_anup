@@ -37,6 +37,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.superdrop2.AboutRestaurentActivity;
 import com.example.superdrop2.BottomSheet;
 import com.example.superdrop2.OfferActivity;
 import com.example.superdrop2.R;
@@ -80,7 +81,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView offerRecyclerView;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
     private  SwipeRefreshLayout swipeRefreshLayout;
-    private ImageView no_internet;
+    private ImageView no_internet,about;
     List<postview> postviewlist;
     private ImageAdapter imageAdapter;
     private DatabaseReference mdatabaseref, mDatabaseRef;
@@ -116,6 +117,15 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 // Handle slider view click, open the Offer activity here
                 openOfferActivity();
+            }
+        });
+        // Initialize 'about' ImageView
+        about = view.findViewById(R.id.more);
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle 'about' ImageView click, open the AboutRestaurentActivity here
+                openAboutRestaurentActivity();
             }
         });
 
@@ -292,6 +302,12 @@ public class HomeFragment extends Fragment {
         // For example:
         Intent offerIntent = new Intent(getActivity(), OfferActivity.class);
         startActivity(offerIntent);
+    }
+
+    public void openAboutRestaurentActivity() {
+
+        Intent intent = new Intent(getActivity(), AboutRestaurentActivity.class);
+        startActivity(intent);
     }
     public void item_view() {
 

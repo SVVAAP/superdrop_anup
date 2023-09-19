@@ -138,6 +138,8 @@ public class MenuFragment extends Fragment {
         card_kfc= view.findViewById(R.id.mkfc_card);
         container_search=view.findViewById(R.id.search_container);
         mSearchView = view.findViewById(R.id.menu_searchView);
+        mSearchView.setQueryHint("Order, Enjoy, Repeat!!");
+        mSearchView.setQuery("", false); // Set an empty query to display the hint text by default
         menuconstraint=view.findViewById(R.id.constraintLayout_rest);
         recyclerview = view.findViewById(R.id.fooditems_rv);
         recyclerview.setHasFixedSize(true);
