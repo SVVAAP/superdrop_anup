@@ -9,7 +9,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Bundle;
-
+import android.media.MediaPlayer;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -48,12 +49,15 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.checkerframework.common.returnsreceiver.qual.This;
+
 import java.io.ByteArrayOutputStream;
 
 public class BottomSheet extends BottomSheetDialogFragment {
     TextView item_name, item_price, item_quantity, total_price;
 
     ImageView item_img, plus_img, minus_img;
+    private MediaPlayer mediaPlayer;
     int i = 1,newItemCount=0;
     double price;
     String priceWithSymbol, imageUrl,itemId;
@@ -88,6 +92,27 @@ public class BottomSheet extends BottomSheetDialogFragment {
         mStorageRef = FirebaseStorage.getInstance().getReference("cart");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("cart");
         mAuth = FirebaseAuth.getInstance();
+
+
+
+        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.addtocart_music);
+
+        bt_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Play the audio when the button is clicked
+                if (mediaPlayer != null) {
+                    mediaPlayer.start();
+                }
+
+                // Start the desired activity (e.g., Cart_Activity)
+                Intent intent = new Intent(getActivity(), Cart_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         // Retrieve item details from arguments
         Bundle args = getArguments();
@@ -234,6 +259,16 @@ public class BottomSheet extends BottomSheetDialogFragment {
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
         return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Release the MediaPlayer
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 
 }
