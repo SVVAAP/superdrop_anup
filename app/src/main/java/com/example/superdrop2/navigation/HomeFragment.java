@@ -286,7 +286,7 @@ public class HomeFragment extends Fragment {
             }
         }, 2000); // Delayed for 2 seconds to simulate data loading
     }
-    private void openOfferActivity() {
+    public void openOfferActivity() {
         // Implement the logic to open your Offer activity here
         // For example:
         Intent offerIntent = new Intent(getActivity(), OfferActivity.class);

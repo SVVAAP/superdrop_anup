@@ -148,6 +148,7 @@ public class CheckoutActivity extends AppCompatActivity {
         cartItemList = new ArrayList<>();
         adapter = new CartAdapter(cartItemList, this);
         recyclerView.setAdapter(adapter);
+        changedeliverycharge();
         setEditMode(false);
         retrieveCartItems();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
@@ -538,7 +539,6 @@ public class CheckoutActivity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(CheckoutActivity.this, "Details uploaded successfully!", Toast.LENGTH_SHORT).show();
                         setEditMode(false);
-                        finish();
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(CheckoutActivity.this, "Failed to upload details.", Toast.LENGTH_SHORT).show();
