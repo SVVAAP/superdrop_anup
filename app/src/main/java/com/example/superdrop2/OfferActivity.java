@@ -29,7 +29,7 @@ private RecyclerView  offerRecyclerView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer);
         mUploads = new ArrayList<>();
-        offerRecyclerView.findViewById(R.id.offer_recyclerview2);
+        offerRecyclerView=findViewById(R.id.offer_recyclerview2);
         offerRecyclerView.setHasFixedSize(true);
         offerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         item_view();

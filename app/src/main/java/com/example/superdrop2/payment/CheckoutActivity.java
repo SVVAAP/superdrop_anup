@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -125,6 +126,7 @@ public class CheckoutActivity extends AppCompatActivity {
             // Handle user not authenticated
 
         }
+
         shippingNameEditText = findViewById(R.id.shipping_name);
         shippingAddressEditText = findViewById(R.id.shipping_address);
         shippingCityEditText = findViewById(R.id.shipping_city);
@@ -250,6 +252,21 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
             }
         });
+        // delivery charge
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Update the delivery charge when a city is selected
+                changedeliverycharge();
+                calculateTotalAmount();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing when nothing is selected
+            }
+        });
+
     }
     private void changedeliverycharge(){
         String selecteditem = citySpinner.getSelectedItem().toString();
@@ -270,6 +287,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 break;
         }
         deliveryCharge.setText("₹" + new DecimalFormat("0.00").format(intdeliveryCharge));
+
     }
     private void setEditMode(boolean editMode) {
         isEditMode = editMode;
@@ -307,7 +325,7 @@ public class CheckoutActivity extends AppCompatActivity {
 //            placeOrderInFirebase(shippingName, shippingAddress, shippingCity, contactInstructions, note, paymentMethod);
 //            redirectToOrderPlacedPage();
 //        }
-
+        changedeliverycharge();
         // You can handle more payment methods here
         String gtotal = calculateTotalAmount();
         String orderStatus = "Pending";
@@ -353,9 +371,11 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private String calculateTotalAmount() {
-        String grandtotal = String.valueOf(total);
-        return grandtotal; // Replace with your actual total amount
+        double totalAmount = total + intdeliveryCharge; // Add the delivery charge to the total
+        return new DecimalFormat("0.00").format(totalAmount); // Convert the total to a string
     }
+
+
 
     private void openGPayPayment(String amount) {
         Uri uri = Uri.parse("upi://pay").buildUpon()

@@ -128,7 +128,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:entries="@array/city_options" />
+                android:entries="@array/city_options"
+                android:padding="10dp" />
 
             <EditText
                 android:id="@+id/edit_landmark"
