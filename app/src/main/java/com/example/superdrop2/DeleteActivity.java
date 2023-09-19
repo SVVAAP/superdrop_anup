@@ -67,8 +67,8 @@ public class DeleteActivity extends AppCompatActivity {
         recyclerview.setLayoutManager(new LinearLayoutManager(DeleteActivity.this));
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        SearchFragment searchFragment = new SearchFragment();
-        ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
+//        SearchFragment searchFragment = new SearchFragment();
+//        ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
         ft.addToBackStack(null); // Add to back stack to allow navigation back
         ft.commit();
 item_view(data);
@@ -237,8 +237,8 @@ item_view(data);
         Bundle args = new Bundle();
         args.putString("itemName", itemName);
 
-        SearchFragment searchFragment = new SearchFragment();
-        searchFragment.setArguments(args);
+//        SearchFragment searchFragment = new SearchFragment();
+//        searchFragment.setArguments(args);
         show(false);
         isEditMode = true;
         ViewGroup.LayoutParams params = button_search.getLayoutParams();

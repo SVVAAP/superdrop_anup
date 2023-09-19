@@ -1,50 +1,45 @@
 package com.example.superdrop2.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.superdrop2.R;
-import com.example.superdrop2.SearchFragment;
 import com.example.superdrop2.methods.ezyMenuItem;
-import com.example.superdrop2.navigation.HomeFragment;
-import com.example.superdrop2.navigation.MenuFragment;
-import com.example.superdrop2.upload.Upload;
 
 import java.util.List;
 
 public class MyMenuAdapter extends RecyclerView.Adapter<MyMenuAdapter.ViewHolder> {
 
     private List<ezyMenuItem> menuItems;
+    private SearchView mSearchView;
     private Fragment homeFragment;
-    private MyMenuAdapter.OnItemClickListener listener; // Add this line
+    private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
         void onItemClick(String item);
     }
 
     // Member variable to hold the click listener
-    private MyMenuAdapter.OnItemClickListener mListener;
 
     // Method to set the click listener
-    public void setOnItemClickListener(MyMenuAdapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
 
 
-    public MyMenuAdapter(List<ezyMenuItem> menuItems, Fragment homeFragment) {
+    public MyMenuAdapter(List<ezyMenuItem> menuItems, Fragment homeFragment,SearchView searchView) {
         this.menuItems = menuItems;
         this.homeFragment=homeFragment;
-
+        this.mSearchView = searchView;
     }
 
     @NonNull
@@ -55,14 +50,32 @@ public class MyMenuAdapter extends RecyclerView.Adapter<MyMenuAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyMenuAdapter.ViewHolder holder, int position) {
         ezyMenuItem menuItem = menuItems.get(position);
-        holder.bind(menuItem);
+        holder.iconImageView.setImageResource(menuItem.getIconResource());
+        holder.nameTextView.setText(menuItem.getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String itemName = menuItem.getName();
-                mListener.onItemClick(itemName);
+                if (mListener != null) {
+                    mListener.onItemClick(itemName);
+                }
+                    if (mSearchView != null) {
+                    mSearchView.setQuery(itemName, true); // The second parameter submits the query
+                }
+            }
+        });
+        holder.iconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String itemName = menuItem.getName();
+                if (mListener != null) {
+                    mListener.onItemClick(itemName);
+                }
+                if (mSearchView != null) {
+                    mSearchView.setQuery(itemName, true); // The second parameter submits the query
+                }
             }
         });
     }
@@ -75,7 +88,6 @@ public class MyMenuAdapter extends RecyclerView.Adapter<MyMenuAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView iconImageView;
         private TextView nameTextView;
-        private ezyMenuItem menuItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,13 +96,9 @@ public class MyMenuAdapter extends RecyclerView.Adapter<MyMenuAdapter.ViewHolder
             itemView.setOnClickListener(this);
         }
 
-        public void bind(ezyMenuItem menuItem) {
-            iconImageView.setImageResource(menuItem.getIconResource());
-            nameTextView.setText(menuItem.getName());
-        }
-
         @Override
         public void onClick(View v) {
+
             // Nothing to do here, we handle the click in the onBindViewHolder
         }
 

@@ -1,30 +1,22 @@
 package com.example.superdrop2.navigation;
 
-import static androidx.core.view.ViewGroupKt.setMargins;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Layout;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,25 +27,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.superdrop2.BottomSheet;
 import com.example.superdrop2.R;
 import com.example.superdrop2.SearchActivity;
-import com.example.superdrop2.SearchFragment;
 import com.example.superdrop2.adapter.MyMenuAdapter;
 import com.example.superdrop2.adapter.rest_Adapter;
 import com.example.superdrop2.adapter.search_menu_adapter;
 import com.example.superdrop2.methods.ezyMenuItem;
 import com.example.superdrop2.upload.Upload;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +80,21 @@ public class MenuFragment extends Fragment {
         mUploads = new ArrayList<>();
         mUploads2 = new ArrayList<>();
         mFilteredUploads = new ArrayList<>();
+        card_bunontop = view.findViewById(R.id.bunontop_card);
+        card_streetwok = view.findViewById(R.id.streetwok_card);
+        card_bowlexpress = view.findViewById(R.id.bowlexpress_card);
+        card_vadapavexpress=view.findViewById(R.id.mvadapavexpress_card);
+        card_kfc= view.findViewById(R.id.mkfc_card);
+        container_search=view.findViewById(R.id.search_container);
+        mSearchView = view.findViewById(R.id.menu_searchView);
+        menuconstraint=view.findViewById(R.id.constraintLayout_rest);
+        recyclerview = view.findViewById(R.id.fooditems_rv);
+        recyclerview.setHasFixedSize(true);
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        item_view_search();
+        mAdapter2=new search_menu_adapter(getContext(),mUploads2);
+        mFilteredAdapter=new search_menu_adapter(getContext(),mFilteredUploads);
+        recyclerview.setAdapter(mAdapter);
         // Retrieve the data passed from HomeFragment
         Bundle args = getArguments();
         if (args != null) {
@@ -110,7 +113,7 @@ public class MenuFragment extends Fragment {
         menuItems.add(new ezyMenuItem(R.drawable.soda, "Soda"));
         // Add more menu items as needed
         mRecyclerView = view.findViewById(R.id.ezy_menu_rv);
-        myMenuAdapter = new MyMenuAdapter(menuItems,this);
+        myMenuAdapter = new MyMenuAdapter(menuItems,this,mSearchView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         mRecyclerView.setAdapter(myMenuAdapter);
         no_internet=view.findViewById(R.id.mno_internet_layout);
@@ -130,22 +133,13 @@ public class MenuFragment extends Fragment {
                 refreshData();
             }
         });
+        myMenuAdapter.setOnItemClickListener(new MyMenuAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String item) {
+                mSearchView.setQuery(item,true);
+            }
+        });
 
-        card_bunontop = view.findViewById(R.id.bunontop_card);
-        card_streetwok = view.findViewById(R.id.streetwok_card);
-        card_bowlexpress = view.findViewById(R.id.bowlexpress_card);
-        card_vadapavexpress=view.findViewById(R.id.mvadapavexpress_card);
-        card_kfc= view.findViewById(R.id.mkfc_card);
-        container_search=view.findViewById(R.id.search_container);
-        mSearchView = view.findViewById(R.id.menu_searchView);
-        menuconstraint=view.findViewById(R.id.constraintLayout_rest);
-        recyclerview = view.findViewById(R.id.fooditems_rv);
-        recyclerview.setHasFixedSize(true);
-        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        item_view_search();
-        mAdapter2=new search_menu_adapter(getContext(),mUploads2);
-        mFilteredAdapter=new search_menu_adapter(getContext(),mFilteredUploads);
-        recyclerview.setAdapter(mAdapter);
         mSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,12 +171,12 @@ public class MenuFragment extends Fragment {
         });
 
         handleCardViewSelection(data1);
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        SearchFragment searchFragment = new SearchFragment();
-        ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
-        ft.addToBackStack(null); // Add to back stack to allow navigation back
-        ft.commit();
+//        FragmentManager fm = getChildFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+//        SearchFragment searchFragment = new SearchFragment();
+//        ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
+//        ft.addToBackStack(null); // Add to back stack to allow navigation back
+//        ft.commit();
 
         card_bunontop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -394,8 +388,8 @@ public class MenuFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString("itemName", itemName);
 
-        SearchFragment searchFragment = new SearchFragment();
-        searchFragment.setArguments(args);
+//        SearchFragment searchFragment = new SearchFragment();
+//        searchFragment.setArguments(args);
         show(false);
         isEditMode = true;
         ViewGroup.LayoutParams params = button_search.getLayoutParams();
