@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0"
-    tools:context=".payment.CheckoutActivity">
+    tools:context="com.svvaap.superdrop2.payment.CheckoutActivity">
 
     <ScrollView
         android:layout_width="match_parent"

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/dialogbg"
     android:orientation="vertical"
-    tools:context=".BottomSheet">
+    tools:context="com.svvaap.superdrop2.BottomSheet">
 
 
     <ImageView

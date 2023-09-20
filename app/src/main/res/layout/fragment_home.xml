@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:onClick="@string/app_name"
-    tools:context=".navigation.HomeFragment">
+    tools:context="com.svvaap.superdrop2.navigation.HomeFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"

@@ -14,7 +14,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Cart_Activity">
+    tools:context="com.svvaap.superdrop2.Cart_Activity">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar

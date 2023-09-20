@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/offer_img"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@drawable/rounded_edge"
             android:clipToOutline="true"
             android:contentDescription="Restaurant Image"

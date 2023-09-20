@@ -8,7 +8,7 @@
     android:background="#FFFFFF"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".payment.OrderPlacedActivity">
+    tools:context="com.svvaap.superdrop2.payment.OrderPlacedActivity">
 
     <TextView
         android:id="@+id/textView16"

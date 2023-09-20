@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:backgroundTint="#F8F3F0"
     android:orientation="vertical"
-    tools:context=".BottomSheet">
+    tools:context="com.svvaap.superdrop2.BottomSheet">
 
 
     <ImageView

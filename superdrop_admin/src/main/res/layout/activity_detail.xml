@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/buttonshapewhitebg"
     android:orientation="vertical"
-    tools:context=".Detail_Activity">
+    tools:context="com.svvaap.superdrop_admin.Detail_Activity">
 
 
     <!--*******create account**********-->

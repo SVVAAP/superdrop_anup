@@ -14,49 +14,49 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SUPERDROP2">
         <activity
-            android:name=".VadaPav_Add_Activity"
+            android:name="com.svvaap.superdrop_admin.VadaPav_Add_Activity"
             android:exported="false" />
         <activity
-            android:name=".KFC_Add_Activity"
+            android:name="com.svvaap.superdrop_admin.KFC_Add_Activity"
             android:exported="false" />
         <activity
-            android:name=".Offer_item_addActivity"
+            android:name="com.svvaap.superdrop_admin.Offer_item_addActivity"
             android:exported="false" />
         <activity
-            android:name=".OwnersTabActivity"
+            android:name="com.svvaap.superdrop_admin.OwnersTabActivity"
             android:exported="false" />
         <activity
-            android:name=".Offer_Add_Activity"
+            android:name="com.svvaap.superdrop_admin.Offer_Add_Activity"
             android:exported="false" />
         <activity
-            android:name=".OwnersActivity"
+            android:name="com.svvaap.superdrop_admin.OwnersActivity"
             android:exported="false" />
         <activity
-            android:name=".DeleteActivity"
+            android:name="com.svvaap.superdrop_admin.DeleteActivity"
             android:exported="false" />
         <activity
-            android:name=".Detail_Activity"
+            android:name="com.svvaap.superdrop_admin.Detail_Activity"
             android:exported="false" />
         <activity
-            android:name=".OtpSendActivity"
+            android:name="com.svvaap.superdrop_admin.OtpSendActivity"
             android:exported="false" />
         <activity
-            android:name=".OtpVerifyActivity"
+            android:name="com.svvaap.superdrop_admin.OtpVerifyActivity"
             android:exported="false" />
         <activity
-            android:name=".Admin_Activity"
+            android:name="com.svvaap.superdrop_admin.Admin_Activity"
             android:exported="false" />
         <activity
-            android:name=".BunOnTopAdd_Activity"
+            android:name="com.svvaap.superdrop_admin.BunOnTopAdd_Activity"
             android:exported="false" />
         <activity
-            android:name=".BowlExpressAdd_Activity"
+            android:name="com.svvaap.superdrop_admin.BowlExpressAdd_Activity"
             android:exported="false" />
         <activity
-            android:name=".StreetWokAdd_Activity"
+            android:name="com.svvaap.superdrop_admin.StreetWokAdd_Activity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.svvaap.superdrop_admin.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,7 +66,7 @@
         </activity>
 
         <service
-            android:name=".MyNotification"
+            android:name="com.svvaap.superdrop_admin.MyNotification"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

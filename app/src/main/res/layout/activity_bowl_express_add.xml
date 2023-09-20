@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context=".upload.BunOnTopAdd_Activity">
+    tools:context="com.svvaap.superdrop2.upload.BunOnTopAdd_Activity">
 
     <TextView
         android:id="@+id/textView10"
