@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 
 public class Abtdev_Activity extends AppCompatActivity {
 

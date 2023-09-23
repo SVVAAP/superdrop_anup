@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 
 public class AboutRestaurentActivity extends AppCompatActivity {
 

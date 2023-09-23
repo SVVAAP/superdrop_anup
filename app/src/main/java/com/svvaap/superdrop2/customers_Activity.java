@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.adapter.CartItem;
 import com.svvaap.superdrop2.adapter.customers_adapter;
 import com.svvaap.superdrop2.methods.Order;

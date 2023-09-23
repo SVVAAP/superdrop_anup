@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;

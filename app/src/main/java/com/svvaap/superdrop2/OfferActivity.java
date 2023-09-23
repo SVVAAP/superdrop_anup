@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.adapter.ImageAdapter;
 import com.svvaap.superdrop2.adapter.SliderAdapter;
 import com.svvaap.superdrop2.upload.Upload;

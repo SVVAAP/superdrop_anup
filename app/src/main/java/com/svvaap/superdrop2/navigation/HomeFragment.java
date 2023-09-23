@@ -30,7 +30,7 @@ import com.bumptech.glide.Glide;
 import com.svvaap.superdrop2.AboutRestaurentActivity;
 import com.svvaap.superdrop2.BottomSheet;
 import com.svvaap.superdrop2.OfferActivity;
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.adapter.ImageAdapter;
 import com.svvaap.superdrop2.adapter.SliderAdapter;
 import com.svvaap.superdrop2.adapter.postview;

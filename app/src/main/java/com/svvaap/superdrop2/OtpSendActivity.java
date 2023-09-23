@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.navigation.NavActivity;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,12 +30,9 @@ public class OtpSendActivity extends AppCompatActivity {
     private EditText etPhone;
     private Button btnSend;
     private ProgressBar progressBar;
-    private CountryCodePicker countryCodePicker;
+    private EditText countryCodePicker;
     private FirebaseAuth mAuth;
     private ActivityResultLauncher<Intent> phoneNumberLauncher;
-    private WebView webView;
-    private WebViewClient webViewClient;
-//    private WebViewCompat webViewCompat;
     @Override
     public void onStart() {
         super.onStart();
@@ -61,9 +58,9 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String countryCode = countryCodePicker.getSelectedCountryCode();
+                String countryCode = countryCodePicker.getText().toString();
                 String phoneNumber = etPhone.getText().toString();
-                String fullPhoneNumber = "+" + countryCode + phoneNumber;
+                String fullPhoneNumber = countryCode + phoneNumber;
 
                 sendOTP(fullPhoneNumber);
             }

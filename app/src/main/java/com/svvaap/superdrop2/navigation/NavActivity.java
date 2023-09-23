@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.svvaap.superdrop2.Abtdev_Activity;
 import com.svvaap.superdrop2.Cart_Activity;
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

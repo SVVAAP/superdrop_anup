@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.adapter.delet_Adapter;
 import com.svvaap.superdrop2.upload.Upload;
 import com.google.firebase.database.DataSnapshot;

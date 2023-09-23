@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.adapter.CartAdapter;
 import com.svvaap.superdrop2.adapter.CartItem;
 import com.svvaap.superdrop2.navigation.NavActivity;

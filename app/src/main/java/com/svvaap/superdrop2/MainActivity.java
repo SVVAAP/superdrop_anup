@@ -12,7 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 
 public class MainActivity extends AppCompatActivity {
     VideoView videoView;

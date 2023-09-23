@@ -54,18 +54,15 @@
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
-        <com.hbb20.CountryCodePicker
+        <EditText
             android:id="@+id/ccp"
-            android:layout_width="110dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/border_left"
-            android:padding="15dp"
-            app:ccp_autoDetectCountry="true"
-            app:ccp_showFullName="false"
-            app:ccp_showNameCode="false"
-            app:ccp_showPhoneCode="true"
-            app:ccp_textSize="16sp"
+            android:padding="20dp"
+            android:text="+91"
+            android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/etPhone"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"

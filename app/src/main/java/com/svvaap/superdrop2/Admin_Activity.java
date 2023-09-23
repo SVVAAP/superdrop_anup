@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.upload.BowlExpressAdd_Activity;
 import com.svvaap.superdrop2.upload.BunOnTopAdd_Activity;
 import com.svvaap.superdrop2.upload.Offer_Add_Activity;

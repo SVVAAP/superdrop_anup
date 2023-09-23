@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.svvaap.superdrop2.Cart_Activity;
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.adapter.CartAdapter;
 import com.svvaap.superdrop2.adapter.CartItem;
 import com.svvaap.superdrop2.methods.Order;
@@ -209,7 +209,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
                     builder.setTitle("Place Order");
-                    builder.setMessage("Conform Your Order!  \t  just for verification!");
+                    builder.setMessage("Press ok to confirm order!!!");
                     builder.setIcon(R.drawable.pizza_icon);
 
                     // Add OK button
@@ -407,7 +407,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         NotificationCompat.Builder mbuilder = new NotificationCompat.Builder(context, channelid)
                 .setSmallIcon(R.drawable.cat_2)
-                .setContentTitle(title)
+                .setContentTitle("Order processing")
                 .setContentText(message)
                 .setAutoCancel(true);
 

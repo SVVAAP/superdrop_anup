@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.methods.User;
 import com.svvaap.superdrop2.navigation.NavActivity;
 import com.google.firebase.auth.FirebaseAuth;

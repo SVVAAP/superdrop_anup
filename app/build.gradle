@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace 'com.example.superdrop2'
+    namespace 'com.svvaap.superdrop2'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.superdrop2"
+        applicationId "com.svvaap.superdrop2"
         minSdk 29
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -25,12 +25,10 @@
 
                 <LinearLayout
                     android:id="@+id/srujan_layout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="8dp"
                     android:background="@drawable/circle_background"
                     android:orientation="horizontal"
                     android:padding="10dp"
@@ -69,11 +67,9 @@
 
                 <LinearLayout
                     android:id="@+id/anup_layout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="21dp"
-                    android:layout_marginEnd="7dp"
                     android:background="@drawable/circle_background"
                     android:orientation="horizontal"
                     android:padding="10dp"
@@ -175,7 +171,6 @@
                         android:id="@+id/textView22"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:text="Email- workwithsvvaap@gmail.com"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

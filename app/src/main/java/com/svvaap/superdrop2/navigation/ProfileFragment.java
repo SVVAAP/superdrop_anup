@@ -31,7 +31,7 @@ import androidx.fragment.app.Fragment;
 
 import com.svvaap.superdrop2.Admin_Activity;
 import com.svvaap.superdrop2.OtpSendActivity;
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.customers_Activity;
 import com.svvaap.superdrop2.methods.User;
 import com.google.android.gms.tasks.OnFailureListener;

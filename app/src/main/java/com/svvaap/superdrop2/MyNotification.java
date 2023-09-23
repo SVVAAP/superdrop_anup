@@ -9,7 +9,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

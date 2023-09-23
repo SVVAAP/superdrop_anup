@@ -30,7 +30,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.svvaap.superdrop2.BottomSheet;
-import com.example.superdrop2.R;
+import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.SearchActivity;
 import com.svvaap.superdrop2.adapter.MyMenuAdapter;
 import com.svvaap.superdrop2.adapter.rest_Adapter;
