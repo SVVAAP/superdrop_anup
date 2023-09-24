@@ -52,6 +52,7 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         progressBar = findViewById(R.id.progressBar);
         countryCodePicker = findViewById(R.id.ccp);
+        countryCodePicker.setEnabled(false);
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -93,7 +94,7 @@ public class OtpSendActivity extends AppCompatActivity {
                         // Hide progress bar
                         progressBar.setVisibility(View.GONE);
                         Log.e("send verify",e.toString());
-                        Toast.makeText(OtpSendActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OtpSendActivity.this, "Error..Try again later.. :(", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

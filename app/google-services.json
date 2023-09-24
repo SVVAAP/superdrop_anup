@@ -8,25 +8,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:587544703441:android:9b1ed07e46b746245d70f0",
+        "mobilesdk_app_id": "1:587544703441:android:d1a1b86ee5ded2af5d70f0",
         "android_client_info": {
-          "package_name": "com.example.superdrop2"
+          "package_name": "com.example.superdrop_admin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "587544703441-c7k61nn8ka4p7msjcaeae2kaarbac5t2.apps.googleusercontent.com",
+          "client_id": "587544703441-3lepnm5c2chbafso7igka6ov91bepdfr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.superdrop2",
+            "package_name": "com.example.superdrop_admin",
             "certificate_hash": "33c8fc0731ec98d92f56b2be430262c90d6e0bea"
           }
         },
         {
-          "client_id": "587544703441-qog3jbn4co0nb124evfi1i0ni069or0s.apps.googleusercontent.com",
+          "client_id": "587544703441-mtl18rrgv29b8dtf0vsg8nok464575p6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.superdrop2",
+            "package_name": "com.example.superdrop_admin",
             "certificate_hash": "31fca92493ab73e5163706aa5cac0d4df963e6aa"
           }
         },
@@ -53,28 +53,12 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:587544703441:android:d1a1b86ee5ded2af5d70f0",
+        "mobilesdk_app_id": "1:587544703441:android:3f21fdfc3ef041815d70f0",
         "android_client_info": {
-          "package_name": "com.example.superdrop_admin"
+          "package_name": "com.svvaap.superdrop2"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "587544703441-3lepnm5c2chbafso7igka6ov91bepdfr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.superdrop_admin",
-            "certificate_hash": "33c8fc0731ec98d92f56b2be430262c90d6e0bea"
-          }
-        },
-        {
-          "client_id": "587544703441-mtl18rrgv29b8dtf0vsg8nok464575p6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.superdrop_admin",
-            "certificate_hash": "31fca92493ab73e5163706aa5cac0d4df963e6aa"
-          }
-        },
         {
           "client_id": "587544703441-0f5vhiriq6jsplrfqul62k2dp0u2qvek.apps.googleusercontent.com",
           "client_type": 3
