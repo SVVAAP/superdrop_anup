@@ -62,12 +62,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
-            android:hint="Phone(optional)"
+            android:hint="Phone"
             android:inputType="phone"
             android:textColor="@color/black"
             android:textColorHint="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phone_number_optioal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            android:hint="Phone(optional)"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:textColorHint="#FFFFFF" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!--*******password**********-->
 
@@ -109,18 +127,23 @@
             android:textColorHint="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/border_2"
+        android:layout_margin="15dp">
 
     <Spinner
         android:id="@+id/city_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
         android:padding="20dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:paddingStart="15dp"
         android:paddingEnd="15dp">
 

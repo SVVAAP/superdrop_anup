@@ -22,7 +22,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Detail_Activity extends AppCompatActivity {
 
-    private EditText fullName, phoneNumber, address, landmark;
+    private EditText fullName, phoneNumber, address, landmark, phoneNumberoptioal;
     private Spinner citySpinner;
     private Button signUpButton;
     // Firebase references
@@ -40,16 +40,24 @@ public class Detail_Activity extends AppCompatActivity {
 
         phoneNumberget = getIntent().getStringExtra("phoneNumber");
 
+
         // Initialize views
         fullName = findViewById(R.id.fullname);
         phoneNumber = findViewById(R.id.phone_number);
+        phoneNumberoptioal=findViewById(R.id.phone_number_optioal);
         address = findViewById(R.id.address_text);
         citySpinner = findViewById(R.id.city_spinner); // Updated to use the Spinner
         landmark = findViewById(R.id.landmark_text);
         signUpButton = findViewById(R.id.signup_button);
+        if(phoneNumberget!=null)
+        {
+            phoneNumber.setText(phoneNumberget);
+            phoneNumber.setEnabled(false);
+        }
+
 
         // Initialize the ArrayAdapter
-        ArrayAdapter ctadapter = ArrayAdapter.createFromResource(this, R.array.city_options, android.R.layout.simple_spinner_item);
+        ArrayAdapter ctadapter = ArrayAdapter.createFromResource(this, R.array.city_options2, android.R.layout.simple_spinner_item);
 
         // Set the dropdown layout style
         ctadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -83,27 +91,34 @@ public class Detail_Activity extends AppCompatActivity {
         if (user != null) {
             String userId = user.getUid();
             String name = fullName.getText().toString();
-            String phone_optnl = phoneNumber.getText().toString();
+            String Phone=phoneNumber.getText().toString();
+            String phone_optnl = phoneNumberoptioal.getText().toString();
             String userAddress = address.getText().toString();
             String selectedCity = citySpinner.getSelectedItem().toString(); // Get the selected city from the Spinner
             String landmarkAddress = landmark.getText().toString();
 
-            // Reference to the "users" node in Firebase Database
-            DatabaseReference userRef = mDatabase.getReference("users").child(userId);
+            if("Select a City".equals(selectedCity))
+            {
+                Toast.makeText(this, "Please Select The City", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                // Reference to the "users" node in Firebase Database
+                DatabaseReference userRef = mDatabase.getReference("users").child(userId);
 
-            // Create a User object and set the details including the selected city
-            User userDetails = new User(name, phoneNumberget, phone_optnl, userAddress, selectedCity, landmarkAddress, Token);
+                // Create a User object and set the details including the selected city
+                User userDetails = new User(name, Phone, phone_optnl, userAddress, selectedCity, landmarkAddress, Token);
 
-            // Push the user details to the database
-            userRef.setValue(userDetails)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(Detail_Activity.this, "Details uploaded successfully!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Detail_Activity.this, NavActivity.class));
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(Detail_Activity.this, "Failed to upload details.", Toast.LENGTH_SHORT).show();
-                    });
+                // Push the user details to the database
+                userRef.setValue(userDetails)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(Detail_Activity.this, "Details uploaded successfully!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(Detail_Activity.this, NavActivity.class));
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(Detail_Activity.this, "Failed to upload details.", Toast.LENGTH_SHORT).show();
+                        });
+            }
         }
     }
 
@@ -111,6 +126,7 @@ public class Detail_Activity extends AppCompatActivity {
         // Check if all required fields are filled
         return !fullName.getText().toString().isEmpty()
                 && !phoneNumber.getText().toString().isEmpty()
+                && !phoneNumberoptioal.getText().toString().isEmpty()
                 && !address.getText().toString().isEmpty()
                 && !landmark.getText().toString().isEmpty()
                 && citySpinner.getSelectedItemPosition() != 0;

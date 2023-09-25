@@ -127,12 +127,20 @@
                 android:hint="Phone Number(optional)"
                 android:inputType="textMultiLine" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/border_2"
+                android:layout_margin="15dp">
+
             <Spinner
                 android:id="@+id/ccity_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:entries="@array/city_options" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <!-- note -->

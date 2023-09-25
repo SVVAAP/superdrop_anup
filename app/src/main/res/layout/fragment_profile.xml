@@ -121,6 +121,11 @@
 
             <!-- Emergency Contact Section -->
             <!-- Emergency Contact -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/border_2">
             <Spinner
                 android:id="@+id/pcity_spinner"
                 android:layout_width="match_parent"
@@ -128,6 +133,7 @@
                 android:layout_margin="5dp"
                 android:entries="@array/city_options"
                 android:padding="10dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <EditText
                 android:id="@+id/edit_landmark"

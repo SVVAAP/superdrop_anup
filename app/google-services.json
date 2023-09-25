@@ -31,7 +31,7 @@
           }
         },
         {
-          "client_id": "587544703441-0f5vhiriq6jsplrfqul62k2dp0u2qvek.apps.googleusercontent.com",
+          "client_id": "587544703441-pim995itn70ab9kc3qvg3l2hhpv6g4j7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -60,7 +60,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "587544703441-0f5vhiriq6jsplrfqul62k2dp0u2qvek.apps.googleusercontent.com",
+          "client_id": "587544703441-5b3abhace2iebm4tlta8m812t0b1b200.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.svvaap.superdrop2",
+            "certificate_hash": "31fca92493ab73e5163706aa5cac0d4df963e6aa"
+          }
+        },
+        {
+          "client_id": "587544703441-pim995itn70ab9kc3qvg3l2hhpv6g4j7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
