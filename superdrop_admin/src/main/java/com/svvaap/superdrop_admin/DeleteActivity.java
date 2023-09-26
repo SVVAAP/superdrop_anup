@@ -63,7 +63,6 @@ public class DeleteActivity extends AppCompatActivity {
         card_kfc= findViewById(R.id.mkfc_card);
         card_offer= findViewById(R.id.offer_card);
         card_offer_Item=findViewById(R.id.offer_item_card);
-        button_search = findViewById(R.id.button2);
         container_search=findViewById(R.id.search_container);
         imageView =findViewById(R.id.imageView7);
 
@@ -125,7 +124,7 @@ item_view(data);
         card_offer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = "Offers";
+                String name = "offers_poster";
                 data=name;
                 item_view(name);
             }
@@ -138,44 +137,7 @@ item_view(data);
                 item_view(name);
             }
         });
-        button_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isEditMode) {
-                    show(true);
-                    button_search.setText("Search");
-                    ViewGroup.LayoutParams params = button_search.getLayoutParams();
-                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                    button_search.setLayoutParams(params);
-                    // Align the button to the center
-                    ConstraintSet constraintSet = new ConstraintSet();
-                    constraintSet.clone((ConstraintLayout) view.getParent());
-                    constraintSet.centerHorizontally(R.id.button2, ConstraintSet.PARENT_ID);
-                    constraintSet.applyTo((ConstraintLayout) view.getParent());
-                    button_search.animate()
-                            .translationXBy(0) // Shift to right side
-                            .setDuration(300) // Animation duration in milliseconds
-                            .start();
-                    imageView.setVisibility(View.VISIBLE);
-                    isEditMode = false;
-                } else {
-                    show(false);
-                    isEditMode = true;
-                    ViewGroup.LayoutParams params = button_search.getLayoutParams();
-                    params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    button_search.setLayoutParams(params);
-                    button_search.setText("X");
-                    ConstraintSet constraintSet = new ConstraintSet();
-                    constraintSet.clone((ConstraintLayout) view.getParent());
-                    constraintSet.connect(R.id.button2, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-                    constraintSet.clear(R.id.button2, ConstraintSet.START);
-                    constraintSet.applyTo((ConstraintLayout) view.getParent());
-                    DeleteActivity.this.overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
-                    imageView.setVisibility(View.GONE);
-                }
 
-            }
-        });
 
         mAdapter = new delet_Adapter(DeleteActivity.this, mUploads);
         recyclerview.setAdapter(mAdapter);

@@ -19,11 +19,11 @@ public class TabAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
        switch (position){
            case 0:
-               return new OldOrders();
-           case 1:
                return new NewOrders();
+           case 1:
+           return new OldOrders();
            default:
-               return new OldOrders();
+               return new NewOrders();
        }
     }
 

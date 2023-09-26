@@ -42,8 +42,9 @@ public class Upload {
         mdiscount=discount;
         mdiscountPrice=discountPrice;
     }
-    public Upload(String imageUrl){
-        mImageUrl = imageUrl;
+    public Upload(String imageUrl,String mitemId){
+        this.mImageUrl = imageUrl;
+        this.mitemId=mitemId;
     }
 
     // Add the getters and setters for the price variable
@@ -59,13 +60,6 @@ public class Upload {
     public String getDiscountPrice(){return mdiscountPrice;}
     public void setDiscountPrice(String discountPrice){mdiscountPrice=discountPrice;}
 
-    public Upload(String name, String imageUrl) {
-        if (name.trim().equals("")) {
-            name = "No Name";
-        }
-        mName = name;
-        mImageUrl = imageUrl;
-    }
     public String getItemId() {
         return mitemId;
     }
