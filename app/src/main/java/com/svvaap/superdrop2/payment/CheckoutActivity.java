@@ -205,8 +205,11 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!isNetworkAvailable()) {
                     // No internet connection, display a toast message
-                    Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
-                } else {
+                    Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.. :(", Toast.LENGTH_SHORT).show();
+                }else if(isEditMode){
+                    Toast.makeText(CheckoutActivity.this, "Save the Address changes First.... :|", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
                     builder.setTitle("Place Order");
                     builder.setMessage("Press ok to confirm order!!!");
@@ -247,8 +250,10 @@ public class CheckoutActivity extends AppCompatActivity {
                     if (isEditMode) {
                         uploaduserdetails();
                         changedeliverycharge();
+                        changeAddress.setText("Change Address");
                     } else {
                         setEditMode(true);
+                        changeAddress.setText("Save Changes");
                     }
                 }
             }

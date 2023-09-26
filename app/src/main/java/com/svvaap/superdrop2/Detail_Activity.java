@@ -28,7 +28,7 @@ public class Detail_Activity extends AppCompatActivity {
     // Firebase references
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
-    private String phoneNumberget, Token;
+    private String  Token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class Detail_Activity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
 
-        phoneNumberget = getIntent().getStringExtra("phoneNumber");
+       String phoneNumberget = getIntent().getStringExtra("phoneNumber");
 
 
         // Initialize views
@@ -119,6 +119,8 @@ public class Detail_Activity extends AppCompatActivity {
                             Toast.makeText(Detail_Activity.this, "Failed to upload details.", Toast.LENGTH_SHORT).show();
                         });
             }
+        }else {
+            Toast.makeText(this, "User id not found...", Toast.LENGTH_SHORT).show();
         }
     }
 

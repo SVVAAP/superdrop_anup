@@ -81,7 +81,7 @@ public class ProfileFragment extends Fragment {
         ctadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Set the ArrayAdapter to the Spinner
-        citySpinner.setAdapter(ctadapter);
+
 
         admin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +105,8 @@ public class ProfileFragment extends Fragment {
         logout = view.findViewById(R.id.logout_bt);
         owner = view.findViewById(R.id.owner_bt);
         track = view.findViewById(R.id.track_bt);
-
+        citySpinner.setAdapter(ctadapter);
+        Picasso.get().load(R.drawable.profile_icon).into(profileImage);
         // Initialize Firebase Database and Storage References
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
         storageReference = FirebaseStorage.getInstance().getReference("users").child(userId);
@@ -263,6 +264,7 @@ public class ProfileFragment extends Fragment {
     private void setEditMode(boolean editMode) {
         isEditMode = editMode;
         editFullName.setEnabled(editMode);
+        profileImage.setEnabled(editMode);
         editPhone.setEnabled(editMode);
         editStreetAddress.setEnabled(editMode);
         editCity.setEnabled(editMode);

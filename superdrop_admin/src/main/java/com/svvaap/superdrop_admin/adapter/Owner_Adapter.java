@@ -136,6 +136,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         holder.address.setText(order.getShippingAddress() != null ? order.getShippingAddress() : "N/A");
         holder.payment.setText(order.getPaymentMethod() != null ? order.getPaymentMethod() : "N/A");
         holder.note.setText(order.getNote() != null ? order.getNote() : "N/A");
+        holder.phone2.setText(order.ge);
         holder.fooditemadapter = new foodItemAdapter(order.getItems(), context);
         holder.itemRecyclerView.setAdapter(holder.fooditemadapter);
         holder.orderid.setText(orderId);
@@ -268,7 +269,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         private RecyclerView itemRecyclerView;
         private foodItemAdapter fooditemadapter;
         private ProgressBar progressBar;
-        private TextView name,city,address,phone,payment,note,orderid,total;
+        private TextView name,city,address,phone,payment,note,orderid,total,phone2,landmark;
         private Button acceptButton,cancelButton;
         private Order order;
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
@@ -285,6 +286,9 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             cancelButton=itemView.findViewById(R.id.ocancelButton);
             total=itemView.findViewById(R.id.oGrandTotal);
             progressBar=itemView.findViewById(R.id.progressBar);
+            phone2=itemView.findViewById(R.id.oshippingphoneTextViewoptional);
+            landmark=itemView.findViewById(R.id.oLandmarkTextView);
+
 
 
             // Set up the layout manager for the nested RecyclerView
