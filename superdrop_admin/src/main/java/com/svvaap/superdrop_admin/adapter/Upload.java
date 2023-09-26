@@ -42,6 +42,10 @@ public class Upload {
         mdiscount=discount;
         mdiscountPrice=discountPrice;
     }
+    public Upload(String imageUrl){
+        mImageUrl = imageUrl;
+    }
+
     // Add the getters and setters for the price variable
     public double getPrice() {
         return mPrice;

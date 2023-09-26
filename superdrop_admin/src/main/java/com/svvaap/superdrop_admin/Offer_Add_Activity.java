@@ -31,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.svvaap.superdrop_admin.adapter.Upload;
 
 public class Offer_Add_Activity extends AppCompatActivity {
     private Button oButtonChooseImage;
@@ -124,7 +125,8 @@ public class Offer_Add_Activity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
                                     String uploadId = oDatabaseRef.push().getKey();
-                                    oDatabaseRef.child(uploadId).setValue(oImageUri);
+                                    Upload upload=new Upload(downloadUri.toString());
+                                    oDatabaseRef.child(uploadId).setValue(upload);
                                 }
                             });
                         }

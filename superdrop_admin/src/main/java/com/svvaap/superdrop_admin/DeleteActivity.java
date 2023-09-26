@@ -125,7 +125,7 @@ item_view(data);
         card_offer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = "offers";
+                String name = "Offers";
                 data=name;
                 item_view(name);
             }
@@ -133,7 +133,9 @@ item_view(data);
         card_offer_Item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                item_view();
+                String name = "Offer_item";
+                data=name;
+                item_view(name);
             }
         });
         button_search.setOnClickListener(new View.OnClickListener() {
@@ -291,34 +293,5 @@ item_view(data);
         imageView.setVisibility(View.GONE);
 
     }
-    public void item_view() {
 
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Offer_item");
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
-            // Inside the ValueEventListener in HomeFragment
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUploads.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Upload upload = postSnapshot.getValue(Upload.class);
-                    // Get the download URL from Firebase Storage and set it in the Upload object
-                    upload.setImageUrl(postSnapshot.child("imageUrl").getValue(String.class));
-                    // Retrieve the price from Firebase and set it in the Upload object
-                    Double priceValue = postSnapshot.child("price").getValue(Double.class);
-                    if (priceValue != null) {
-                        upload.setPrice(priceValue);
-                    }
-                    mUploads.add(upload);
-                    mAdapter.clearSelectedItems();
-                }
-                mAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(DeleteActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }
