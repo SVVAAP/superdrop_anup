@@ -7,7 +7,7 @@ import java.util.List;
 public class Order {
     private String shippingName,Token;
     private String shippingAddress;
-    private String shippingCity,landmark;
+    private String shippingCity,landmark,phone_optnl;
     private String contactInstructions;
     private String note;
     private String paymentMethod,grandtotal;
@@ -134,6 +134,12 @@ public class Order {
     }
     public void setLandmark(String landmark) {
         this.landmark = landmark;
+    }
+    public String getPhone_optnl() {
+        return phone_optnl;
+    }
+    public void setPhone_optnl(String phone_optnl) {
+        this.phone_optnl = phone_optnl;
     }
     // Add getter and setter methods as needed
 }

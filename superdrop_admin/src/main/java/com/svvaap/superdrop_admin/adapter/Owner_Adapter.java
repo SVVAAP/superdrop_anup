@@ -136,7 +136,8 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         holder.address.setText(order.getShippingAddress() != null ? order.getShippingAddress() : "N/A");
         holder.payment.setText(order.getPaymentMethod() != null ? order.getPaymentMethod() : "N/A");
         holder.note.setText(order.getNote() != null ? order.getNote() : "N/A");
-        holder.phone2.setText(order.ge);
+        holder.phone2.setText(order.getPhone_optnl());
+        holder.landmark.setText(order.getLandmark());
         holder.fooditemadapter = new foodItemAdapter(order.getItems(), context);
         holder.itemRecyclerView.setAdapter(holder.fooditemadapter);
         holder.orderid.setText(orderId);

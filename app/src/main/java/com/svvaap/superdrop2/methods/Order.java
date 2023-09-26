@@ -9,7 +9,7 @@ import java.util.List;
 public class Order {
     private String shippingName,Token;
     private String shippingAddress;
-    private String shippingCity,landmark;
+    private String shippingCity,landmark,phone_optnl;
     private String contactInstructions;
     private String note;
     private String paymentMethod,grandtotal;
@@ -26,7 +26,7 @@ public class Order {
     }
 
     public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
-                 String contactInstructions, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark) {
+                 String contactInstructions, String phone_optnl, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark) {
         this.orderid=orderid;
         this.shippingName = shippingName;
         this.shippingAddress = shippingAddress;
@@ -40,6 +40,7 @@ public class Order {
         // No need to add a dummy item her
         this.orderStatus=oredrStatus;
         this.landmark=landmark;
+        this.phone_optnl=phone_optnl;
     }
     public String getOrderStatus(){
         return orderStatus;
@@ -136,6 +137,12 @@ public class Order {
     }
     public void setLandmark(String landmark) {
         this.landmark = landmark;
+    }
+    public String getPhone_optnl() {
+        return phone_optnl;
+    }
+    public void setPhone_optnl(String phone_optnl) {
+        this.phone_optnl = phone_optnl;
     }
     // Add getter and setter methods as needed
 }

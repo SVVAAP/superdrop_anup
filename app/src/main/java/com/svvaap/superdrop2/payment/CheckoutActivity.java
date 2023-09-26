@@ -313,6 +313,7 @@ public class CheckoutActivity extends AppCompatActivity {
         String contactInstructions = contactInstructionsEditText.getText().toString();
         String note = noteEditText.getText().toString();
         String landmark = shippinglandmark.getText().toString();
+        String phone_optnl=ContactOptialEditText.getText().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String currentDate = dateFormat.format(Calendar.getInstance().getTime());
@@ -339,7 +340,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // Store order details in Firebase
         Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
-                contactInstructions, note, paymentMethod, newstatus, gtotal, orderStatus, landmark);
+                contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark);
         order.setItems(cartItemList);
         order.setUserId(userId);
         order.setDate(currentDate); // Set the current date
