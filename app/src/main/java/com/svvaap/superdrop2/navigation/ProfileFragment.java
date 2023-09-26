@@ -29,11 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.svvaap.superdrop2.Admin_Activity;
-import com.svvaap.superdrop2.OtpSendActivity;
-import com.svvaap.superdrop2.R;
-import com.svvaap.superdrop2.customers_Activity;
-import com.svvaap.superdrop2.methods.User;
+import com.example.superdrop2.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +42,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+import com.svvaap.superdrop2.Admin_Activity;
+import com.svvaap.superdrop2.OtpSendActivity;
+import com.svvaap.superdrop2.customers_Activity;
+import com.svvaap.superdrop2.methods.User;
 
 public class ProfileFragment extends Fragment {
 
