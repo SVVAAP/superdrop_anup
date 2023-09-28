@@ -1,5 +1,6 @@
 package com.svvaap.superdrop_admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,11 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 public class NewOrders extends Fragment {
     private RecyclerView orderRecyclerView;
     private Owner_Adapter orderAdapter;
     private List<Order> orderList;
+
+    private BackgroundMusicService backgroundMusicService;
+
     public NewOrders() {
         // Required empty public constructor
     }
@@ -50,8 +53,14 @@ public class NewOrders extends Fragment {
         // Retrieve orders from Firebase and populate the list
         retrieveOrdersFromFirebase();
 
+        // Initialize the service
+        backgroundMusicService = new BackgroundMusicService();
+        Intent serviceIntent = new Intent(getContext(), BackgroundMusicService.class);
+        getContext().startService(serviceIntent);
+
         return view;
     }
+
     private void retrieveOrdersFromFirebase() {
         DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
 
@@ -75,11 +84,22 @@ public class NewOrders extends Fragment {
                         }
                         // Set the retrieved cart items to the order
                         order.setItems(cartItems);
-                        orderList.add(0,order);
+                        orderList.add(0, order);
                     }
                 }
-
                 orderAdapter.notifyDataSetChanged();
+
+                // Check for the order status and start/stop the background music
+                for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                    Order order = orderSnapshot.getValue(Order.class);
+                    if (order != null && Objects.equals(order.getStatus(), "Ordering")) {
+                        // Start the background music when status is "Ordering"
+                        backgroundMusicService.startMusic();
+                    } else {
+                        // Stop the background music when status changes
+                        backgroundMusicService.stopMusic();
+                    }
+                }
             }
 
             @Override
@@ -87,5 +107,15 @@ public class NewOrders extends Fragment {
                 // Handle database read error
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Stop the background music service when the fragment is destroyed
+        if (backgroundMusicService != null) {
+            backgroundMusicService.stopMusic();
+            getContext().stopService(new Intent(getContext(), BackgroundMusicService.class));
+        }
     }
 }

@@ -1,20 +1,17 @@
 package com.svvaap.superdrop2;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.svvaap.superdrop2.R;
-import com.svvaap.superdrop2.adapter.ImageAdapter;
-import com.svvaap.superdrop2.adapter.SliderAdapter;
-import com.svvaap.superdrop2.upload.Upload;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.superdrop2.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +27,9 @@ import com.google.firebase.storage.StorageReference;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
+import com.svvaap.superdrop2.adapter.ImageAdapter;
+import com.svvaap.superdrop2.adapter.SliderAdapter;
+import com.svvaap.superdrop2.upload.Upload;
 
 import java.util.ArrayList;
 import java.util.List;

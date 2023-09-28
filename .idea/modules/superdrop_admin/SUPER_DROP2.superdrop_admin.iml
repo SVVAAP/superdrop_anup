@@ -25,6 +25,7 @@
     <output-test url="file://$MODULE_DIR$/../../../superdrop_admin/build/intermediates/javac/debugUnitTest/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../superdrop_admin">
+      <sourceFolder url="file://$MODULE_DIR$/../../../superdrop_admin" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../superdrop_admin/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../superdrop_admin/build" />
     </content>

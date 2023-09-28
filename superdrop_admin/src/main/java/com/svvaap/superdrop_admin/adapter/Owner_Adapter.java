@@ -1,10 +1,14 @@
 package com.svvaap.superdrop_admin.adapter;
 
 import android.animation.ValueAnimator;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.svvaap.superdrop_admin.BackgroundMusicService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,10 +51,13 @@ import okhttp3.Response;
 
 public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder> {
     private List<Order> orderList;
-    private Context context;
+    private static Context context;
     private String orderID,cToken;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private String userid;
+
+    private static BackgroundMusicService musicService;
+    private static boolean isMusicServiceBound = false;
     public Owner_Adapter(List<Order> OrderList, Context context) {
         this.orderList = OrderList;
         this.context = context;
@@ -273,6 +281,8 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         private TextView name,city,address,phone,payment,note,orderid,total,phone2,landmark;
         private Button acceptButton,cancelButton;
         private Order order;
+        //private Button acceptButton, cancelButton;
+
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
             super(itemView);
             itemRecyclerView = itemView.findViewById(R.id.ofoodItemsRecyclerView);
@@ -290,6 +300,9 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             phone2=itemView.findViewById(R.id.oshippingphoneTextViewoptional);
             landmark=itemView.findViewById(R.id.oLandmarkTextView);
 
+            acceptButton = itemView.findViewById(R.id.oacceptButton);
+            cancelButton = itemView.findViewById(R.id.ocancelButton);
+
 
 
             // Set up the layout manager for the nested RecyclerView
@@ -299,11 +312,63 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             fooditemadapter = new foodItemAdapter(new ArrayList<>(), itemView.getContext()); // Initialize cartAdapter with an empty list
             itemRecyclerView.setAdapter(fooditemadapter);
 
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // ... (other onClick code)
 
+                    // Stop the music when the "Accept" button is clicked
+                    if (isMusicServiceBound) {
+                        musicService.stopMusic();
+                    }
+                }
+            });
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // ... (other onClick code)
+
+                    // Stop the music when the "Cancel" button is clicked
+                    if (isMusicServiceBound) {
+                        musicService.stopMusic();
+                    }
+                }
+            });
 
         }
 
     }
+
+    public static void bindMusicService() {
+        if (!isMusicServiceBound) {
+            Intent intent = new Intent(context, BackgroundMusicService.class);
+            context.bindService(intent, musicConnection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    public static void unbindMusicService() {
+        if (isMusicServiceBound) {
+            context.unbindService(musicConnection);
+            isMusicServiceBound = false;
+        }
+    }
+
+    private static ServiceConnection musicConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isMusicServiceBound = true;
+            // Start playing music when the service is connected
+            musicService.startMusic();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isMusicServiceBound = false;
+        }
+    };
      private void updateButtonAppearance(ViewHolder holder,Button abutton) {
          // Set the width of the accept button to match the parent's width
          animateButtonWidthChange(abutton, abutton.getWidth(),
