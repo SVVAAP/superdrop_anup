@@ -55,7 +55,7 @@ import com.smarteist.autoimageslider.SliderView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class  HomeFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private rest_Adapter mAdapter;

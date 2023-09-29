@@ -17,7 +17,7 @@ public class MyNotification extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
-        Intent intent = new Intent(getApplicationContext(), Track_Order_Activity.class);
+        Intent intent = new Intent(getApplicationContext(), customers_Activity.class);
         if (message.getData().size() > 0) {
             String title = message.getData().get("title");
             String body = message.getData().get("body");

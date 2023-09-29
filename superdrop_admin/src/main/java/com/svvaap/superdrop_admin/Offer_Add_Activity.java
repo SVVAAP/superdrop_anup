@@ -55,8 +55,8 @@ public class Offer_Add_Activity extends AppCompatActivity {
         oButtonUpload = findViewById(R.id.upload_offer);
         oImageView = findViewById(R.id.offr_img);
         oProgressBar = findViewById(R.id.offr_progressBar);
-        oStorageRef = FirebaseStorage.getInstance().getReference("offers_poster");
-        oDatabaseRef = FirebaseDatabase.getInstance().getReference("offers_poster");
+        oStorageRef = FirebaseStorage.getInstance().getReference("Offers");
+        oDatabaseRef = FirebaseDatabase.getInstance().getReference("Offers");
 
         oButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override

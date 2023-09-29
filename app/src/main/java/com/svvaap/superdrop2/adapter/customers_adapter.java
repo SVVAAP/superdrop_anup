@@ -34,7 +34,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
     @Override
     public customers_adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.customer_item_v, parent, false);
-        return new customers_adapter.ViewHolder(view,parent);
+        return new ViewHolder(view, parent);
     }
 
     @Override
@@ -53,6 +53,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         holder.total.setText(gtotal);
         holder.date.setText(order.getDate());
         holder.time.setText(order.getTime());
+        holder.orderid.setText(order.getOrderId());
 
         // Set initial visibility
         holder.processing.setVisibility(View.INVISIBLE);
@@ -123,7 +124,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         private ProgressBar progressBar;
         private ConstraintLayout moreinfo,itembackground;
         private LinearLayout linearLayout;
-        private TextView name,city,address,phone,payment,note,total,toggltext,date,time,textcancle;
+        private TextView name,city,address,phone,payment,note,total,toggltext,date,time,textcancle,orderid;
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
             super(itemView);
             Order order;
@@ -149,6 +150,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             textcancle=itemView.findViewById(R.id.cancle_text);
             itembackground=itemView.findViewById(R.id.citem_background);
             linearLayout=itemView.findViewById(R.id.linear_status);
+            orderid=itemView.findViewById(R.id.order_id_txt);
             // Set up layout animation for sliding down
             LayoutTransition layoutTransition = new LayoutTransition();
             layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,

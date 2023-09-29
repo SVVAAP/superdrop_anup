@@ -124,7 +124,7 @@ item_view(data);
         card_offer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = "offers_poster";
+                String name = "Offers";
                 data=name;
                 item_view(name);
             }

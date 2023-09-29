@@ -27,9 +27,6 @@
             android:name="com.svvaap.superdrop2.customers_Activity"
             android:exported="false" />
         <activity
-            android:name="com.svvaap.superdrop2.Track_Order_Activity"
-            android:exported="false" />
-        <activity
             android:name="com.svvaap.superdrop2.DeleteActivity"
             android:exported="false" />
         <activity
