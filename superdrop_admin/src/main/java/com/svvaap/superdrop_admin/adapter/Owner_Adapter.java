@@ -82,50 +82,57 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
 
         @Override
         public Void call() {
-            // Perform your database updates here
-            DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
-            DatabaseReference custOrderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userid);
+            try {
+                // Perform your database updates here
+                DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
+                DatabaseReference custOrderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userid);
 
-            orderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            snapshot.getRef().child("status").setValue(newStatus);
-                            if(Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")){
-                                snapshot.getRef().child("orderStatus").setValue("Done");
+                orderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                snapshot.getRef().child("status").setValue(newStatus);
+                                if (Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")) {
+                                    snapshot.getRef().child("orderStatus").setValue("Done");
+                                }
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle database read error
-                }
-            });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle database read error
+                    }
+                });
 
-            custOrderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            snapshot.getRef().child("status").setValue(newStatus);
-                            if(Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")){
-                                snapshot.getRef().child("orderStatus").setValue("Done");
+                custOrderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                snapshot.getRef().child("status").setValue(newStatus);
+                                if (Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")) {
+                                    snapshot.getRef().child("orderStatus").setValue("Done");
+                                }
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle database read error
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle database read error
+                    }
 
-            });
+                });
 
 
+
+            } catch (Exception e) {
+                Toast.makeText(button.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+
+            }
             return null;
         }
     }
@@ -397,6 +404,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
 //        if (executor != null && !executor.isShutdown()) {
 //            executor.shutdown();
 //        }
+//    }
 private void sendNotification(String tokens,String status,String id) {
     SendNotificationTask task = new SendNotificationTask(tokens,status,id);
     new Thread(task).start();
@@ -413,15 +421,16 @@ private void sendNotification(String tokens,String status,String id) {
 
         @Override
         public void run() {
-            OkHttpClient client = new OkHttpClient();
-            MediaType mediaType = MediaType.parse("application/json");
+            try {
+                OkHttpClient client = new OkHttpClient();
+                MediaType mediaType = MediaType.parse("application/json");
 
                 JSONObject notification = new JSONObject();
                 JSONObject body = new JSONObject();
 
                 try {
                     notification.put("title", "Your Order:" + id);
-                    notification.put("body", "Your order is being "+status);
+                    notification.put("body", "Your order is being " + status);
                     body.put("to", tokens);
                     body.put("notification", notification);
                 } catch (JSONException e) {
@@ -449,6 +458,9 @@ private void sendNotification(String tokens,String status,String id) {
                 } catch (IOException e) {
                     Log.d("error", e.toString());
                 }
+            }catch (Exception e){
+                Toast.makeText(context.getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            }
             }
 
     }

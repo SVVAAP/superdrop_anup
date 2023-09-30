@@ -81,6 +81,9 @@
             </intent-filter>
         </service>
         <service android:name="com.svvaap.superdrop_admin.BackgroundMusicService" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="Channel1" />
 
     </application>
 

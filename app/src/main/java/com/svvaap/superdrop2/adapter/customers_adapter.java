@@ -65,7 +65,8 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
 
 
         String currentStatus=order.getStatus();
-        if (currentStatus != null && currentStatus.equals("Ordering"))  {
+        assert currentStatus != null;
+        if (currentStatus.equals("Ordering"))  {
            holder.progressBar.setProgress(0);
             holder.processing.setVisibility(View.VISIBLE);
             holder.accepted.setVisibility(View.INVISIBLE);
@@ -100,7 +101,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             holder.cooking.setVisibility(View.VISIBLE);
             holder.delivering.setVisibility(View.VISIBLE);
             holder.delivered.setVisibility(View.VISIBLE);
-            }else if(currentStatus.equals("Cancled")) {
+        }else if(currentStatus.equals("Cancled")) {
             holder.progressBar.setVisibility(View.INVISIBLE);
             holder.processing.setVisibility(View.INVISIBLE);
             holder.accepted.setVisibility(View.INVISIBLE);

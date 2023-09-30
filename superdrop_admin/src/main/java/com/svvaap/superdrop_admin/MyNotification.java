@@ -38,6 +38,7 @@ public class MyNotification extends FirebaseMessagingService {
                 playNotificationSoundLikeAlarm();
             }
         }
+        message.getNotification().getBody();
     }
 
     public void showNotification(String title, String message) {
