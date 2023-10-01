@@ -68,7 +68,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="ffffff" />
-                                                <entry key="imagePath" value="C:\Users" />
+                                                <entry key="imagePath" value="C:\Users\sruja\AppData\Local\Temp\ic_android_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -81,7 +81,7 @@
                                               <map>
                                                 <entry key="color" value="000000" />
                                                 <entry key="imagePath" value="G:\ANDROID PROJECT\superdrop_anup-master\superdrop_anup-master\app\src\main\res\drawable\superdrop_logo.png" />
-                                                <entry key="scalingPercent" value="62" />
+                                                <entry key="scalingPercent" value="72" />
                                               </map>
                                             </option>
                                           </PersistentState>

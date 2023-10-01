@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.media.MediaPlayer;
 import android.view.View;
 import androidx.annotation.NonNull;
-
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.svvaap.superdrop2.Cart_Activity;
 import com.svvaap.superdrop2.adapter.CartItem;
 import com.svvaap.superdrop2.navigation.NavActivity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,7 +50,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
     double totalprice;
     ProgressBar progressBar;
 
-
     public BottomSheet() {
         // Required empty public constructor
     }
@@ -74,8 +73,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("cart");
         mAuth = FirebaseAuth.getInstance();
 
-
-
         mediaPlayer = MediaPlayer.create(getActivity(), R.raw.addtocart_music);
 
         bt_order.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +88,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 startActivity(intent);
             }
         });
-
-
-
 
         // Retrieve item details from arguments
         Bundle args = getArguments();
@@ -123,6 +117,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 total_price.setText(withsymboltprice);
             }
         });
+
         minus_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,9 +131,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                     total_price.setText(priceWithSymbol);
                 }
             }
-        });// Load image using Picasso or any other library you prefer
-        Picasso.get().load(imageUrl).into(item_img);
-        // Inside BottomSheet.java
+        });
 
         bt_cart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +152,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 }
             }
         });
+
         bt_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,7 +183,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         CartItem cartItem = snapshot.getValue(CartItem.class);
                         int newQuantity = cartItem.getQuantity() + quantity;
-                        double newTotalPrice = cartItem.getTotalprice()+totalPrice;
+                        double newTotalPrice = cartItem.getTotalprice() + totalPrice;
                         snapshot.getRef().child("quantity").setValue(newQuantity);
                         snapshot.getRef().child("totalprice").setValue(newTotalPrice);
                         progressBar.setVisibility(View.INVISIBLE);
@@ -229,6 +223,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
             }
         });
     }
+
     // Update the badge number in NavActivity
     private void updateBadgeNumber(int newItemCount) {
         NavActivity navActivity = (NavActivity) getActivity();
@@ -236,6 +231,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
             navActivity.updateBadgeNumber(newItemCount);
         }
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
@@ -251,5 +247,4 @@ public class BottomSheet extends BottomSheetDialogFragment {
             mediaPlayer = null;
         }
     }
-
 }
