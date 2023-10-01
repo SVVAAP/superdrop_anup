@@ -68,6 +68,14 @@
           }
         },
         {
+          "client_id": "587544703441-nh2tpcdpicv0rlric278l4qckiefjtdl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.svvaap.superdrop2",
+            "certificate_hash": "d7f962d77b5777de9e289064827615d8ce0cebde"
+          }
+        },
+        {
           "client_id": "587544703441-pim995itn70ab9kc3qvg3l2hhpv6g4j7.apps.googleusercontent.com",
           "client_type": 3
         }

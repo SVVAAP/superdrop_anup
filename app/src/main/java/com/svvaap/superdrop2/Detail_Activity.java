@@ -65,20 +65,23 @@ public class Detail_Activity extends AppCompatActivity {
         // Set the ArrayAdapter to the Spinner
         citySpinner.setAdapter(ctadapter);
 
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                String iToken = task.getResult();
-                // Store the token in Firebase Firestore
-                Token = iToken;
-            }
-        });
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Check if all required fields are filled
                 if (areFieldsValid()) {
-                    uploadDetails();
+                    FirebaseMessaging.getInstance().getToken()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful() && task.getResult() != null) {
+                                    String iToken = task.getResult();
+                                    // Store the token in Firebase Firestore
+                                    Token = iToken;
+                                    uploadDetails(); // Call uploadDetails() once the token is available
+                                } else {
+                                    Toast.makeText(Detail_Activity.this, "Failed to retrieve FCM token.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 } else {
                     Toast.makeText(Detail_Activity.this, "Please fill out all required fields.", Toast.LENGTH_SHORT).show();
                 }

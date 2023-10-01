@@ -40,7 +40,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
     @Override
     public void onBindViewHolder(@NonNull customers_adapter.ViewHolder holder, int position) {
         Order order = orderList.get(position);
-     // Set default values to prevent NullPointerException
+        // Set default values to prevent NullPointerException
         holder.name.setText(order.getShippingName() != null ? order.getShippingName() : "N/A");
         holder.phone.setText(order.getContactInstructions() != null ? order.getContactInstructions() : "N/A");
         holder.city.setText(order.getShippingCity() != null ? order.getShippingCity() : "N/A");
@@ -62,12 +62,10 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         holder.delivering.setVisibility(View.INVISIBLE);
         holder.cooking.setVisibility(View.INVISIBLE);
         holder.textcancle.setVisibility(View.GONE);
-
-
         String currentStatus=order.getStatus();
         assert currentStatus != null;
         if (currentStatus.equals("Ordering"))  {
-           holder.progressBar.setProgress(0);
+            holder.progressBar.setProgress(0);
             holder.processing.setVisibility(View.VISIBLE);
             holder.accepted.setVisibility(View.INVISIBLE);
             holder.cooking.setVisibility(View.INVISIBLE);

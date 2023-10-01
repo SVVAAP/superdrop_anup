@@ -428,16 +428,15 @@ private void sendNotification(String tokens, String status, String id) {
                         Log.d("Notification", "Notification sent successfully");
                     } else {
                         // Notification sending failed
-                        Log.d("Notification", "Notification sending failed");
+                        Log.e("Notification", "Notification sending failed: " + response.body().string());
                     }
                 } catch (IOException e) {
-                    Log.d("error", e.toString());
+                    Log.e("Notification", "Error sending notification: " + e.toString());
                 }
-            }catch (Exception e){
-                Toast.makeText(context.getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Log.e("Notification", "Error sending notification: " + e.toString());
             }
-            }
-
+        }
     }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
