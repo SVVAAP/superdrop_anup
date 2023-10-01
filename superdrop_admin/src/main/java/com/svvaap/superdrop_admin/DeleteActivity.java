@@ -166,7 +166,7 @@ item_view(data);
                     if (itemId != null) {
                         menuRef.child(itemId).removeValue();
                         currentFolderRef.child(itemId).removeValue();
-                        StorageReference fileRef = storageReference.child(itemId +"." + getFileExtension(imageuri)); // Replace ".jpg" with the actual file extension you use
+                        StorageReference fileRef = storageReference.child(itemId); // Replace ".jpg" with the actual file extension you use
                         fileRef.delete();
 
                     }
