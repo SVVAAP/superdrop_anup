@@ -41,6 +41,7 @@
         android:layout_height="250dp"
         android:layout_margin="21dp"
         android:background="@drawable/red_rounded_edge"
+        android:backgroundTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createText">
@@ -198,7 +199,7 @@
             app:layout_constraintTop_toTopOf="@+id/constraintLayout7">
 
             <Button
-                android:id="@+id/sheet_addtocart_bt"
+                android:id="@+id/cart_sheet_updatecart_bt"
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -222,7 +223,7 @@
                 android:src="@drawable/add_to_basket"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/sheet_addtocart_bt"
+                app:layout_constraintStart_toEndOf="@+id/cart_sheet_updatecart_bt"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

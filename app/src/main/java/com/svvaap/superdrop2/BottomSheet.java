@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.adapter.CartItem;
 import com.svvaap.superdrop2.navigation.NavActivity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -65,7 +64,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         total_price = view.findViewById(R.id.sheet_totalprice);
         item_quantity = view.findViewById(R.id.sheet_quantity);
         item_img = view.findViewById(R.id.sheet_img);
-        bt_cart = view.findViewById(R.id.sheet_addtocart_bt);
+        bt_cart = view.findViewById(R.id.cart_sheet_updatecart_bt);
         bt_order = view.findViewById(R.id.sheet_order_bt);
         plus_img = view.findViewById(R.id.sheet_plus_bt);
         minus_img = view.findViewById(R.id.sheet_minus_bt);

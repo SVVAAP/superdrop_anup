@@ -91,14 +91,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Note [For Now Delivery only available from shirva to belman And nitte]"
-                android:textSize="14sp"
-                android:textStyle="italic" />
-
             <EditText
                 android:id="@+id/edit_street_address"
                 android:layout_width="match_parent"
@@ -122,6 +114,14 @@
 
             <!-- Emergency Contact Section -->
             <!-- Emergency Contact -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Note [For Now Delivery only available from these Towns only]"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

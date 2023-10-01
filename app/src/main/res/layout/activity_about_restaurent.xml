@@ -4,16 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context="com.svvaap.superdrop2.AboutRestaurentActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -131,6 +136,11 @@
                         android:layout_height="wrap_content"
                         android:padding="16dp"
                         android:text="Description: Experience the flavors of China at Street Wok, your go-to spot for savory noodles, delectable momos, and an enticing selection of Chinese fast food." />
+
+                    <WebView
+                        android:id="@+id/streetwok_web"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/bowlexpress_card"
@@ -268,6 +278,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
                         android:padding="16dp"
                         android:text="Contact Information"
                         android:textSize="20sp"
