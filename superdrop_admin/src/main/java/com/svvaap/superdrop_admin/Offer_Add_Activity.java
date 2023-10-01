@@ -103,8 +103,8 @@ public class Offer_Add_Activity extends AppCompatActivity {
     }
     private void uploadFile() {
         if (oImageUri != null) {
-            StorageReference fileReference = oStorageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(oImageUri));
+            String uploadId = oDatabaseRef.push().getKey();
+            StorageReference fileReference = oStorageRef.child(uploadId + "." + getFileExtension(oImageUri));
 
             oUploadTask = fileReference.putFile(oImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -124,7 +124,7 @@ public class Offer_Add_Activity extends AppCompatActivity {
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
-                                    String uploadId = oDatabaseRef.push().getKey();
+
                                     Upload upload=new Upload(downloadUri.toString(),uploadId);
                                     oDatabaseRef.child(uploadId).setValue(upload);
                                 }

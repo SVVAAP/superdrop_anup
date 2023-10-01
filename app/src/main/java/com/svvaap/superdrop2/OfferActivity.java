@@ -105,59 +105,26 @@ private RecyclerView  offerRecyclerView;
     }
     private void fetchImageURLs() {
         // Get a reference to the "uploads" folder in Firebase Storage
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference("Offers");
-
-        // Fetch the images from Firebase Storage
-        storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Offers");
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            // Inside the ValueEventListener in HomeFragment
             @Override
-            public void onSuccess(ListResult listResult) {
-                imageURLs.clear(); // Clear the existing URLs before adding new ones
-
-                // Iterate through the list of items (images) and add their URLs to the list
-                List<StorageReference> items = listResult.getItems();
-                List<Task<Uri>> downloadUrlTasks = new ArrayList<>();
-
-                for (StorageReference item : items) {
-                    downloadUrlTasks.add(item.getDownloadUrl());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               imageURLs.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    imageURLs.add(postSnapshot.child("imageUrl").getValue(String.class));
                 }
-
-                // Wait for all downloadUrlTasks to complete
-                Tasks.whenAllComplete(downloadUrlTasks)
-                        .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
-                            @Override
-                            public void onSuccess(List<Task<?>> tasks) {
-                                // Extract the URLs from the completed tasks
-                                for (Task<Uri> task : downloadUrlTasks) {
-                                    if (task.isSuccessful()) {
-                                        Uri uri = task.getResult();
-                                        imageURLs.add(uri.toString());
-//                                        mAdapter=new rest_Adapter(imageURLs)
-//                                        mRecyclerView.setAdapter(mAdapter);
-                                    }
-                                }
-                                SliderAdapter slideadapter = new SliderAdapter(imageURLs);
-                                sliderView.setSliderAdapter(slideadapter);
-                                mProgressCircle.setVisibility(View.INVISIBLE);
-                                sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
-                                sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
-                                sliderView.startAutoCycle();
-
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Handle any errors that may occur while fetching URLs
-                                Toast.makeText(OfferActivity.this, "Failed to fetch image URLs", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                SliderAdapter slideadapter = new SliderAdapter(imageURLs);
+                sliderView.setSliderAdapter(slideadapter);
+                mProgressCircle.setVisibility(View.INVISIBLE);
+                sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+                sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
+                sliderView.startAutoCycle();
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                // Handle any errors that may occur while listing items in Firebase Storage
-                Toast.makeText(OfferActivity.this, "Failed to fetch image URLs", Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(OfferActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
         });

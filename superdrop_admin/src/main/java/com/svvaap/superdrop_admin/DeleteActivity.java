@@ -1,5 +1,7 @@
 package com.svvaap.superdrop_admin;
 
+import static com.google.common.io.Files.getFileExtension;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.superdrop_admin.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.svvaap.superdrop_admin.adapter.ImageAdapter;
 import com.svvaap.superdrop_admin.adapter.delet_Adapter;
 import com.svvaap.superdrop_admin.adapter.Upload;
@@ -153,13 +157,18 @@ item_view(data);
                 // Get reference to the Firebase database for "menu" and "bunontop" nodes
                 DatabaseReference menuRef = FirebaseDatabase.getInstance().getReference("menu");
                 DatabaseReference currentFolderRef = FirebaseDatabase.getInstance().getReference(data);
+                StorageReference storageReference= FirebaseStorage.getInstance().getReference(data);
 
                 // Loop through selected items and delete them from both "menu" and "bunontop"
                 for (Upload selectedItem : selectedItems) {
                     String itemId = selectedItem.getItemId(); // Assuming you have this property in Upload class
+                    String imageuri=selectedItem.getImageUrl();
                     if (itemId != null) {
                         menuRef.child(itemId).removeValue();
                         currentFolderRef.child(itemId).removeValue();
+                        StorageReference fileRef = storageReference.child(itemId +"." + getFileExtension(imageuri)); // Replace ".jpg" with the actual file extension you use
+                        fileRef.delete();
+
                     }
                 }
 

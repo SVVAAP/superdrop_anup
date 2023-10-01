@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -69,71 +70,52 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.owner_item_v, parent, false);
         return new ViewHolder(view,parent);
     }
-    private class UpdateStatusTask implements Callable<Void> {
-        private final Button button;
-        private final String newStatus;
-        private final String orderId;
+    private void updateStatus(String newStatus, String orderId) {
+        try {
+            // Perform your database updates here
+            DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
+            DatabaseReference custOrderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userid);
 
-        public UpdateStatusTask(Button button, String newStatus, String orderId) {
-            this.button = button;
-            this.newStatus = newStatus;
-            this.orderId = orderId;
-        }
-
-        @Override
-        public Void call() {
-            try {
-                // Perform your database updates here
-                DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
-                DatabaseReference custOrderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userid);
-
-                orderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().child("status").setValue(newStatus);
-                                if (Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")) {
-                                    snapshot.getRef().child("orderStatus").setValue("Done");
-                                }
+            orderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            snapshot.getRef().child("status").setValue(newStatus);
+                            if (Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")) {
+                                snapshot.getRef().child("orderStatus").setValue("Done");
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle database read error
-                    }
-                });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle database read error
+                }
+            });
 
-                custOrderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                snapshot.getRef().child("status").setValue(newStatus);
-                                if (Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")) {
-                                    snapshot.getRef().child("orderStatus").setValue("Done");
-                                }
+            custOrderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            snapshot.getRef().child("status").setValue(newStatus);
+                            if (Objects.equals(newStatus, "Delivered") || Objects.equals(newStatus, "Cancled")) {
+                                snapshot.getRef().child("orderStatus").setValue("Done");
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle database read error
-                    }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle database read error
+                }
+            });
 
-                });
-
-
-
-            } catch (Exception e) {
-                Toast.makeText(button.getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-
-            }
-            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -214,20 +196,30 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
                     // Show progress bar
                     holder.progressBar.setVisibility(View.VISIBLE);
                     holder.cancelButton.setEnabled(false);
-                    // Update status using ExecutorService and Future
-                    Future<Void> future = executor.submit(new UpdateStatusTask(holder.cancelButton, "Cancled", order.getOrderId()));
-                    sendNotification(cToken, "Cancled", orderId);
-                    // Wait for the background task to complete
-                    new Handler().postDelayed(() -> {
-                        try {
-                            future.get();
-                            holder.progressBar.setVisibility(View.GONE); // Hide progress bar
-                            holder.cancelButton.setEnabled(true);
-                            // Update UI as needed
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    // Update status using ExecutorService
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateStatus("Cancled", order.getOrderId());
+                            sendNotification(cToken, "Cancled", orderId);
+
+                            // Delay to simulate background task
+                            try {
+                                Thread.sleep(3500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Update UI on the main thread
+                            holder.progressBar.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.progressBar.setVisibility(View.GONE); // Hide progress bar
+                                    holder.cancelButton.setEnabled(true);
+                                }
+                            });
                         }
-                    }, 2500); // Delay for the same amount as the background operation
+                    });
                 }
             }
         });
@@ -258,20 +250,30 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
                         return;
                     }
 
-                    // Update status using ExecutorService and Future
-                    Future<Void> future = executor.submit(new UpdateStatusTask(holder.acceptButton, newStatus, order.getOrderId()));
-                    sendNotification(cToken, newStatus, orderId);
-                    // Wait for the background task to complete
-                    new Handler().postDelayed(() -> {
-                        try {
-                            future.get();
-                            holder.progressBar.setVisibility(View.GONE); // Hide progress bar
-                            holder.acceptButton.setEnabled(true);
-                            // Update UI as needed
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    // Execute the updateStatus in the ExecutorService
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateStatus(newStatus, order.getOrderId());
+                            sendNotification(cToken, newStatus, orderId);
+
+                            // Delay to simulate background task
+                            try {
+                                Thread.sleep(3500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Update UI on the main thread
+                            holder.progressBar.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.progressBar.setVisibility(View.GONE); // Hide progress bar
+                                    holder.acceptButton.setEnabled(true);
+                                }
+                            });
                         }
-                    }, 2500); // Delay for the same amount as the background operation
+                    });
                 }
             }
         });
@@ -347,35 +349,6 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
 
     }
 
-    public static void bindMusicService() {
-        if (!isMusicServiceBound) {
-            Intent intent = new Intent(context, BackgroundMusicService.class);
-            context.bindService(intent, musicConnection, Context.BIND_AUTO_CREATE);
-        }
-    }
-
-    public static void unbindMusicService() {
-        if (isMusicServiceBound) {
-            context.unbindService(musicConnection);
-            isMusicServiceBound = false;
-        }
-    }
-
-    private static ServiceConnection musicConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
-            musicService = binder.getService();
-            isMusicServiceBound = true;
-            // Start playing music when the service is connected
-            musicService.startMusic();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            isMusicServiceBound = false;
-        }
-    };
      private void updateButtonAppearance(ViewHolder holder,Button abutton) {
          // Set the width of the accept button to match the parent's width
          animateButtonWidthChange(abutton, abutton.getWidth(),
@@ -405,18 +378,20 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
 //            executor.shutdown();
 //        }
 //    }
-private void sendNotification(String tokens,String status,String id) {
-    SendNotificationTask task = new SendNotificationTask(tokens,status,id);
+private void sendNotification(String tokens, String status, String id) {
+    SendNotificationTask task = new SendNotificationTask(tokens, status, id);
     new Thread(task).start();
 }
-    private class SendNotificationTask implements Runnable {
+
+    private static class SendNotificationTask implements Runnable {
         private String tokens;
         private String status;
         private String id;
-        public SendNotificationTask(String tokens,String status,String id) {
+
+        public SendNotificationTask(String tokens, String status, String id) {
             this.tokens = tokens;
-            this.status =status;
-            this.id =id;
+            this.status = status;
+            this.id = id;
         }
 
         @Override
@@ -464,9 +439,9 @@ private void sendNotification(String tokens,String status,String id) {
             }
 
     }
-private boolean isNetworkAvailable() {
-    ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
-    return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
-}
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    }
 }

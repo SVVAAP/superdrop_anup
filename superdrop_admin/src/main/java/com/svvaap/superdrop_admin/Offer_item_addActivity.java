@@ -130,8 +130,8 @@ public class Offer_item_addActivity extends AppCompatActivity {
 
     private void uploadFile(final double price) {
         if (mImageUri != null) {
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(mImageUri));
+            String uploadId = mDatabaseRef.push().getKey();
+            StorageReference fileReference = mStorageRef.child(uploadId + "." + getFileExtension(mImageUri));
             String restname="BowlRxpress";
             String discount=mEditTextDiscount.getText().toString().trim();
             String discountprice=mEditTextDiscountPrice.getText().toString().trim();
@@ -153,7 +153,7 @@ public class Offer_item_addActivity extends AppCompatActivity {
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
-                                    String uploadId = mDatabaseRef.push().getKey(); // Generate a unique item ID
+                                    // Generate a unique item ID
                                     Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price,restname,uploadId,discount,discountprice);
                                    // Set the unique item ID
                                     mDatabaseRef.child(uploadId).setValue(upload);

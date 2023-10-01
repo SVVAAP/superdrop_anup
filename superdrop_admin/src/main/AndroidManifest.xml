@@ -75,9 +75,11 @@
 
         <service
             android:name="com.svvaap.superdrop_admin.MyNotification"
-            android:exported="false">
+            android:exported="false"
+            android:permission="com.google.android.c2dm.permission.Send">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.permission.Reciever"/>
             </intent-filter>
         </service>
         <service android:name="com.svvaap.superdrop_admin.BackgroundMusicService" />

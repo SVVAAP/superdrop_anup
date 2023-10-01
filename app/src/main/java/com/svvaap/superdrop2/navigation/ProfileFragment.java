@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -63,6 +64,7 @@ public class ProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private ActivityResultLauncher<Intent> mGetContentLauncher;
     private Uri mImageUri;
+    private ProgressBar progressBar;
 
     @SuppressLint("MissingInflatedId")
     @Nullable
@@ -75,6 +77,7 @@ public class ProfileFragment extends Fragment {
         String userId = user.getUid();
         admin = view.findViewById(R.id.adminbt);
         citySpinner = view.findViewById(R.id.pcity_spinner);
+        progressBar=view.findViewById(R.id.progressBar_pro);
         ArrayAdapter ctadapter = ArrayAdapter.createFromResource(getContext(), R.array.city_options, android.R.layout.simple_spinner_item);
 
         // Set the dropdown layout style
@@ -139,6 +142,8 @@ public class ProfileFragment extends Fragment {
                     String profileImageUrl = user.getProfileImageUrl();
                     if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
                         loadProfileImage(profileImageUrl);
+                    }else {
+                        Picasso.get().load(R.drawable.profile_icon).into(profileImage);
                     }
                 }
             }
@@ -162,6 +167,7 @@ public class ProfileFragment extends Fragment {
                     // No internet connection, display a toast message
                     Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
                 } else {
+                    progressBar.setVisibility(View.VISIBLE);
                     saveProfileToFirebase();
                 }
             }
@@ -176,6 +182,7 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (isEditMode) {
+                        progressBar.setVisibility(View.VISIBLE);
                         saveProfileToFirebase();
                     } else {
                         setEditMode(true);
@@ -298,6 +305,7 @@ public class ProfileFragment extends Fragment {
         String city = citySpinner.getSelectedItem().toString();
         String landmark = editlandmark.getText().toString();
         String emergencyContact = editEmergencyContact.getText().toString();
+        String profileImageUrl = (mImageUri != null) ? mImageUri.toString() : "";
         float rating = ratingBar.getRating();
 
         // Get the current user's ID
@@ -308,11 +316,12 @@ public class ProfileFragment extends Fragment {
 
             // Save the user data to Firebase using the databaseReference
             // Replace "users" with your database reference
-            User user = new User(fullName, phone, streetAddress, city, landmark, emergencyContact, rating, mImageUri.toString());
+            User user = new User(fullName, phone, streetAddress, city, landmark, emergencyContact, rating, profileImageUrl);
             databaseReference.setValue(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(getActivity(), "Details uploaded", Toast.LENGTH_SHORT).show();
                             setEditMode(false);
                         }
@@ -320,6 +329,7 @@ public class ProfileFragment extends Fragment {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(getActivity(), "Failed to upload", Toast.LENGTH_SHORT).show();
                         }
                     });

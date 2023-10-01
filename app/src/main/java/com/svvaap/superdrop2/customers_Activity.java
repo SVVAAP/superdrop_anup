@@ -4,8 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.adapter.CartItem;
@@ -27,7 +32,11 @@ public class customers_Activity extends AppCompatActivity {
     private customers_adapter orderAdapter;
     private List<Order> orderList;
     private FirebaseAuth mAuth;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private String userId;
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +47,16 @@ public class customers_Activity extends AppCompatActivity {
         orderRecyclerView = findViewById(R.id.coustomer_recycler_v);
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderRecyclerView.setAdapter(orderAdapter);
-
+        progressBar=findViewById(R.id.progressBar_cust);
+        progressBar.setVisibility(View.VISIBLE);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout_cust);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Implement the logic to refresh your data here
+                refreshData();
+            }
+        });
         // Retrieve orders from Firebase and populate the list
         retrieveOrdersFromFirebase();
 
@@ -77,10 +95,10 @@ public class customers_Activity extends AppCompatActivity {
 
                         // Set the retrieved cart items to the order
                         order.setItems(cartItems);
-                        orderList.add(0,order);
+                        orderList.add(0, order);
                     }
                 }
-
+                progressBar.setVisibility(View.GONE);
                 orderAdapter.notifyDataSetChanged();
             }
 
@@ -89,5 +107,17 @@ public class customers_Activity extends AppCompatActivity {
                 // Handle database read error
             }
         });
+    }
+
+    private void refreshData() {
+        retrieveOrdersFromFirebase();
+        // Implement your data refresh logic here
+        mainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
+
     }
 }

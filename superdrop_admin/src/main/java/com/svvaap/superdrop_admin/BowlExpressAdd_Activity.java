@@ -130,8 +130,8 @@ public class BowlExpressAdd_Activity extends AppCompatActivity {
 
     private void uploadFile(final double price) {
         if (mImageUri != null) {
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(mImageUri));
+            String uploadId = mDatabaseRef.push().getKey(); // Generate a unique item ID
+            StorageReference fileReference = mStorageRef.child(uploadId + "." + getFileExtension(mImageUri));
             String restname="BowlRxpress";
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -151,7 +151,6 @@ public class BowlExpressAdd_Activity extends AppCompatActivity {
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
-                                    String uploadId = mDatabaseRef.push().getKey(); // Generate a unique item ID
                                     Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price);
                                     Upload upload2 = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price,restname,uploadId);
                                     upload.setItemId(uploadId); // Set the unique item ID
