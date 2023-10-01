@@ -8,15 +8,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.svvaap.superdrop2.R;
+import android.webkit.WebView;
 
 public class Abtdev_Activity extends AppCompatActivity {
 
@@ -31,12 +23,15 @@ public class Abtdev_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abtdev);
 
-
+        //loading website
+        WebView webView = findViewById(R.id.svvaap_web);
+        webView.getSettings().setJavaScriptEnabled(true); // Enable JavaScript if required
+        webView.loadUrl("https://svvaap.github.io/svvaap/");
 
         // Initialize your views
         anupLayout = findViewById(R.id.anup_layout);
         srujanLayout = findViewById(R.id.srujan_layout);
-        imageView3 = findViewById(R.id.imageView3);
+        imageView3 = findViewById(R.id.svvaap);
         textView3 = findViewById(R.id.textView3);
         svvaapDetails = findViewById(R.id.svvaap_details);
 
