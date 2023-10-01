@@ -63,9 +63,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartItemViewHo
 
 
         holder.cartItemName.setText(cartItem.getItemName());
-        holder.cartItemPrice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getItemPrice()));
+        String ItemPrice="₹" + new DecimalFormat("0.00").format(cartItem.getItemPrice());
+        holder.cartItemPrice.setText(ItemPrice);
         holder.cartItemQuantity.setText(String.valueOf(cartItem.getQuantity()));
-        holder.CartItemTotalprice.setText("₹" + new DecimalFormat("0.00").format(cartItem.getTotalprice()));
+        String TotalItemPrice="₹" + new DecimalFormat("0.00").format(cartItem.getTotalprice());
+        holder.CartItemTotalprice.setText(TotalItemPrice);
 //        double price =cartItem.getItemPrice();
 //        int qty=cartItem.getQuantity();
 //        double total=price*qty;

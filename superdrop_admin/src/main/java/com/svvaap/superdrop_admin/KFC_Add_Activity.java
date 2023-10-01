@@ -127,7 +127,7 @@ public class KFC_Add_Activity extends AppCompatActivity {
     private void uploadFile(final double price) {
         if (mImageUri != null) {
             String uploadId = mDatabaseRef.push().getKey(); // Generate a unique item ID
-            StorageReference fileReference = mStorageRef.child(uploadId + "." + getFileExtension(mImageUri));
+            StorageReference fileReference = mStorageRef.child(uploadId);
             String restname="KFC";
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

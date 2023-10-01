@@ -130,7 +130,8 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
     private void uploadFile(final double price) {
         if (mImageUri != null) {
             String uploadId = mDatabaseRef.push().getKey();
-            StorageReference fileReference = mStorageRef.child(uploadId + "." + getFileExtension(mImageUri));
+            assert uploadId != null;
+            StorageReference fileReference = mStorageRef.child(uploadId);
 
             String restname="BunOnTop";
             mUploadTask = fileReference.putFile(mImageUri)

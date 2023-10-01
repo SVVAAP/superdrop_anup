@@ -131,7 +131,7 @@ public class Offer_item_addActivity extends AppCompatActivity {
     private void uploadFile(final double price) {
         if (mImageUri != null) {
             String uploadId = mDatabaseRef.push().getKey();
-            StorageReference fileReference = mStorageRef.child(uploadId + "." + getFileExtension(mImageUri));
+            StorageReference fileReference = mStorageRef.child(uploadId);
             String restname="BowlRxpress";
             String discount=mEditTextDiscount.getText().toString().trim();
             String discountprice=mEditTextDiscountPrice.getText().toString().trim();

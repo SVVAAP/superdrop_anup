@@ -104,7 +104,7 @@ public class Offer_Add_Activity extends AppCompatActivity {
     private void uploadFile() {
         if (oImageUri != null) {
             String uploadId = oDatabaseRef.push().getKey();
-            StorageReference fileReference = oStorageRef.child(uploadId + "." + getFileExtension(oImageUri));
+            StorageReference fileReference = oStorageRef.child(uploadId);
 
             oUploadTask = fileReference.putFile(oImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

@@ -130,7 +130,8 @@ public class StreetWokAdd_Activity extends AppCompatActivity {
     private void uploadFile(final double price) {
         if (mImageUri != null) {
             String uploadId = mDatabaseRef.push().getKey(); // Generate a unique item ID
-            StorageReference fileReference = mStorageRef.child(uploadId + "." + getFileExtension(mImageUri));
+            assert uploadId != null;
+            StorageReference fileReference = mStorageRef.child(uploadId);
 
             String restname="StreetWok";
             mUploadTask = fileReference.putFile(mImageUri)
