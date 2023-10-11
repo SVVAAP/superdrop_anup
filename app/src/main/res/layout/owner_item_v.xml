@@ -168,7 +168,7 @@
                 android:textStyle="bold|italic" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ofoodItemsRecyclerView"
+                android:id="@+id/order_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" />
