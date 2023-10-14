@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -43,14 +46,14 @@ public class OwnersTabActivity extends AppCompatActivity {
         if (!Settings.canDrawOverlays(OwnersTabActivity.this)) {
             showPermissionRequestDialog();
         }
-       // if (!isNotificationAccessGranted()) {
-        //    requestNotificationAccessPermission();
-     //   }
+        if (!isNotificationAccessGranted()) {
+            showNotificationPermissionDialog();
+        }
         // ...
 
-        tabLayout =findViewById(R.id.tab_layout);
-        viewPager2=findViewById(R.id.view_pager);
-        tabAdapter=new TabAdapter(this);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager2 = findViewById(R.id.view_pager);
+        tabAdapter = new TabAdapter(this);
         viewPager2.setAdapter(tabAdapter);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -87,8 +90,8 @@ public class OwnersTabActivity extends AppCompatActivity {
         });
 
 
-
     }
+
     private void showPermissionRequestDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Permission Required");
@@ -123,23 +126,41 @@ public class OwnersTabActivity extends AppCompatActivity {
             }
         }
     }
-    // Method to check if notification access is granted
-//    private boolean isNotificationAccessGranted() {
-//     //   ComponentName cn = new ComponentName(this, MyNotification.class);
-//
-//        // Get the package manager
-//        PackageManager pm = getPackageManager();
-//
-//        // Check if the service is enabled
-//        //int state = pm.getComponentEnabledSetting(cn);
-//
-//        //return state == PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-//    }
 
-    // Method to request notification access permission
-    private void requestNotificationAccessPermission() {
-        // Redirect the user to the notification access settings
-        Toast.makeText(this, "Please turn On the Notification in System Seetings", Toast.LENGTH_SHORT).show();
+    private void showNotificationPermissionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Notification Permission Required");
+        builder.setMessage("To receive notifications, please turn on notification access for this app.");
+
+            builder.setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Open notification access settings
+                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setData(Uri.parse("package:"+getPackageName()));
+                    startActivity(intent);
+                }
+            });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle the user's choice to cancel
+            }
+        });
+
+        builder.create().show();
     }
 
+    private boolean isNotificationAccessGranted() {
+            // For Android Oreo and above, you need to check the notification channel's importance.
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel channel = notificationManager.getNotificationChannel("Default"); // Replace with your channel ID
+
+            return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+
+    }
+
+//    Intent(android.provider.Settings.ACTION_APPLICATION_SETTINGS);
 }

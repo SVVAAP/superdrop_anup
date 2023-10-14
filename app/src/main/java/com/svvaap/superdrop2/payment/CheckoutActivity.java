@@ -353,7 +353,7 @@ public class CheckoutActivity extends AppCompatActivity {
         }
         // You can handle more payment methods here
         changedeliverycharge();
-        String gtotal = totalPriceTextView.getText().toString();
+        String gtotal = totalPriceTextView.getText().toString().replace("₹", "");
         String orderStatus = "Pending";
 
         // Store order details in Firebase
