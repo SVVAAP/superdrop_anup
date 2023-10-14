@@ -347,7 +347,7 @@ public class CheckoutActivity extends AppCompatActivity {
         }
         if (TextUtils.isEmpty(shippingName) || TextUtils.isEmpty(shippingAddress) || TextUtils.isEmpty(shippingCity) ||
                 TextUtils.isEmpty(contactInstructions) || TextUtils.isEmpty(landmark) || TextUtils.isEmpty(phone_optnl) ||
-                TextUtils.isEmpty(note) || TextUtils.isEmpty(paymentMethod) || TextUtils.isEmpty(cToken)) {
+                 TextUtils.isEmpty(paymentMethod) || TextUtils.isEmpty(cToken)) {
             Toast.makeText(CheckoutActivity.this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
             return;
         }
