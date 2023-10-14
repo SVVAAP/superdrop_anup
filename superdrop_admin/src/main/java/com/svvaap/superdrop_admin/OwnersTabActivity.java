@@ -33,6 +33,12 @@ public class OwnersTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owners_tab);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            Intent overlayIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivity(overlayIntent);
+        }
+
         // Check if "Draw over other apps" permission is granted
         if (!Settings.canDrawOverlays(OwnersTabActivity.this)) {
             showPermissionRequestDialog();

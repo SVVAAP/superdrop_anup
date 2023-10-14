@@ -10,6 +10,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.Build;
 import android.util.Log;
 
@@ -28,11 +30,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         String channelId = "Default";
-        NotificationCompat.Builder builder = new  NotificationCompat.Builder(this, channelId)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.logo)
                 .setContentTitle(remoteMessage.getNotification().getTitle())
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setAutoCancel(true).setContentIntent(pendingIntent)
+                .setColor(Color.BLUE)
+                .addAction(R.mipmap.ic_launcher,"Accept",pendingIntent)
                 .setDefaults(DEFAULT_SOUND | DEFAULT_VIBRATE)
                 .setPriority(Notification.PRIORITY_MAX);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -44,23 +48,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         manager.notify(0, builder.build());
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("New Order");
-        alertDialogBuilder.setMessage(remoteMessage.getNotification().getBody());
-
-        alertDialogBuilder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Handle the "Accept" action here
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Handle the "Cancel" action here
-            }
-        });
-
-        alertDialogBuilder.show();
+//        Intent intent1 = new Intent(getApplicationContext(), Alert_Dialog.class);
+//        intent1.putExtra("title",remoteMessage.getNotification().getTitle());
+//        intent1.putExtra("body",remoteMessage.getNotification().getBody());
+//        try{
+//            PendingIntent.getActivity(getApplicationContext(),0,intent1,PendingIntent.FLAG_IMMUTABLE).send();
+//        }catch (Exception e){
+//            Log.d("FMC ERROR",e.getMessage());
+//        }
     }
 
 }
