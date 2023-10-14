@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.svvaap.superdrop2.Cart_Activity;
 import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.adapter.CartAdapter;
@@ -264,7 +266,6 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // Update the delivery charge when a city is selected
                 changedeliverycharge();
-                calculateTotalAmount();
             }
 
             @Override
@@ -333,9 +334,26 @@ public class CheckoutActivity extends AppCompatActivity {
 //            placeOrderInFirebase(shippingName, shippingAddress, shippingCity, contactInstructions, note, paymentMethod);
 //            redirectToOrderPlacedPage();
 //        }
-        changedeliverycharge();
+// Check if the cToken is empty and generate it if needed
+        if (TextUtils.isEmpty(cToken)||cToken==null) {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        String iToken = task.getResult();
+                        // Store the token in Firebase Firestore
+                       cToken = iToken;
+                    }
+                });
+        }
+        if (TextUtils.isEmpty(shippingName) || TextUtils.isEmpty(shippingAddress) || TextUtils.isEmpty(shippingCity) ||
+                TextUtils.isEmpty(contactInstructions) || TextUtils.isEmpty(landmark) || TextUtils.isEmpty(phone_optnl) ||
+                TextUtils.isEmpty(note) || TextUtils.isEmpty(paymentMethod) || TextUtils.isEmpty(cToken)) {
+            Toast.makeText(CheckoutActivity.this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         // You can handle more payment methods here
-        String gtotal = calculateTotalAmount();
+        changedeliverycharge();
+        String gtotal = totalPriceTextView.getText().toString();
         String orderStatus = "Pending";
 
         // Store order details in Firebase
@@ -555,6 +573,12 @@ public class CheckoutActivity extends AppCompatActivity {
             String userAddress = shippingAddressEditText.getText().toString();
             String selectedCity = citySpinner.getSelectedItem().toString(); // Get the selected city from the Spinner
             String landmarkAddress = shippinglandmark.getText().toString();
+
+            // Validate fields
+            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(userAddress) || TextUtils.isEmpty(selectedCity) || TextUtils.isEmpty(landmarkAddress)) {
+                Toast.makeText(CheckoutActivity.this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // Reference to the "users" node in Firebase Database
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);

@@ -126,14 +126,45 @@ public class Detail_Activity extends AppCompatActivity {
             Toast.makeText(this, "User id not found...", Toast.LENGTH_SHORT).show();
         }
     }
-
     private boolean areFieldsValid() {
-        // Check if all required fields are filled
-        return !fullName.getText().toString().isEmpty()
-                && !phoneNumber.getText().toString().isEmpty()
-                && !phoneNumberoptioal.getText().toString().isEmpty()
-                && !address.getText().toString().isEmpty()
-                && !landmark.getText().toString().isEmpty()
-                && citySpinner.getSelectedItemPosition() != 0;
+        String name = fullName.getText().toString().trim();
+        String phone = phoneNumber.getText().toString().trim();
+        String optionalPhone = phoneNumberoptioal.getText().toString().trim();
+        String userAddr = address.getText().toString().trim();
+        String landmarkAddr = landmark.getText().toString().trim();
+        String selectedCity = citySpinner.getSelectedItem().toString();
+        boolean isValid = true;
+
+        if (name.isEmpty()) {
+            fullName.setError("Please enter your full name.");
+            isValid = false;
+        }
+
+        if (phone.isEmpty()) {
+            phoneNumber.setError("Please enter your phone number.");
+            isValid = false;
+        }
+
+        if (optionalPhone.isEmpty()) {
+            phoneNumberoptioal.setError("Please enter an optional phone number.");
+            isValid = false;
+        }
+
+        if (userAddr.isEmpty()) {
+            address.setError("Please enter your address.");
+            isValid = false;
+        }
+
+        if (landmarkAddr.isEmpty()) {
+            landmark.setError("Please enter a landmark address.");
+            isValid = false;
+        }
+
+        if ("Select a City".equals(selectedCity)) {
+            Toast.makeText(this, "Please select a city.", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        return isValid;
     }
 }
