@@ -30,7 +30,7 @@ public class MyNotification extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationId = 1;
         String channelId = "Channel1";
-        String channelName = "My Channel";
+        String channelName = "SuperDrop Notification";
         int importance = NotificationManager.IMPORTANCE_HIGH;
 
         // Create a notification channel (only if it doesn't exist)
@@ -46,10 +46,11 @@ public class MyNotification extends FirebaseMessagingService {
                 .setAutoCancel(true);
 
         // Create a PendingIntent to open the Track_Order_Activity
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         builder.setContentIntent(pendingIntent);
 
         // Notify using the NotificationManager
         notificationManager.notify(notificationId, builder.build());
     }
+
 }
