@@ -213,6 +213,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView23"
                     app:layout_constraintVertical_bias="1.0" />
 
+
                 <TextView
                     android:id="@+id/textView26"
                     android:layout_width="wrap_content"
@@ -224,6 +225,28 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Current Status"
+                    android:textSize="24sp"
+                    android:textStyle="bold|italic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+                <TextView
+                    android:id="@+id/order_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Status"
+                    android:textSize="24sp"
+                    android:textStyle="bold|italic"
+                    app:layout_constraintStart_toEndOf="@+id/textView28"
+                    app:layout_constraintTop_toBottomOf="@+id/order_note" />
 
                 <TextView
                     android:id="@+id/order_note"
@@ -247,7 +270,7 @@
                 android:textStyle="bold|italic" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ofoodItemsRecyclerView"
+                android:id="@+id/order_foodItemsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -326,7 +349,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/order_progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"

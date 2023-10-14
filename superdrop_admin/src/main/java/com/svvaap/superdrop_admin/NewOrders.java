@@ -50,6 +50,15 @@ public class NewOrders extends Fragment {
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orderRecyclerView.setAdapter(orderAdapter);
 
+        orderAdapter.setOnItemClickListener(new Owner_Adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String stringToPass) {
+                Intent intent = new Intent(getActivity(), Order_Activity.class);
+                intent.putExtra("STRING_KEY", stringToPass); // Pass the stringToPass to the new activity
+                startActivity(intent);
+            }
+        });
+
         // Retrieve orders from Firebase and populate the list
         retrieveOrdersFromFirebase();
 

@@ -1,5 +1,6 @@
 package com.svvaap.superdrop_admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,15 @@ public class OldOrders extends Fragment {
         orderRecyclerView = view.findViewById(R.id.oldorder_recyclerview);
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orderRecyclerView.setAdapter(orderAdapter);
+
+        orderAdapter.setOnItemClickListener(new Owner_Adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String stringToPass) {
+                Intent intent = new Intent(getActivity(), Order_Activity.class);
+                intent.putExtra("STRING_KEY", stringToPass); // Pass the stringToPass to the new activity
+                startActivity(intent);
+            }
+        });
 
         // Retrieve orders from Firebase and populate the list
         retrieveOrdersFromFirebase();
