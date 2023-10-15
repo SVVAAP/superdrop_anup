@@ -142,6 +142,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     User user = snapshot.getValue(User.class);
 
                     // Populate UI elements with user data
+                    assert user != null;
                     shippingNameEditText.setText(user.getFullName());
                     contactInstructionsEditText.setText(user.getPhone());
                     shippingAddressEditText.setText(user.getStreetAddress());
@@ -210,6 +211,8 @@ public class CheckoutActivity extends AppCompatActivity {
                     Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.. :(", Toast.LENGTH_SHORT).show();
                 }else if(isEditMode){
                     Toast.makeText(CheckoutActivity.this, "Save the Address changes First.... :|", Toast.LENGTH_SHORT).show();
+                }else   if (areFieldsValid()) {
+                    Toast.makeText(CheckoutActivity.this, "Invalid Data..... :|", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
@@ -249,7 +252,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     // No internet connection, display a toast message
                     Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (isEditMode) {
+                    if (isEditMode && areFieldsValid()) {
                         uploaduserdetails();
                         changedeliverycharge();
                         changeAddress.setText("Change Address");
@@ -344,12 +347,6 @@ public class CheckoutActivity extends AppCompatActivity {
                        cToken = iToken;
                     }
                 });
-        }
-        if (TextUtils.isEmpty(shippingName) || TextUtils.isEmpty(shippingAddress) || TextUtils.isEmpty(shippingCity) ||
-                TextUtils.isEmpty(contactInstructions) || TextUtils.isEmpty(landmark) || TextUtils.isEmpty(phone_optnl) ||
-                 TextUtils.isEmpty(paymentMethod) || TextUtils.isEmpty(cToken)) {
-            Toast.makeText(CheckoutActivity.this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
-            return;
         }
         // You can handle more payment methods here
         changedeliverycharge();
@@ -596,5 +593,47 @@ public class CheckoutActivity extends AppCompatActivity {
                         Toast.makeText(CheckoutActivity.this, "Failed to upload details.", Toast.LENGTH_SHORT).show();
                     });
         }
+    }
+
+    private boolean areFieldsValid() {
+        String name = shippingNameEditText.getText().toString().trim();
+        String phone = contactInstructionsEditText.getText().toString().trim();
+        String optionalPhone = ContactOptialEditText.getText().toString().trim();
+        String userAddr = shippingAddressEditText.getText().toString().trim();
+        String landmarkAddr = shippinglandmark.getText().toString().trim();
+        String selectedCity = citySpinner.getSelectedItem().toString();
+        boolean isValid = true;
+
+        if (name.isEmpty()) {
+            shippingNameEditText.setError("Please enter your full name.");
+            isValid = false;
+        }
+
+        if (phone.isEmpty()) {
+           contactInstructionsEditText.setError("Please enter your phone number.");
+            isValid = false;
+        }
+
+        if (optionalPhone.isEmpty()) {
+           ContactOptialEditText.setError("Please enter an optional phone number.");
+            isValid = false;
+        }
+
+        if (userAddr.isEmpty()) {
+          shippingAddressEditText.setError("Please enter your address.");
+            isValid = false;
+        }
+
+        if (landmarkAddr.isEmpty()) {
+           shippinglandmark.setError("Please enter a landmark address.");
+            isValid = false;
+        }
+
+        if ("Select a City".equals(selectedCity)) {
+            Toast.makeText(this, "Please select a city.", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        return isValid;
     }
 }

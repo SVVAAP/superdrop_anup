@@ -54,6 +54,7 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         holder.date.setText(order.getDate());
         holder.time.setText(order.getTime());
         holder.orderid.setText(order.getOrderId());
+        holder.status.setText(order.getStatus());
 
         // Set initial visibility
         holder.processing.setVisibility(View.INVISIBLE);
@@ -121,9 +122,9 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
         private foodItemAdapter fooditemadapter;
         private ImageView processing,cooking,delivering,delivered,accepted,toogleimg;
         private ProgressBar progressBar;
-        private ConstraintLayout moreinfo,itembackground;
+        private ConstraintLayout moreinfo,itembackground,statua_bg;
         private LinearLayout linearLayout;
-        private TextView name,city,address,phone,payment,note,total,toggltext,date,time,textcancle,orderid;
+        private TextView name,city,address,phone,payment,note,total,toggltext,date,time,textcancle,orderid,status;
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
             super(itemView);
             Order order;
@@ -150,6 +151,8 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
             itembackground=itemView.findViewById(R.id.citem_background);
             linearLayout=itemView.findViewById(R.id.linear_status);
             orderid=itemView.findViewById(R.id.order_id_txt);
+            statua_bg=itemView.findViewById(R.id.status_constraint);
+            status=itemView.findViewById(R.id.status_text);
             // Set up layout animation for sliding down
             LayoutTransition layoutTransition = new LayoutTransition();
             layoutTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
@@ -163,10 +166,8 @@ public class customers_adapter extends RecyclerView.Adapter<customers_adapter.Vi
                 @Override
                 public void onClick(View v) {
                     // Toggle visibility of more_item layout
-                    moreinfo.setVisibility(
-                            moreinfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE
-                    );
-
+                    moreinfo.setVisibility(moreinfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                    statua_bg.setVisibility(statua_bg.getVisibility()== View.VISIBLE ? View.VISIBLE : View.GONE);
                     // Rotate the toggle image
                     float rotation = moreinfo.getVisibility() == View.VISIBLE ? 180 : 0;
                     toogleimg.animate().rotation(rotation).start();

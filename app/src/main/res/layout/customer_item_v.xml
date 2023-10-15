@@ -86,13 +86,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="5dp"
                     android:text="Date :"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/order_id" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
                 <TextView
                     android:id="@+id/ctime"
@@ -130,23 +129,55 @@
                     android:id="@+id/toogle_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text="View More"
                     android:textSize="16sp"
                     android:textStyle="bold|italic"
-                    app:layout_constraintBottom_toTopOf="@+id/toogle_img"
                     app:layout_constraintEnd_toEndOf="@+id/toogle_img"
-                    app:layout_constraintStart_toStartOf="@+id/toogle_img" />
+                    app:layout_constraintStart_toStartOf="@+id/toogle_img"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/toogle_img"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toogle_text"
                     app:srcCompat="@drawable/ccp_ic_arrow_drop_down"
                     app:tint="#000000" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/status_constraint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/curved_shape"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cdate">
+
+                    <TextView
+                        android:id="@+id/status_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="cursive"
+                        android:padding="5dp"
+                        android:text="Status"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
