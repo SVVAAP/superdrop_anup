@@ -143,10 +143,10 @@
                     android:layout_height="50dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="10dp"
-                    android:tint="#000000"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat="@drawable/ccp_ic_arrow_drop_down" />
+                    app:srcCompat="@drawable/ccp_ic_arrow_drop_down"
+                    app:tint="#000000" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -154,6 +154,7 @@
                 android:id="@+id/more_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="10dp"
                 android:background="@drawable/rounded_edge"
                 android:backgroundTint="#E6E5E5"
                 android:padding="21dp"
