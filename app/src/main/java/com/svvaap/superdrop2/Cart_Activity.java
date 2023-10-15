@@ -43,14 +43,14 @@ public class Cart_Activity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CartAdapter adapter;
     private List<CartItem> cartItemList;
-    private TextView totalPriceTextView;
+    private TextView totalPriceTextView,no_item_txt1,no_item_txt2;
     private FirebaseAuth mAuth;
     private ImageView no_internet;
     private DatabaseReference userCartRef;
     double total = 0.0;
     private MediaPlayer mediaPlayer;
-    ImageView edit_bt, back_bt;
-    Button placeorder, deleteButton;
+    private ImageView edit_bt, back_bt,no_item;
+    private Button placeorder, deleteButton;
     private  SwipeRefreshLayout swipeRefreshLayout;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
     @Override
@@ -71,6 +71,9 @@ public class Cart_Activity extends AppCompatActivity {
         totalPriceTextView = findViewById(R.id.cart_grandprice);
         placeorder = findViewById(R.id.cart_order);
 no_internet=findViewById(R.id.cno_internet_layout);
+no_item_txt1=findViewById(R.id.no_item_text_1);
+no_item_txt2=findViewById(R.id.no_item_text_2);
+no_item=findViewById(R.id.no_item_image);
         recyclerView = findViewById(R.id.cartRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(Cart_Activity.this));
@@ -173,8 +176,16 @@ no_internet=findViewById(R.id.cno_internet_layout);
 
                 adapter.notifyDataSetChanged();
                 if (cartItemList.isEmpty()) {
+                    no_item.setVisibility(View.VISIBLE);
+                    no_item_txt1.setVisibility(View.VISIBLE);
+                    no_item_txt2.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.INVISIBLE);
                     totalPriceTextView.setText("₹0.00"); // Display default total
                 } else {
+                    no_item.setVisibility(View.GONE);
+                    no_item_txt1.setVisibility(View.GONE);
+                    no_item_txt2.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
                 }
             }

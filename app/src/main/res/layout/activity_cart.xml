@@ -36,18 +36,18 @@
             <!-- Edit Image -->
             <ImageView
                 android:id="@+id/edit_img"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:layout_marginTop="-1dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="1dp"
                 android:clickable="true"
-                android:padding="10dp"
-                app:srcCompat="@drawable/edit" />
+                android:contentDescription="@string/delete_item"
+                app:srcCompat="@drawable/delete_ic" />
 
             <!-- Title -->
             <TextView
@@ -60,7 +60,7 @@
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
                 android:lineSpacingExtra="8sp"
-                android:text="Your Cart"
+                android:text="@string/your_cart"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -78,7 +78,7 @@
                 android:layout_marginTop="1dp"
                 android:layout_marginBottom="-1dp"
                 android:clickable="true"
-                android:padding="10dp"
+                android:contentDescription="@string/return_back"
                 app:srcCompat="@drawable/back_arrow" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -102,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Delete"
+        android:text="@string/delete"
         android:textAlignment="center"
         android:textSize="20sp"
         android:visibility="gone"
@@ -127,7 +127,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Total Price"
+                android:text="@string/total_price"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -138,7 +138,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0.00"
+                android:text="@string/zero_value"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -149,15 +149,56 @@
         <Button
             android:id="@+id/cart_order"
             style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Place Order"
+            android:text="@string/place_order"
             android:textAlignment="center"
+            android:paddingStart="90dp"
+            android:paddingEnd="90dp"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/no_item_image"
+        android:layout_width="291dp"
+        android:layout_height="283dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        android:contentDescription="@string/no_item_in_catr_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/empty_cart" />
+
+    <TextView
+        android:id="@+id/no_item_text_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gotham"
+        android:text="@string/your_cart_is_empty"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/no_item_image"
+        app:layout_constraintStart_toStartOf="@+id/no_item_image"
+        app:layout_constraintTop_toBottomOf="@+id/no_item_image" />
+
+    <TextView
+        android:id="@+id/no_item_text_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gotham"
+        android:text="@string/please_select_an_item_from_menu"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/no_item_text_1"
+        app:layout_constraintStart_toStartOf="@+id/no_item_text_1"
+        app:layout_constraintTop_toBottomOf="@+id/no_item_text_1" />
 
     <ImageView
         android:id="@+id/cno_internet_layout"
@@ -166,6 +207,7 @@
         android:background="#FDF7E3"
         android:src="@drawable/no_internet"
         android:visibility="gone"
+        android:contentDescription="@string/no_internet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"

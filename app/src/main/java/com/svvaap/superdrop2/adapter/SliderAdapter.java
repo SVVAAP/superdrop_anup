@@ -15,19 +15,7 @@ import java.util.List;
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder>{
 
     private List<String> images;
-    private rest_Adapter.OnItemClickListener listener; // Add this line
 
-    public interface OnItemClickListener {
-        void onItemClick(Upload item);
-    }
-
-    // Member variable to hold the click listener
-    private rest_Adapter.OnItemClickListener mListener;
-
-    // Method to set the click listener
-    public void setOnItemClickListener(rest_Adapter.OnItemClickListener listener) {
-        mListener = listener;
-    }
 
 
     public SliderAdapter(List<String> images){
@@ -51,15 +39,8 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder>{
                 .load(imageUrl)
                 .centerCrop()
                 .into(viewHolder.imageView);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    HomeFragment homeFragment=new HomeFragment();
-                    homeFragment.openOfferActivity();
-                }
-            }
-        });
+
+
     }
 
 
@@ -68,7 +49,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder>{
         return images.size();
     }
 
-    public class Holder extends  SliderViewAdapter.ViewHolder implements View.OnClickListener{
+    public class Holder extends  SliderViewAdapter.ViewHolder {
 
         ImageView imageView;
 
@@ -77,10 +58,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder>{
             imageView = itemView.findViewById(R.id.imageview);
 
         }
-        @Override
-        public void onClick(View v) {
-            // Nothing to do here, we handle the click in the onBindViewHolder
-        }
+
     }
 
 }

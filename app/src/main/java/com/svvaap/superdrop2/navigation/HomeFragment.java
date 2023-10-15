@@ -100,13 +100,7 @@ public class  HomeFragment extends Fragment {
         }
 
         // Set OnClickListener for SliderView
-        sliderView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle slider view click, open the Offer activity here
-                openOfferActivity();
-            }
-        });
+
         // Initialize 'about' ImageView
         about = view.findViewById(R.id.more);
         about.setOnClickListener(new View.OnClickListener() {
