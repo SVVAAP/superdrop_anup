@@ -211,7 +211,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.. :(", Toast.LENGTH_SHORT).show();
                 }else if(isEditMode){
                     Toast.makeText(CheckoutActivity.this, "Save the Address changes First.... :|", Toast.LENGTH_SHORT).show();
-                }else   if (areFieldsValid()) {
+                }else if (areFieldsValid()) {
                     Toast.makeText(CheckoutActivity.this, "Invalid Data..... :|", Toast.LENGTH_SHORT).show();
                 }
                 else {

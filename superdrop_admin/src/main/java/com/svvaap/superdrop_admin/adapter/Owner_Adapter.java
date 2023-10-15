@@ -59,28 +59,28 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         String gtotal="₹"+order.getGrandTotal();
         holder.total.setText(gtotal);
         holder.status.setText(currentStatus);
-
-
+        holder.time_txt.setText(order.getTime());
+        holder.date_txt.setText(order.getDate());
         // Check if the status is "processing"
-        if ("processing".equalsIgnoreCase(currentStatus)) {
-            // Start playing music if it's not already playing
-            if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
-                startMusicPlayback();
-            }
-        } else {
-            // Stop music if the status changes
-            stopMusicPlayback();
-        }
+//        if ("processing".equalsIgnoreCase(currentStatus)) {
+//            // Start playing music if it's not already playing
+//            if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
+//                startMusicPlayback();
+//            }
+//        } else {
+//            // Stop music if the status changes
+//            stopMusicPlayback();
+//        }
 
         // Set click listeners for location and call
-        holder.ringButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Stop the music when the ring button is clicked
-                stopMusicPlayback();
-                // Handle other actions related to the button click
-            }
-        });
+//        holder.ringButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Stop the music when the ring button is clicked
+//                stopMusicPlayback();
+//                // Handle other actions related to the button click
+//            }
+//        });
 
 
         // Set click listeners for location and call
@@ -90,8 +90,6 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
                 openGoogleMaps(order.getShippingAddress(), holder.mapWebView);
             }
         });
-
-
         holder.call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,7 +135,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         private foodItemAdapter fooditemadapter;
-        private TextView name, phone, orderid, total, status;
+        private TextView name, phone, orderid, total, status,date_txt,time_txt;
         private ImageView location, call, ringButton;
         public WebView mapWebView;  // Store the WebView as a member variable
 
@@ -151,6 +149,8 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             total = itemView.findViewById(R.id.oGrandTotal);
             location = itemView.findViewById(R.id.location);
             call = itemView.findViewById(R.id.call);
+            date_txt = itemView.findViewById(R.id.date);
+            time_txt = itemView.findViewById(R.id.time);
             //  mapWebView = itemView.findViewById(R.id.map_web);
             status = itemView.findViewById(R.id.ostatus_text);
             // Initialize mapWebView here
