@@ -5,16 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,7 +58,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         holder.orderid.setText(orderId);
         String gtotal="₹"+order.getGrandTotal();
         holder.total.setText(gtotal);
-        holder.status=order.setStatus(currentStatus);
+        holder.status.setText(currentStatus);
 
 
         // Check if the status is "processing"
@@ -141,8 +137,8 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         private foodItemAdapter fooditemadapter;
-        private TextView name, phone, orderid, total,status;
-        private ImageView location, call,ringButton;
+        private TextView name, phone, orderid, total, status;
+        private ImageView location, call, ringButton;
         public WebView mapWebView;  // Store the WebView as a member variable
 
 
@@ -155,20 +151,20 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             total = itemView.findViewById(R.id.oGrandTotal);
             location = itemView.findViewById(R.id.location);
             call = itemView.findViewById(R.id.call);
-            mapWebView = itemView.findViewById(R.id.map_web);
-            status=itemView.findViewById(R.id.status);
+            //  mapWebView = itemView.findViewById(R.id.map_web);
+            status = itemView.findViewById(R.id.ostatus_text);
             // Initialize mapWebView here
 
             // Set up a WebViewClient to handle Google Maps URL
             // Set up a WebViewClient to handle Google Maps URL
-            mapWebView.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                    super.onReceivedError(view, errorCode, description, failingUrl);
-                    // Handle the error here
-                    Log.e("WebViewError", description);
-                }
-            });
+//            mapWebView.setWebViewClient(new WebViewClient() {
+//                @Override
+//                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+//                    super.onReceivedError(view, errorCode, description, failingUrl);
+//                    // Handle the error here
+//                    Log.e("WebViewError", description);
+//                }
+//            });
 
 
 // Enable JavaScript
@@ -176,9 +172,6 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
 
         }
     }
-
-
-
     // Open Google Maps with the specified address
     private void openGoogleMaps(String address, WebView mapWebView) {
         if (mapWebView != null) {
@@ -187,9 +180,6 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             mapWebView.loadUrl("https://maps.google.com/maps?q=" + Uri.encode(address));
         }
     }
-
-
-
     // Make a phone call to the specified phone number
     private void makePhoneCall(String phoneNumber) {
         Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
