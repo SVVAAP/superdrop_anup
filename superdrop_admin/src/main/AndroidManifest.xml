@@ -29,54 +29,54 @@
 
         <activity
             android:name="com.svvaap.superdrop_admin.Order_Activity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.VadaPav_Add_Activity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.KFC_Add_Activity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.Offer_item_addActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.OwnersTabActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.Offer_Add_Activity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.OwnersActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.DeleteActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.Detail_Activity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.OtpSendActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.OtpVerifyActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.Admin_Activity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.BunOnTopAdd_Activity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.BowlExpressAdd_Activity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.svvaap.superdrop_admin.StreetWokAdd_Activity"
-            android:exported="false" />
+            android:exported="true" />
 
         <receiver
             android:name="com.svvaap.superdrop_admin.adapter.AlarmStopReceiver"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name="com.svvaap.superdrop_admin.MainActivity"

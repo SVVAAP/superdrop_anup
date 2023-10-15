@@ -36,10 +36,15 @@ public class OwnersTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owners_tab);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            Intent overlayIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            startActivity(overlayIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            String channelId = "Default"; // Use the same channel ID you are trying to access
+            if (notificationManager.getNotificationChannel(channelId) == null) {
+                int importance = NotificationManager.IMPORTANCE_HIGH; // Adjust importance as needed
+                NotificationChannel notificationChannel = new NotificationChannel(channelId, "Default Channel", importance);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
         }
 
         // Check if "Draw over other apps" permission is granted
@@ -161,6 +166,7 @@ public class OwnersTabActivity extends AppCompatActivity {
             return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
 
     }
+
 
 //    Intent(android.provider.Settings.ACTION_APPLICATION_SETTINGS);
 }

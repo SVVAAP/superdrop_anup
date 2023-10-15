@@ -44,6 +44,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+
 public class Order_Activity extends AppCompatActivity {
 private TextView name,phone,optionalphone,address,city,paymentmethord,landmark,note,total,orderid,status;
 private Button acceptButton,cancelButton;
@@ -141,6 +148,8 @@ private ProgressBar progressBar;
         });
 
         changeAppearance();
+
+
     }
 
     private void retrieveOrdersFromFirebase() {

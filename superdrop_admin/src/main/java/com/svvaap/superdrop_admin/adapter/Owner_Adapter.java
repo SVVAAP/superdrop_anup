@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,6 +90,22 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         holder.orderid.setText(orderId);
         String gtotal="₹"+order.getGrandTotal();
         holder.total.setText(gtotal);
+
+        // Set click listeners for location and call
+        holder.location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGoogleMaps(order.getShippingAddress());
+            }
+        });
+
+        holder.call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makePhoneCall(order.getContactInstructions());
+            }
+        });
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +124,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder{
         private foodItemAdapter fooditemadapter;
         private TextView name,phone,orderid,total;
+        private ImageView location,call;
         //private Button acceptButton, cancelButton;
 
         public ViewHolder(@NonNull View itemView,ViewGroup parent) {
@@ -114,8 +133,36 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             phone=itemView.findViewById(R.id.oshippingphoneTextView);
             orderid=itemView.findViewById(R.id.shippingorderid);
             total=itemView.findViewById(R.id.oGrandTotal);
+            location=itemView.findViewById(R.id.location);
+            call=itemView.findViewById(R.id.call);
 
         }
 
+    }
+
+    // Open Google Maps with the specified address
+    private void openGoogleMaps(String address) {
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps"); // Ensure it opens in Google Maps
+        if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(mapIntent);
+        } else {
+            // Handle the case where Google Maps is not installed
+            // You can show a message to the user or open a web-based map service.
+            Toast.makeText(context, "Google Maps is not installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Make a phone call to the specified phone number
+    private void makePhoneCall(String phoneNumber) {
+        Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
+        if (dialIntent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(dialIntent);
+        } else {
+            // Handle the case where there's no dialer app installed
+            // You can display a message or take an alternative action.
+            Toast.makeText(context, "No dialer app is available.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
