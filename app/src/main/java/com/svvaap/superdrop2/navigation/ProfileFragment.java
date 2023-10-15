@@ -167,8 +167,10 @@ public class ProfileFragment extends Fragment {
                     // No internet connection, display a toast message
                     Toast.makeText(getActivity(), "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
                 } else {
-                    progressBar.setVisibility(View.VISIBLE);
-                    saveProfileToFirebase();
+                    if (areFieldsValid()) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        saveProfileToFirebase();
+                    }
                 }
             }
         });
@@ -340,5 +342,46 @@ public class ProfileFragment extends Fragment {
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
         return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    }
+
+    private boolean areFieldsValid() {
+        String name = editFullName.getText().toString().trim();
+        String phone = editPhone.getText().toString().trim();
+        String userAddr = editStreetAddress.getText().toString().trim();
+        String landmarkAddr = editlandmark.getText().toString().trim();
+        String selectedCity = citySpinner.getSelectedItem().toString();
+        boolean isValid = true;
+
+        if (name.isEmpty()) {
+            editFullName.setError("Please enter your full name.");
+            isValid = false;
+        }
+
+        if (phone.isEmpty()) {
+           editPhone.setError("Please enter your phone number.");
+            isValid = false;
+        }
+
+//        if (optionalPhone.isEmpty()) {
+//            phoneNumberoptioal.setError("Please enter an optional phone number.");
+//            isValid = false;
+//        }
+
+        if (userAddr.isEmpty()) {
+            editStreetAddress.setError("Please enter your address.");
+            isValid = false;
+        }
+
+        if (landmarkAddr.isEmpty()) {
+           editlandmark.setError("Please enter a landmark address.");
+            isValid = false;
+        }
+
+        if ("Select a City".equals(selectedCity)) {
+            Toast.makeText(getContext(), "Please select a city.", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        return isValid;
     }
 }
