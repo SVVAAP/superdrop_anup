@@ -211,12 +211,9 @@ public class CheckoutActivity extends AppCompatActivity {
                     Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.. :(", Toast.LENGTH_SHORT).show();
                 }else if(isEditMode){
                     Toast.makeText(CheckoutActivity.this, "Save the Address changes First.... :|", Toast.LENGTH_SHORT).show();
-                }else   if (areFieldsValid()) {
+                }else   if (!areFieldsValid()) {
                     Toast.makeText(CheckoutActivity.this, "Invalid Data..... :|", Toast.LENGTH_SHORT).show();
                 }
-//                }else   if (areFieldsValid()) {
-//                    Toast.makeText(CheckoutActivity.this, "Invalid Data..... :|", Toast.LENGTH_SHORT).show();
-//                }
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
                     builder.setTitle("Place Order");
@@ -599,13 +596,14 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private boolean areFieldsValid() {
+        setEditMode(true);
         String name = shippingNameEditText.getText().toString().trim();
         String phone = contactInstructionsEditText.getText().toString().trim();
         String optionalPhone = ContactOptialEditText.getText().toString().trim();
         String userAddr = shippingAddressEditText.getText().toString().trim();
         String landmarkAddr = shippinglandmark.getText().toString().trim();
-        String selectedCity = citySpinner.getSelectedItem().toString();
         boolean isValid = true;
+        changeAddress.setText("Save Changes");
 
         if (name.isEmpty()) {
             shippingNameEditText.setError("Please enter your full name.");
@@ -613,28 +611,27 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
         if (phone.isEmpty()) {
-           contactInstructionsEditText.setError("Please enter your phone number.");
+            contactInstructionsEditText.setError("Please enter your phone number.");
             isValid = false;
         }
 
-        if (optionalPhone.isEmpty()) {
-           ContactOptialEditText.setError("Please enter an optional phone number.");
-            isValid = false;
-        }
+//        if (optionalPhone.isEmpty()) {
+//            // Optional phone field, no need for an error if it's empty
+//        }
 
         if (userAddr.isEmpty()) {
-          shippingAddressEditText.setError("Please enter your address.");
+            shippingAddressEditText.setError("Please enter your address.");
             isValid = false;
         }
 
         if (landmarkAddr.isEmpty()) {
-           shippinglandmark.setError("Please enter a landmark address.");
+            shippinglandmark.setError("Please enter a landmark address.");
             isValid = false;
         }
 
-        if ("Select a City".equals(selectedCity)) {
-            Toast.makeText(this, "Please select a city.", Toast.LENGTH_SHORT).show();
-            isValid = false;
+        if (isValid) {
+            setEditMode(false); // Only set to false when fields are valid
+            changeAddress.setText("Change Address");
         }
 
         return isValid;

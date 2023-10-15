@@ -132,7 +132,6 @@ public class Detail_Activity extends AppCompatActivity {
         String optionalPhone = phoneNumberoptioal.getText().toString().trim();
         String userAddr = address.getText().toString().trim();
         String landmarkAddr = landmark.getText().toString().trim();
-        String selectedCity = citySpinner.getSelectedItem().toString();
         boolean isValid = true;
 
         if (name.isEmpty()) {
@@ -157,11 +156,6 @@ public class Detail_Activity extends AppCompatActivity {
 
         if (landmarkAddr.isEmpty()) {
             landmark.setError("Please enter a landmark address.");
-            isValid = false;
-        }
-
-        if ("Select a City".equals(selectedCity)) {
-            Toast.makeText(this, "Please select a city.", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
 
