@@ -1,61 +1,33 @@
 package com.svvaap.superdrop_admin.adapter;
 
-import android.animation.ValueAnimator;
-import android.content.ComponentName;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
+import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.superdrop_admin.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.svvaap.superdrop_admin.BackgroundMusicService;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder> {
     private List<Order> orderList;
     private static Context context;
 
+    private MediaPlayer mediaPlayer;
     private static boolean isMusicServiceBound = false;
     private OnItemClickListener mListener; // Add a listener field
 
@@ -90,14 +62,39 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         holder.orderid.setText(orderId);
         String gtotal="₹"+order.getGrandTotal();
         holder.total.setText(gtotal);
+        holder.status=order.setStatus(currentStatus);
+
+
+        // Check if the status is "processing"
+        if ("processing".equalsIgnoreCase(currentStatus)) {
+            // Start playing music if it's not already playing
+            if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
+                startMusicPlayback();
+            }
+        } else {
+            // Stop music if the status changes
+            stopMusicPlayback();
+        }
+
+        // Set click listeners for location and call
+        holder.ringButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Stop the music when the ring button is clicked
+                stopMusicPlayback();
+                // Handle other actions related to the button click
+            }
+        });
+
 
         // Set click listeners for location and call
         holder.location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openGoogleMaps(order.getShippingAddress());
+                openGoogleMaps(order.getShippingAddress(), holder.mapWebView);
             }
         });
+
 
         holder.call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,52 +114,86 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
 
     }
 
+
+
+    // Method to start playing music
+    private void startMusicPlayback() {
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(context, R.raw.addtocart_music); // Replace with your music resource
+            mediaPlayer.setLooping(true); // Loop the music
+        }
+        mediaPlayer.start();
+    }
+
+    // Method to stop music playback
+    private void stopMusicPlayback() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+
     @Override
     public int getItemCount() {
         return orderList.size();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private foodItemAdapter fooditemadapter;
-        private TextView name,phone,orderid,total;
-        private ImageView location,call;
-        //private Button acceptButton, cancelButton;
+        private TextView name, phone, orderid, total,status;
+        private ImageView location, call,ringButton;
+        public WebView mapWebView;  // Store the WebView as a member variable
 
-        public ViewHolder(@NonNull View itemView,ViewGroup parent) {
+
+        @SuppressLint("SetJavaScriptEnabled")
+        public ViewHolder(@NonNull View itemView, ViewGroup parent) {
             super(itemView);
-            name=itemView.findViewById(R.id.oshippingNameTextView);
-            phone=itemView.findViewById(R.id.oshippingphoneTextView);
-            orderid=itemView.findViewById(R.id.shippingorderid);
-            total=itemView.findViewById(R.id.oGrandTotal);
-            location=itemView.findViewById(R.id.location);
-            call=itemView.findViewById(R.id.call);
+            name = itemView.findViewById(R.id.oshippingNameTextView);
+            phone = itemView.findViewById(R.id.oshippingphoneTextView);
+            orderid = itemView.findViewById(R.id.shippingorderid);
+            total = itemView.findViewById(R.id.oGrandTotal);
+            location = itemView.findViewById(R.id.location);
+            call = itemView.findViewById(R.id.call);
+            mapWebView = itemView.findViewById(R.id.map_web);
+            status=itemView.findViewById(R.id.status);
+            // Initialize mapWebView here
+
+            // Set up a WebViewClient to handle Google Maps URL
+            // Set up a WebViewClient to handle Google Maps URL
+            mapWebView.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    super.onReceivedError(view, errorCode, description, failingUrl);
+                    // Handle the error here
+                    Log.e("WebViewError", description);
+                }
+            });
+
+
+// Enable JavaScript
+
 
         }
-
     }
+
+
 
     // Open Google Maps with the specified address
-    private void openGoogleMaps(String address) {
-        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps"); // Ensure it opens in Google Maps
-        if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(mapIntent);
-        } else {
-            // Handle the case where Google Maps is not installed
-            // You can show a message to the user or open a web-based map service.
-            Toast.makeText(context, "Google Maps is not installed.", Toast.LENGTH_SHORT).show();
+    private void openGoogleMaps(String address, WebView mapWebView) {
+        if (mapWebView != null) {
+            mapWebView.getSettings().setJavaScriptEnabled(true);
+            mapWebView.setVisibility(View.VISIBLE);
+            mapWebView.loadUrl("https://maps.google.com/maps?q=" + Uri.encode(address));
         }
     }
+
+
 
     // Make a phone call to the specified phone number
     private void makePhoneCall(String phoneNumber) {
         Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
-        if (dialIntent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(dialIntent);
-        } else {
-            // Handle the case where there's no dialer app installed
-            // You can display a message or take an alternative action.
-            Toast.makeText(context, "No dialer app is available.", Toast.LENGTH_SHORT).show();
-        }
+        context.startActivity(dialIntent);
+
     }
 }
