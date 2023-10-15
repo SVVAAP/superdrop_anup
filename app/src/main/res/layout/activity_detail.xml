@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
-            android:hint="Phone(optional)"
+            android:hint="Phone Number 2"
             android:inputType="phone"
             android:textColor="@color/black"
             android:textColorHint="#FFFFFF" />

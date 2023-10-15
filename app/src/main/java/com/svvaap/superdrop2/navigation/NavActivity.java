@@ -160,7 +160,7 @@ public class NavActivity extends AppCompatActivity {
         }
 
     private void showNotificationPermissionDialog() {
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Notification Permission Required");
         builder.setMessage("To receive notifications, please turn on notification access for this app.");
 
@@ -187,12 +187,13 @@ public class NavActivity extends AppCompatActivity {
 
     private boolean isNotificationAccessGranted() {
         // For Android Oreo and above, you need to check the notification channel's importance.
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel channel = notificationManager.getNotificationChannel("Channel1"); // Replace with your channel ID
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            NotificationChannel channel = notificationManager.getNotificationChannel("Channel1"); // Replace with your channel ID
 
-        return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+            return channel != null && channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+        }
 
+        return true; // If not on Android Oreo or above, assume permission is granted.
     }
-
-//    Intent(android.provider.Settings.ACTION_APPLICATION_SETTINGS);
 }

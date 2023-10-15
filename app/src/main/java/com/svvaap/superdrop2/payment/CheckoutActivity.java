@@ -209,11 +209,12 @@ public class CheckoutActivity extends AppCompatActivity {
                 if (!isNetworkAvailable()) {
                     // No internet connection, display a toast message
                     Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.. :(", Toast.LENGTH_SHORT).show();
-                }else if(isEditMode){
+                }else if(isEditMode) {
                     Toast.makeText(CheckoutActivity.this, "Save the Address changes First.... :|", Toast.LENGTH_SHORT).show();
-                }else   if (areFieldsValid()) {
-                    Toast.makeText(CheckoutActivity.this, "Invalid Data..... :|", Toast.LENGTH_SHORT).show();
                 }
+//                }else   if (areFieldsValid()) {
+//                    Toast.makeText(CheckoutActivity.this, "Invalid Data..... :|", Toast.LENGTH_SHORT).show();
+//                }
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
                     builder.setTitle("Place Order");
@@ -572,7 +573,7 @@ public class CheckoutActivity extends AppCompatActivity {
             String landmarkAddress = shippinglandmark.getText().toString();
 
             // Validate fields
-            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(userAddress) || TextUtils.isEmpty(selectedCity) || TextUtils.isEmpty(landmarkAddress)) {
+            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(userAddress)  || TextUtils.isEmpty(landmarkAddress)) {
                 Toast.makeText(CheckoutActivity.this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -606,6 +607,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         if (name.isEmpty()) {
             shippingNameEditText.setError("Please enter your full name.");
+            Toast.makeText(this, "name", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
 
