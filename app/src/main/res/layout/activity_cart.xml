@@ -46,9 +46,9 @@
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="1dp"
                 android:clickable="true"
-                android:contentDescription="@string/delete_item"
                 android:padding="10dp"
-                app:srcCompat="@drawable/delete_ic" />
+                app:srcCompat="@drawable/delete_ic"
+                android:contentDescription="TODO" />
 
             <!-- Title -->
             <TextView
@@ -61,7 +61,7 @@
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
                 android:lineSpacingExtra="8sp"
-                android:text="@string/your_cart"
+                android:text="Your Cart"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -79,7 +79,7 @@
                 android:layout_marginTop="1dp"
                 android:layout_marginBottom="-1dp"
                 android:clickable="true"
-                android:contentDescription="@string/return_back"
+                android:contentDescription="return back"
                 android:padding="10dp"
                 app:srcCompat="@drawable/back_arrow" />
         </RelativeLayout>
@@ -104,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/delete"
+        android:text="delete"
         android:textAlignment="center"
         android:textSize="20sp"
         android:visibility="gone"
@@ -129,7 +129,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/total_price"
+                android:text="Total price"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -140,7 +140,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/zero_value"
+                android:text="zero value"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -154,7 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/place_order"
+            android:text="place order"
             android:textAlignment="center"
             android:paddingStart="90dp"
             android:paddingEnd="90dp"
@@ -170,7 +170,7 @@
         android:layout_height="283dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
-        android:contentDescription="@string/no_item_in_catr_image"
+        android:contentDescription="no item in cart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
@@ -181,7 +181,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gotham"
-        android:text="@string/your_cart_is_empty"
+        android:text="your cart is empty"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="16sp"
         android:visibility="gone"
@@ -194,7 +194,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gotham"
-        android:text="@string/please_select_an_item_from_menu"
+        android:text="please select an item from menu"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="16sp"
         android:visibility="gone"
@@ -209,7 +209,7 @@
         android:background="#FDF7E3"
         android:src="@drawable/no_internet"
         android:visibility="gone"
-        android:contentDescription="@string/no_internet"
+        android:contentDescription="no internet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
