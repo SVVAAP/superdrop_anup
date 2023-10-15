@@ -5,11 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-
-import com.svvaap.superdrop2.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -31,12 +28,15 @@ public class MyNotification extends FirebaseMessagingService {
         int notificationId = 1;
         String channelId = "Channel1";
         String channelName = "SuperDrop Notification";
-        int importance = NotificationManager.IMPORTANCE_HIGH;
+        int importance = NotificationManager.IMPORTANCE_DEFAULT; // Set to default importance
 
         // Create a notification channel (only if it doesn't exist)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
-            notificationManager.createNotificationChannel(notificationChannel);
+            NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
+            if (notificationChannel == null) {
+                notificationChannel = new NotificationChannel(channelId, channelName, importance);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
@@ -52,5 +52,4 @@ public class MyNotification extends FirebaseMessagingService {
         // Notify using the NotificationManager
         notificationManager.notify(notificationId, builder.build());
     }
-
 }
