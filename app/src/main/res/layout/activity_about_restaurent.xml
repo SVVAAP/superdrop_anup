@@ -28,7 +28,7 @@
                     android:id="@+id/textView48"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="About"
+                    android:text="@string/about"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +66,8 @@
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
                                 android:padding="-35dp"
-                                android:src="@drawable/bun_on_top" />
+                                android:src="@drawable/bun_on_top"
+                                android:contentDescription="@string/todo" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -74,7 +75,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="10dp"
                                 android:padding="5dp"
-                                android:text="BunOnTop"
+                                android:text="@string/bunontop"
                                 android:textColor="#FFFFFF"
                                 android:textSize="25sp"
                                 android:textStyle="bold" />
@@ -89,7 +90,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:text="Description: A fast-food haven offering a delicious array of pizzas, burgers, and crispy French fries. Satisfy your cravings with our mouthwatering menu!" />
+                        android:text="@string/description_a_fast_food_haven_offering_a_delicious_array_of_pizzas_burgers_and_crispy_french_fries_satisfy_your_cravings_with_our_mouthwatering_menu" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/streetwok_card"
@@ -110,7 +111,7 @@
                             <ImageView
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
-                                android:contentDescription="rest_img2"
+                                android:contentDescription="@string/rest_img2"
                                 android:padding="10dp"
                                 android:src="@drawable/streetwok" />
 
@@ -120,7 +121,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="10dp"
                                 android:padding="5dp"
-                                android:text="StreetWok"
+                                android:text="@string/streetwok"
                                 android:textColor="#FFFFFF"
                                 android:textSize="25sp"
                                 android:textStyle="bold" />
@@ -135,12 +136,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:text="Description: Experience the flavors of China at Street Wok, your go-to spot for savory noodles, delectable momos, and an enticing selection of Chinese fast food." />
+                        android:text="@string/description_experience_the_flavors_of_china_at_street_wok_your_go_to_spot_for_savory_noodles_delectable_momos_and_an_enticing_selection_of_chinese_fast_food" />
 
                     <WebView
                         android:id="@+id/streetwok_web"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/bowlexpress_card"
@@ -170,7 +172,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="10dp"
                                 android:padding="5dp"
-                                android:text="BowlExpress"
+                                android:text="@string/bowlexpress"
                                 android:textColor="#FFFFFF"
                                 android:textSize="25sp"
                                 android:textStyle="bold" />
@@ -214,7 +216,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="10dp"
                                 android:padding="5dp"
-                                android:text="Vada Pav Express"
+                                android:text="@string/vada_pav_express"
                                 android:textColor="#FFFFFF"
                                 android:textSize="25sp"
                                 android:textStyle="bold" />
@@ -284,30 +286,25 @@
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-                    <!-- Address -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="Address: Shambhavi Heights, Church Road, Shirva, Karnataka 574116" />
 
                     <!-- Phone Number -->
                     <TextView
+                        android:id="@+id/call"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="Phone: +91 73043 05584" />
+                        android:text="Phone: +91 73043 05584"
+                        android:textStyle="bold" />
 
-                    <!-- Email -->
-
-                    <!-- Operating Hours Section -->
+                    <!-- Address -->
                     <TextView
+                        android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="Operating Hours"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:padding="8dp"
+                        android:text="Address: Shambhavi Heights, Church Road, Shirva, Karnataka 574116"
+                        android:textStyle="bold|italic" />
+
 
                     <!-- Operating Hours -->
                     <TextView

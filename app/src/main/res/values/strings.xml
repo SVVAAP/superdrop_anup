@@ -3,4 +3,15 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_web_client_id">587544703441-pim995itn70ab9kc3qvg3l2hhpv6g4j7.apps.googleusercontent.com</string>
+    <string name="vada_pav_express">Vada Pav Express</string>
+    <string name="bunontop">BunOnTop</string>
+    <string name="bowlexpress">BowlExpress</string>
+    <string name="streetwok">StreetWok</string>
+    <string name="about">About</string>
+    <string name="todo">TODO</string>
+    <string name="description_a_fast_food_haven_offering_a_delicious_array_of_pizzas_burgers_and_crispy_french_fries_satisfy_your_cravings_with_our_mouthwatering_menu">Description: A fast-food haven offering a delicious array of pizzas, burgers, and crispy French fries. Satisfy your cravings with our mouthwatering menu!</string>
+    <string name="rest_img2">rest_img2</string>
+    <string name="description_experience_the_flavors_of_china_at_street_wok_your_go_to_spot_for_savory_noodles_delectable_momos_and_an_enticing_selection_of_chinese_fast_food">Description: Experience the flavors of China at Street Wok, your go-to spot for savory noodles, delectable momos, and an enticing selection of Chinese fast food.</string>
+    <string name="phone_number_optional">Phone Number(optional)</string>
+    <string name="checkout">Checkout</string>
 </resources>

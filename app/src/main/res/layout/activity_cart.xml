@@ -47,7 +47,8 @@
                 android:layout_marginBottom="1dp"
                 android:clickable="true"
                 android:padding="10dp"
-                app:srcCompat="@drawable/edit" />
+                app:srcCompat="@drawable/edit"
+                android:contentDescription="TODO" />
 
             <!-- Title -->
             <TextView
@@ -79,7 +80,8 @@
                 android:layout_marginBottom="-1dp"
                 android:clickable="true"
                 android:padding="10dp"
-                app:srcCompat="@drawable/back_arrow" />
+                app:srcCompat="@drawable/back_arrow"
+                android:contentDescription="TODO" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 

@@ -182,7 +182,7 @@ public class MenuFragment extends Fragment {
         card_bunontop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = "bunontop";
+                String name = "Bunontop";
                 item_view(name);
                 handleCardViewSelection(name);
             }
@@ -191,7 +191,7 @@ public class MenuFragment extends Fragment {
         card_streetwok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = "streetwok";
+                String name = "StreetWok";
                 item_view(name);
                 handleCardViewSelection(name);
             }
@@ -200,7 +200,7 @@ public class MenuFragment extends Fragment {
         card_bowlexpress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = "bowlexpress";
+                String name = "BowlExpress";
                 item_view(name);
                 handleCardViewSelection(name);
             }
@@ -209,7 +209,7 @@ public class MenuFragment extends Fragment {
         card_vadapavexpress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = "vadapavexpress";
+                String name = "VadaPavExpress";
                 item_view(name);
                 handleCardViewSelection(name);
             }
@@ -283,15 +283,15 @@ public class MenuFragment extends Fragment {
 
         // Determine the clicked card view based on the folder name
         // Determine the clicked linear layout based on the folder name
-        if ("bunontop".equals(folderName)) {
+        if ("Bunontop".equals(folderName)) {
             clickedLinearLayout = card_bunontop.findViewById(R.id.linear_bunontop_card);
-        } else if ("streetwok".equals(folderName)) {
+        } else if ("StreetWok".equals(folderName)) {
             clickedLinearLayout = card_streetwok.findViewById(R.id.linear_streetwok_card);
-        } else if ("bowlexpress".equals(folderName)) {
+        } else if ("BowlExpress".equals(folderName)) {
             clickedLinearLayout = card_bowlexpress.findViewById(R.id.linear_bowlexpress_card);
         } else if ("KFC".equals(folderName)) {
             clickedLinearLayout = card_kfc.findViewById(R.id.linear_kfc_card);
-        } else if ("vadapavexpress".equals(folderName)) {
+        } else if ("VadaPavExpress".equals(folderName)) {
             clickedLinearLayout = card_vadapavexpress.findViewById(R.id.linear_vadapavexpress_card);
         }
 
@@ -322,7 +322,7 @@ public class MenuFragment extends Fragment {
         if (rest_name != null) {
             mDatabaseRef = FirebaseDatabase.getInstance().getReference(rest_name);
         } else {
-            mDatabaseRef = FirebaseDatabase.getInstance().getReference("bunontop");
+            mDatabaseRef = FirebaseDatabase.getInstance().getReference("Bunontop");
         }
 
 
