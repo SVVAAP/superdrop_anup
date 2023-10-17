@@ -19,7 +19,7 @@
         android:theme="@style/Theme.SUPERDROP2">
         <activity
             android:name="com.svvaap.superdrop_admin.Alert_Dialog"
-            android:exported="false" />
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

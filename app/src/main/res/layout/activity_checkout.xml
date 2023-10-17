@@ -124,7 +124,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="start|top"
                 android:hint="Phone Number"
-                android:inputType="textMultiLine"
+                android:inputType="phone"
                 android:textSize="20sp" />
 
             <EditText
@@ -135,7 +135,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="start|top"
                 android:hint="@string/phone_number_optional"
-                android:inputType="textMultiLine"
+                android:inputType="phone"
                 android:textSize="20sp" />
 
             <com.google.android.material.textfield.TextInputLayout

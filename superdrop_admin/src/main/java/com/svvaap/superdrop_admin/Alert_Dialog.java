@@ -27,61 +27,46 @@ public class Alert_Dialog extends AppCompatActivity {
         String title = bundle != null ? bundle.getString("title") : null;
         String body = bundle != null ? bundle.getString("body") : null;
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(body)
-                .create();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(title)
+                .setMessage(body);
 
         // Set the window type to TYPE_SYSTEM_ALERT
-        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         ringtone = RingtoneManager.getRingtone(getApplicationContext(), ringtoneUri);
-
-        Button acceptButton = new Button(this);
-        acceptButton.setText("Accept");
-        acceptButton.setOnClickListener(new View.OnClickListener() {
+        if(ringtone!=null){
+            ringtone.play();
+        }
+        builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // Stop the ringtone
+            public void onClick(DialogInterface dialog, int which) {
+                // Open notification access settings
                 stopRingtone();
-
                 // Open the ownerTabactivity
                 Intent ownerIntent = new Intent(Alert_Dialog.this, OwnersTabActivity.class);
                 startActivity(ownerIntent);
-
                 // Close the dialog
                 finish();
             }
         });
 
-        Button cancelButton = new Button(this);
-        cancelButton.setText("Cancel");
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // Stop the ringtone
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle the user's choice to cancel
                 stopRingtone();
-
-                // Close the dialog
-                finish();
+               // Close the dialog
+                onBackPressed();
+//                Intent previousActivityIntent = new Intent(Alert_Dialog.this, MainActivity.class);
+//                startActivity(previousActivityIntent);
+//                finish();
             }
         });
 
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Accept", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Button click handled in acceptButton click listener
-                Intent ownerIntent = new Intent(Alert_Dialog.this, OwnersTabActivity.class);
-                startActivity(ownerIntent);
-            }
-        });
-
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Button click handled in cancelButton click listener
-            }
-        });
-
+        AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         alertDialog.show();
+
     }
 
     private void stopRingtone() {

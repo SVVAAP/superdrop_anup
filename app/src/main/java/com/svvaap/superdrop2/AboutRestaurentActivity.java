@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 import android.view.View;
 import android.widget.TextView;
 
-public class AboutRestaurentActivity extends AppCompatActivity {
+public class  AboutRestaurentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
