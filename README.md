@@ -35,6 +35,5 @@ Ready to embark on a culinary adventure with Superdrop? Simply download our app,
 Superdrop - Where Flavor Meets Convenience!
 </p>
 
-![Screenshot 2024-01-05 193501](https://github.com/SVVAAP/superdrop_anup/assets/120665410/bdfdb8b2-a8c8-4d36-a857-d7dc3c38e24a)
 
 ![Screenshot 2024-01-05 193501](https://github.com/SVVAAP/superdrop_anup/assets/120665410/53d9e2ad-d114-43fe-a40b-bdd4bdb03196)
