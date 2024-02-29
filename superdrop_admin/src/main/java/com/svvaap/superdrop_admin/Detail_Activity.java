@@ -33,13 +33,13 @@ public class Detail_Activity extends AppCompatActivity {
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-String userid= mAuth.getUid();
+        String userid= mAuth.getUid();
         phoneNumberget = getIntent().getStringExtra("phoneNumber");
 
         // Initialize views
         fullName = findViewById(R.id.fullname);
         phoneNumber = findViewById(R.id.phone_number);
-        address = findViewById(R.id.address_text);
+//        address = findViewById(R.id.address_text);
         signUpButton = findViewById(R.id.signup_button);
         // Retrieve the device token
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
