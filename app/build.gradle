@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.svvaap.superdrop2'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.svvaap.superdrop2"
@@ -27,18 +27,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion ='34.0.0'
 }
 
 dependencies {implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.google.firebase:firebase-database:20.2.2'
-    implementation 'com.google.firebase:firebase-storage:20.2.1'
+    implementation 'com.google.firebase:firebase-database:20.3.0'
+    implementation 'com.google.firebase:firebase-storage:20.3.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
    
-    implementation 'androidx.webkit:webkit:1.7.0'
-    implementation 'com.google.firebase:firebase-messaging:23.2.1'
+    implementation 'androidx.webkit:webkit:1.10.0'
+    implementation 'com.google.firebase:firebase-messaging:23.4.1'
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
     implementation 'com.makeramen:roundedimageview:2.3.0'
@@ -60,10 +61,10 @@ dependencies {implementation 'androidx.appcompat:appcompat:1.6.1'
 
     implementation 'com.github.TutorialsAndroid:GButton:v1.0.19'
     implementation 'com.hbb20:ccp:2.5.0'
-    implementation 'com.google.firebase:firebase-firestore:24.8.1'
+    implementation 'com.google.firebase:firebase-firestore:24.10.2'
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0' // Adjust version as needed
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.android.gms:play-services-auth:21.0.0'
 
 }

@@ -1,11 +1,11 @@
 <component name="libraryTable">
-  <library name="Gradle: com.google.android.gms:play-services-cloud-messaging:17.0.1@aar">
+  <library name="Gradle: com.google.android.gms:play-services-cloud-messaging:17.0.1@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/transforms-3/47cfa67c3d8366ead4c6832bc1d2c75b/transformed/jetified-play-services-cloud-messaging-17.0.1/AndroidManifest.xml" />
-      <root url="jar://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/transforms-3/47cfa67c3d8366ead4c6832bc1d2c75b/transformed/jetified-play-services-cloud-messaging-17.0.1/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/97d0018f9e5ae9becb0e73fe93ebf515/transformed/jetified-play-services-cloud-messaging-17.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/97d0018f9e5ae9becb0e73fe93ebf515/transformed/jetified-play-services-cloud-messaging-17.0.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://E:/ANDROID STUDIO PROJECT/FoodOn_FoodDelivery_by_Androrealm-master/FoodOn_FoodDelivery_by_Androrealm-master/gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-cloud-messaging/17.0.1/5b54e40c89bf1882a551b10312acdf03dcf34e82/play-services-cloud-messaging-17.0.1-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-cloud-messaging/17.0.1/5b54e40c89bf1882a551b10312acdf03dcf34e82/play-services-cloud-messaging-17.0.1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
   </library>

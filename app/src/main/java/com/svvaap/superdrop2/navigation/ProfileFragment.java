@@ -299,6 +299,9 @@ public class ProfileFragment extends Fragment {
                 .into(profileImage);
     }
 
+
+
+
     private void saveProfileToFirebase() {
         // Get the profile data from the EditText fields and RatingBar
         String fullName = editFullName.getText().toString();
