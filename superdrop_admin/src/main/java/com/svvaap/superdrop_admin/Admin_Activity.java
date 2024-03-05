@@ -29,13 +29,13 @@ public class Admin_Activity extends AppCompatActivity {
         add_rest=findViewById(R.id.add_rest);
         add_offer=findViewById(R.id.offr);
         add_bunontop=findViewById(R.id.bunontop_add);
-        add_streetwok=findViewById(R.id.streetwok_add);
-        add_bowlexpres=findViewById(R.id.bowlexpress_add);
+//        add_streetwok=findViewById(R.id.streetwok_add);
+//        add_bowlexpres=findViewById(R.id.bowlexpress_add);
         orders=findViewById(R.id.owners_bt);
         tab=findViewById(R.id.tab_bt);
         Offeradd=findViewById(R.id.offer_item_add);
-        add_vadapav=findViewById(R.id.vadapav_add_bt);
-        add_kfc=findViewById(R.id.kfc_add_bt);
+//        add_vadapav=findViewById(R.id.vadapav_add_bt);
+//        add_kfc=findViewById(R.id.kfc_add_bt);
 
         add_rest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,20 +59,20 @@ public class Admin_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        add_streetwok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Admin_Activity.this, StreetWokAdd_Activity.class);
-                startActivity(intent);
-            }
-        });
-        add_bowlexpres.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Admin_Activity.this, BowlExpressAdd_Activity.class);
-                startActivity(intent);
-            }
-        });
+//        add_streetwok.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Admin_Activity.this, StreetWokAdd_Activity.class);
+//                startActivity(intent);
+//            }
+//        });
+//        add_bowlexpres.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Admin_Activity.this, BowlExpressAdd_Activity.class);
+//                startActivity(intent);
+//            }
+//        });
        orders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,20 +94,20 @@ public class Admin_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        add_vadapav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Admin_Activity.this, VadaPav_Add_Activity.class);
-                startActivity(intent);
-            }
-        });
-        add_kfc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Admin_Activity.this, KFC_Add_Activity.class);
-                startActivity(intent);
-            }
-        });
+//        add_vadapav.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Admin_Activity.this, VadaPav_Add_Activity.class);
+//                startActivity(intent);
+//            }
+//        });
+//        add_kfc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Admin_Activity.this, KFC_Add_Activity.class);
+//                startActivity(intent);
+//            }
+//        });
 
        //logout
         // Initialize the logout button

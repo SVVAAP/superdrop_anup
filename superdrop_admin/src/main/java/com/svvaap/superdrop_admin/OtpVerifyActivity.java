@@ -19,8 +19,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.svvaap.superdrop_admin.adapter.User;
 
 public class OtpVerifyActivity extends AppCompatActivity {
 
@@ -28,6 +32,8 @@ public class OtpVerifyActivity extends AppCompatActivity {
     private Button btnVerify;
     private ProgressBar progressBarVerify;
     private String verificationId,phoneNumber1;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
 
 
 
@@ -130,7 +136,11 @@ public class OtpVerifyActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // OTP verification successful, proceed to the next activity
                             // For example, you can redirect to the user's profile or dashboard
-
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            String userId = user.getUid();
+                            DatabaseReference userRef = mDatabase.getReference("rest_users").child(userId);
+                            User userState=new User(false);
+                            userRef.setValue(userState);
                             Intent intent = new Intent(OtpVerifyActivity.this,Detail_Activity.class);
                             intent.putExtra("phoneNumber", phoneNumber1);
                             startActivity(intent);

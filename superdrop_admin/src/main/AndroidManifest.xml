@@ -55,9 +55,9 @@
         <activity
             android:name="com.svvaap.superdrop_admin.DeleteActivity"
             android:exported="false" />
-        <activity
-            android:name="com.svvaap.superdrop_admin.Detail_Activity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name="com.svvaap.superdrop_admin.Detail_Activity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name="com.svvaap.superdrop_admin.OtpSendActivity"
             android:exported="false" />
@@ -81,9 +81,10 @@
             android:name="com.svvaap.superdrop_admin.adapter.AlarmStopReceiver"
             android:enabled="true"
             android:exported="true" />
+        <!--            android:name="com.svvaap.superdrop_admin.MainActivity"-->
 
         <activity
-            android:name="com.svvaap.superdrop_admin.MainActivity"
+            android:name="com.svvaap.superdrop_admin.Detail_Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

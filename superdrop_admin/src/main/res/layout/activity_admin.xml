@@ -79,14 +79,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="16dp"
         android:text="Upload New Offer :"
         android:textSize="16sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/kfc_add_bt" />
+        app:layout_constraintTop_toBottomOf="@+id/bunontop_add" />
 
     <Button
         android:id="@+id/offr"
@@ -118,36 +118,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-    <Button
-        android:id="@+id/streetwok_add"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
-        android:padding="5dp"
-        android:text="StreetWok"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bunontop_add" />
-
-    <Button
-        android:id="@+id/bowlexpress_add"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
-        android:padding="5dp"
-        android:text="Bowl Express"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/streetwok_add" />
 
     <Button
         android:id="@+id/add_rest"
@@ -230,37 +200,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/offer_item_add" />
-
-    <Button
-        android:id="@+id/vadapav_add_bt"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
-        android:padding="5dp"
-        android:text="Vada Pav Express "
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bowlexpress_add" />
-
-    <Button
-        android:id="@+id/kfc_add_bt"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
-        android:padding="5dp"
-        android:text="KFC Item "
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vadapav_add_bt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
