@@ -12,7 +12,7 @@ public class CartItem {
         // Default constructor required for Firebase
     }
 
-    public CartItem(String itemName, double itemPrice, int quantity,double totalprice,String itemimg) {
+    public CartItem(String itemName, double itemPrice, int quantity, double totalprice, String itemimg) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemPrice = itemPrice;

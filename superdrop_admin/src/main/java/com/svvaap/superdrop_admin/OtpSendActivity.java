@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.superdrop_admin.R;
@@ -21,6 +21,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
@@ -32,19 +37,35 @@ public class OtpSendActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private CountryCodePicker countryCodePicker;
     private FirebaseAuth mAuth;
-    private ActivityResultLauncher<Intent> phoneNumberLauncher;
-    private WebView webView;
-    private WebViewClient webViewClient;
 //    private WebViewCompat webViewCompat;
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentuser= mAuth.getCurrentUser();
-        if(currentuser!=null) {
-            startActivity(new Intent(OtpSendActivity.this, OwnersTabActivity.class));
-           finish();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+                // Check if user is registered
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("rest_users").child(currentUser.getUid());
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            // User is registered, navigate to dashboard
+                            startActivity(new Intent(OtpSendActivity.this, OwnersTabActivity.class));
+                            finish();
+                        } else {
+                            // User is not registered, navigate to detail activity
+                            startActivity(new Intent(OtpSendActivity.this, Detail_Activity.class));
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle error
+                    }
+                });
+            }
         }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +76,7 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         progressBar = findViewById(R.id.progressBar);
         countryCodePicker = findViewById(R.id.ccp);
-        webView = findViewById(R.id.webView);
+        WebView webView = findViewById(R.id.webView);
         mAuth = FirebaseAuth.getInstance();
 
         webView.setWebViewClient(new WebViewClient() {
@@ -67,15 +88,12 @@ public class OtpSendActivity extends AppCompatActivity {
             }
         });
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String countryCode = countryCodePicker.getSelectedCountryCode();
-                String phoneNumber = etPhone.getText().toString();
-                String fullPhoneNumber = "+" + countryCode + phoneNumber;
+        btnSend.setOnClickListener(view -> {
+            String countryCode = countryCodePicker.getSelectedCountryCode();
+            String phoneNumber = etPhone.getText().toString();
+            String fullPhoneNumber = "+" + countryCode + phoneNumber;
 
-                sendOTP(fullPhoneNumber);
-            }
+            sendOTP(fullPhoneNumber);
         });
     }
 
@@ -90,7 +108,7 @@ public class OtpSendActivity extends AppCompatActivity {
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
-                    public void onVerificationCompleted(PhoneAuthCredential credential) {
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
                         // Auto-retrieval or instant verification is successful.
                         // Proceed with verifying the credential directly
                     }
@@ -107,7 +125,7 @@ public class OtpSendActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                    public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
                         // Save the verification ID and token for later use
                         // Call the OTP verification activity
                         Intent intent = new Intent(OtpSendActivity.this, OtpVerifyActivity.class);

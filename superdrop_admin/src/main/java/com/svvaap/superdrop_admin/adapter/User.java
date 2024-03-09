@@ -17,7 +17,7 @@ private String token,restId;
         // Default constructor required for Firebase
     }
 
-    public User(String fullName, String phoneNumber, String phoneNumberoptl, String address,String restName,String restCity,String type,String restProfileImageUrl, Boolean registred,String restId) {
+    public User(String fullName, String phoneNumber, String phoneNumberoptl, String address,String restName,String restCity,String type,String restProfileImageUrl,String restId , String token) {
         this.fullName = fullName;
         this.phone=phoneNumber;
         this.emergencyContact = phoneNumberoptl;
@@ -25,8 +25,8 @@ private String token,restId;
         this.restName=restName;
         this.restCity=restCity;
         this.restProfileImageUrl=restProfileImageUrl;
-        this.registred=registred;
         this.restId=restId;
+        this.token=token;
     }
     public User(Boolean registred){
         this.registred=registred;

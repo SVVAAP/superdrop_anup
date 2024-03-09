@@ -4,7 +4,7 @@ public class Upload {
     private String mName;
     private String mImageUrl;
     private Double mPrice;
-    private String mRestName;
+    private String mRestId;
     private String mItemId;
     private String mDiscount;
     private String mDiscountPrice;
@@ -12,29 +12,21 @@ public class Upload {
     public Upload() {
         //empty constructor needed
     }
-    public Upload(String name, String imageUrl, double price) {
+    public Upload(String name, String imageUrl, double price,String restId,String itemId) {
         if (name.trim().equals("")) {
             name = "No Name";
         }
         mName = name;
         mImageUrl = imageUrl;
         mPrice = price; // Set the price
-    }
-    public Upload(String name, String imageUrl, double price,String restname,String itemId) {
-        if (name.trim().equals("")) {
-            name = "No Name";
-        }
-        mName = name;
-        mImageUrl = imageUrl;
-        mPrice = price; // Set the price
-        mRestName=restname;
+        mRestId=restId;
         mItemId=itemId;
     }
-    public Upload(String name, String imageUrl, Double price, String restName, String itemId, String discount, String discountPrice) {
+    public Upload(String name, String imageUrl, Double price, String restId, String itemId, String discount, String discountPrice) {
         mName = name.trim().isEmpty() ? "No Name" : name;
         mImageUrl = imageUrl;
         mPrice = price;
-        mRestName = restName;
+        mRestId = restId;
         mItemId = itemId;
         mDiscount = discount;
         mDiscountPrice = discountPrice;
@@ -70,12 +62,12 @@ public class Upload {
         mPrice = price;
     }
 
-    public String getRestName() {
-        return mRestName;
+    public String getRestId() {
+        return mRestId;
     }
 
-    public void setRestName(String restName) {
-        mRestName = restName;
+    public void setRestId(String restName) {
+        mRestId = restName;
     }
 
     public String getItemId() {

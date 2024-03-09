@@ -34,12 +34,8 @@
         <activity
             android:name="com.svvaap.superdrop_admin.Order_Activity"
             android:exported="false" />
-        <activity
-            android:name="com.svvaap.superdrop_admin.VadaPav_Add_Activity"
-            android:exported="false" />
-        <activity
-            android:name="com.svvaap.superdrop_admin.KFC_Add_Activity"
-            android:exported="false" />
+
+
         <activity
             android:name="com.svvaap.superdrop_admin.Offer_item_addActivity"
             android:exported="false" />
@@ -55,9 +51,9 @@
         <activity
             android:name="com.svvaap.superdrop_admin.DeleteActivity"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name="com.svvaap.superdrop_admin.Detail_Activity"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name="com.svvaap.superdrop_admin.Detail_Activity"
+            android:exported="false" />
         <activity
             android:name="com.svvaap.superdrop_admin.OtpSendActivity"
             android:exported="false" />
@@ -70,12 +66,6 @@
         <activity
             android:name="com.svvaap.superdrop_admin.BunOnTopAdd_Activity"
             android:exported="false" />
-        <activity
-            android:name="com.svvaap.superdrop_admin.BowlExpressAdd_Activity"
-            android:exported="false" />
-        <activity
-            android:name="com.svvaap.superdrop_admin.StreetWokAdd_Activity"
-            android:exported="false" />
 
         <receiver
             android:name="com.svvaap.superdrop_admin.adapter.AlarmStopReceiver"
@@ -84,7 +74,7 @@
         <!--            android:name="com.svvaap.superdrop_admin.MainActivity"-->
 
         <activity
-            android:name="com.svvaap.superdrop_admin.Detail_Activity"
+            android:name="com.svvaap.superdrop_admin.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

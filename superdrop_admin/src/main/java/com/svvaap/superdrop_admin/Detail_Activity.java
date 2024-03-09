@@ -167,7 +167,7 @@ public class Detail_Activity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri downloadUri) {
                                         // Create a User object and set the details
-                                        User userDetails = new User(name, phoneNumberget, phone_optnl, userAddress,restaurantName,restaurantCity,restaurantType,downloadUri.toString(),true,restId);
+                                        User userDetails = new User(name, phoneNumberget, phone_optnl, userAddress,restaurantName,restaurantCity,restaurantType,downloadUri.toString(),restId,ownerToken);
 
                                         // Push the user details to the database
                                         userRef.setValue(userDetails)
@@ -181,9 +181,9 @@ public class Detail_Activity extends AppCompatActivity {
                                                     Toast.makeText(Detail_Activity.this, "Failed to upload details.", Toast.LENGTH_SHORT).show();
                                                 });
 
-                                        DatabaseReference tokensRef = mDatabase.getReference("Restaurents").child(userId);
-                                        User rest=new User(restId,ownerToken);
-                                        tokensRef.setValue(rest);
+//                                        DatabaseReference tokensRef = mDatabase.getReference("Restaurents").child(userId);
+//                                        User rest=new User(restId,ownerToken);
+//                                        tokensRef.setValue(rest);
                                     }
                                 });
                             }

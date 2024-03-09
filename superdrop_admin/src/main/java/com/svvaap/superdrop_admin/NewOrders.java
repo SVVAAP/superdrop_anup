@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.superdrop_admin.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.svvaap.superdrop_admin.adapter.CartItem;
 import com.svvaap.superdrop_admin.adapter.Order;
 import com.svvaap.superdrop_admin.adapter.Owner_Adapter;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.svvaap.superdrop_admin.adapter.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,8 @@ public class NewOrders extends Fragment {
     private RecyclerView orderRecyclerView;
     private Owner_Adapter orderAdapter;
     private List<Order> orderList;
-
+    private FirebaseAuth mAuth;
+    private String restId;
     private BackgroundMusicService backgroundMusicService;
 
     public NewOrders() {
@@ -50,6 +54,21 @@ public class NewOrders extends Fragment {
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orderRecyclerView.setAdapter(orderAdapter);
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("rest_users").child(currentUser.getUid());
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user=snapshot.getValue(User.class);
+                assert user != null;
+                restId=user.getRestId();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         orderAdapter.setOnItemClickListener(new Owner_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(String stringToPass) {
@@ -71,7 +90,7 @@ public class NewOrders extends Fragment {
     }
 
     private void retrieveOrdersFromFirebase() {
-        DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
+        DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference(restId);
 
         orderDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override

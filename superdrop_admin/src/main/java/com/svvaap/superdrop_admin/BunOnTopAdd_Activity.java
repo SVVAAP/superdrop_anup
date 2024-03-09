@@ -23,6 +23,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.superdrop_admin.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.svvaap.superdrop_admin.adapter.Upload;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.svvaap.superdrop_admin.adapter.User;
 
 public class BunOnTopAdd_Activity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -44,20 +50,35 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
     private EditText mEditTextFileName,mEditTextPrice;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
-
     private Uri mImageUri;
-
-    private StorageReference mStorageRef,sStorageRef;
-    private DatabaseReference mDatabaseRef,sDatabaseRef;
+     private String restId;
+    private StorageReference sStorageRef;
+    private DatabaseReference sDatabaseRef;
 
     private StorageTask mUploadTask;
     private ActivityResultLauncher<Intent> mGetContentLauncher;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bun_on_top_add);
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("rest_users").child(currentUser.getUid());
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user=snapshot.getValue(User.class);
+                assert user != null;
+                restId=user.getRestId();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         mButtonChooseImage = findViewById(R.id.bun_img_bt);
         mButtonUpload = findViewById(R.id.bun_upload_bt);
         //mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
@@ -66,8 +87,6 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.bun_progressBar);
         mEditTextPrice=findViewById(R.id.bun_item_price);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("bunontop");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("bunontop");
         sStorageRef = FirebaseStorage.getInstance().getReference("menu");
         sDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
 
@@ -129,11 +148,10 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
 
     private void uploadFile(final double price) {
         if (mImageUri != null) {
-            String uploadId = mDatabaseRef.push().getKey();
+            String uploadId = sDatabaseRef.push().getKey();
             assert uploadId != null;
-            StorageReference fileReference = mStorageRef.child(uploadId);
+            StorageReference fileReference = sStorageRef.child(uploadId);
 
-            String restname="BunOnTop";
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -152,11 +170,8 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {// Generate a unique item ID
-                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price);
-                                    Upload upload2 = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price,restname,uploadId);
-                                    upload.setItemId(uploadId); // Set the unique item ID
-                                    mDatabaseRef.child(uploadId).setValue(upload);
-                                    sDatabaseRef.child(uploadId).setValue(upload2);
+                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price,restId,uploadId);
+                                    sDatabaseRef.child(uploadId).setValue(upload);
                                 }
                             });
                         }
