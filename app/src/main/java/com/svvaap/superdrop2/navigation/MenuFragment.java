@@ -2,14 +2,11 @@ package com.svvaap.superdrop2.navigation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,8 +27,9 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.svvaap.superdrop2.BottomSheet;
+import com.svvaap.superdrop2.CatogeryFilter_Dailoge;
 import com.svvaap.superdrop2.R;
-import com.svvaap.superdrop2.SearchActivity;
+import com.svvaap.superdrop2.RestFilter_Dailoge;
 import com.svvaap.superdrop2.adapter.MyMenuAdapter;
 import com.svvaap.superdrop2.adapter.rest_Adapter;
 import com.svvaap.superdrop2.adapter.search_menu_adapter;
@@ -56,15 +54,12 @@ public class MenuFragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private List<Upload> mUploads,mUploads2,mFilteredUploads; // List to hold filtered items
     private search_menu_adapter mFilteredAdapter,mAdapter2; ;
-    private Button  button_search;
-    private CardView card_bunontop, card_streetwok, card_bowlexpress,card_vadapavexpress,card_kfc;
+    private Button  button_search,filter_bt,rest_bt;
     private FrameLayout container_search;
     private Boolean isEditMode=false;
     private ImageView imageView,no_internet;
     private SearchView mSearchView;
     private LinearLayout selectedLinearLayout = null;
-    ConstraintLayout menuconstraint;
-
     private Handler mainHandler = new Handler(Looper.getMainLooper());
     private  SwipeRefreshLayout swipeRefreshLayout;
 
@@ -76,29 +71,26 @@ public class MenuFragment extends Fragment {
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-     View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_menu, container, false);
         mUploads = new ArrayList<>();
         mUploads2 = new ArrayList<>();
         mFilteredUploads = new ArrayList<>();
-        card_bunontop = view.findViewById(R.id.bunontop_card);
-        card_streetwok = view.findViewById(R.id.streetwok_card);
-        card_bowlexpress = view.findViewById(R.id.bowlexpress_card);
-        card_vadapavexpress=view.findViewById(R.id.mvadapavexpress_card);
-        card_kfc= view.findViewById(R.id.mkfc_card);
+
         container_search=view.findViewById(R.id.search_container);
         mSearchView = view.findViewById(R.id.menu_searchView);
-        menuconstraint=view.findViewById(R.id.constraintLayout_rest);
         recyclerview = view.findViewById(R.id.fooditems_rv);
         recyclerview.setHasFixedSize(true);
+        filter_bt=view.findViewById(R.id.filter_sheet_bt);
+        rest_bt=view.findViewById(R.id.rest_sheet_bt);
         recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         item_view_search();
-        mAdapter2=new search_menu_adapter(getContext(),mUploads2);
+        mAdapter2=new search_menu_adapter(getContext(),mUploads);
         mFilteredAdapter=new search_menu_adapter(getContext(),mFilteredUploads);
         recyclerview.setAdapter(mAdapter);
         // Retrieve the data passed from HomeFragment
         Bundle args = getArguments();
         if (args != null) {
-            data1 = args.getString("data", "bunontop");
+            data1 = args.getString("data", "menu");
         }
         item_view(data1);
         List<ezyMenuItem> menuItems = new ArrayList<>();
@@ -124,9 +116,9 @@ public class MenuFragment extends Fragment {
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
 
         if (networkCapabilities == null || !networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-           no_internet.setVisibility(View.VISIBLE);
+            no_internet.setVisibility(View.VISIBLE);
         }
-         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -148,8 +140,9 @@ public class MenuFragment extends Fragment {
                 mSearchView.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(mSearchView, InputMethodManager.SHOW_IMPLICIT);
-                menuconstraint.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
+
+
                 // Set the adapter to show all menu items when the search view is clicked
                 recyclerview.setAdapter(mAdapter2);
             }
@@ -158,7 +151,6 @@ public class MenuFragment extends Fragment {
             @Override
             public boolean onClose() {
                 // Restore the default menu and make the constraint visible again
-                menuconstraint.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
                 recyclerview.setAdapter(mAdapter);
                 return false;
@@ -171,58 +163,6 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        handleCardViewSelection(data1);
-//        FragmentManager fm = getChildFragmentManager();
-//        FragmentTransaction ft = fm.beginTransaction();
-//        SearchFragment searchFragment = new SearchFragment();
-//        ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
-//        ft.addToBackStack(null); // Add to back stack to allow navigation back
-//        ft.commit();
-
-        card_bunontop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "bunontop";
-                item_view(name);
-                handleCardViewSelection(name);
-            }
-        });
-
-        card_streetwok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "streetwok";
-                item_view(name);
-                handleCardViewSelection(name);
-            }
-        });
-
-        card_bowlexpress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "bowlexpress";
-                item_view(name);
-                handleCardViewSelection(name);
-            }
-        });
-
-        card_vadapavexpress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "vadapavexpress";
-                item_view(name);
-                handleCardViewSelection(name);
-            }
-        });
-
-        card_kfc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "KFC";
-                item_view(name);
-                handleCardViewSelection(name);
-            }
-        });
         mAdapter = new rest_Adapter(getActivity(), mUploads);
         recyclerview.setAdapter(mAdapter);
 
@@ -266,67 +206,29 @@ public class MenuFragment extends Fragment {
                 return true;
             }
         });
+        filter_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CatogeryFilter_Dailoge filterBottomSheet=new CatogeryFilter_Dailoge();
+                filterBottomSheet.show(getChildFragmentManager(), filterBottomSheet.getTag());
+
+            }
+         });
+        rest_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RestFilter_Dailoge filterBottomSheet=new RestFilter_Dailoge();
+                filterBottomSheet.show(getChildFragmentManager(), filterBottomSheet.getTag());
+
+            }
+        });
 
         return view;
-    }
-    public void show(Boolean editMode){
-        if (container_search != null) { // Add this null check
-            container_search.setVisibility(editMode ? View.GONE : View.VISIBLE);
-            recyclerview.setVisibility(editMode ? View.VISIBLE : View.GONE);
-            card_bowlexpress.setVisibility(editMode ? View.VISIBLE : View.GONE);
-            card_bunontop.setVisibility(editMode ? View.VISIBLE : View.GONE);
-            card_streetwok.setVisibility(editMode ? View.VISIBLE : View.GONE);
-        }
-    }
-    private void handleCardViewSelection(String folderName) {
-        LinearLayout clickedLinearLayout = null;
-
-        // Determine the clicked card view based on the folder name
-        // Determine the clicked linear layout based on the folder name
-        if ("bunontop".equals(folderName)) {
-            clickedLinearLayout = card_bunontop.findViewById(R.id.linear_bunontop_card);
-        } else if ("streetwok".equals(folderName)) {
-            clickedLinearLayout = card_streetwok.findViewById(R.id.linear_streetwok_card);
-        } else if ("bowlexpress".equals(folderName)) {
-            clickedLinearLayout = card_bowlexpress.findViewById(R.id.linear_bowlexpress_card);
-        } else if ("KFC".equals(folderName)) {
-            clickedLinearLayout = card_kfc.findViewById(R.id.linear_kfc_card);
-        } else if ("vadapavexpress".equals(folderName)) {
-            clickedLinearLayout = card_vadapavexpress.findViewById(R.id.linear_vadapavexpress_card);
-        }
-
-        if (clickedLinearLayout != null) {
-            // If there is a selected linear layout, restore its background
-            if (selectedLinearLayout != null) {
-                selectedLinearLayout.setBackgroundResource(R.drawable.curved_shape); // Restore normal drawable
-            }
-
-            // Set the background drawable of the clicked linear layout
-            clickedLinearLayout.setBackgroundResource(R.drawable.curved_shape_dark); // Darkened drawable
-            selectedLinearLayout = clickedLinearLayout;
-        }
-        }
-
-    public void openSearchActivity() {
-        Intent intent = new Intent(getActivity(), SearchActivity.class);
-        startActivity(intent);
-
-        // Apply slide-right animation
-        getActivity().overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
-
     }
 
 
     public void item_view(String rest_name) {
-        String deault1="bunontop";
-        if (rest_name != null) {
-            mDatabaseRef = FirebaseDatabase.getInstance().getReference(rest_name);
-        } else {
-            mDatabaseRef = FirebaseDatabase.getInstance().getReference("bunontop");
-        }
-
-
-
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             // Inside the ValueEventListener in HomeFragment
             @Override
@@ -343,7 +245,7 @@ public class MenuFragment extends Fragment {
                     }
                     mUploads.add(upload);
                 }
-                  mAdapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
 //                mAdapter = new rest_Adapter(getActivity(), mUploads);
 //                recyclerview.setAdapter(mAdapter);
             }
@@ -361,7 +263,7 @@ public class MenuFragment extends Fragment {
             // Inside the ValueEventListener in HomeFragment
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUploads2.clear();
+                mUploads.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Upload upload = postSnapshot.getValue(Upload.class);
                     // Get the download URL from Firebase Storage and set it in the Upload object
@@ -371,9 +273,10 @@ public class MenuFragment extends Fragment {
                     if (priceValue != null) {
                         upload.setPrice(priceValue);
                     }
-                   mUploads2.add(upload);
+                    mUploads.add(upload);
+                    mUploads2.add(upload);
                 }
-              mAdapter2.notifyDataSetChanged();
+                mAdapter2.notifyDataSetChanged();
 //                mAdapter = new rest_Adapter(getActivity(), mUploads);
 //                recyclerview.setAdapter(mAdapter);
             }
@@ -385,26 +288,7 @@ public class MenuFragment extends Fragment {
         });
     }
 
-    public void openMenuFragment(String itemName) {
-        Bundle args = new Bundle();
-        args.putString("itemName", itemName);
 
-//        SearchFragment searchFragment = new SearchFragment();
-//        searchFragment.setArguments(args);
-        show(false);
-        isEditMode = true;
-        ViewGroup.LayoutParams params = button_search.getLayoutParams();
-        params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        button_search.setLayoutParams(params);
-        button_search.setText("X");
-//        ConstraintSet constraintSet = new ConstraintSet();
-//        constraintSet.clone((ConstraintLayout) view.getParent());
-//        constraintSet.connect(R.id.button2, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-//        constraintSet.clear(R.id.button2, ConstraintSet.START);
-//        constraintSet.applyTo((ConstraintLayout) view.getParent());
-        imageView.setVisibility(View.GONE);
-
-    }
     private void showBottomSheetForItem(Upload item) {
         BottomSheet bottomSheetFragment = new BottomSheet();
         Bundle args = new Bundle();
@@ -439,24 +323,71 @@ public class MenuFragment extends Fragment {
         item_view(data1);
         if (!isNetworkAvailable()) {
             // No internet connection, display a toast message
-           no_internet.setVisibility(View.VISIBLE);
+            no_internet.setVisibility(View.VISIBLE);
         } else {
             no_internet.setVisibility(View.GONE);
             // After data is refreshed, stop the refresh animation
         }
-            mainHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(false);
+        mainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000); // Delayed for 2 seconds to simulate data loading
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    }
+
+    public void applyFilters(String chipText, String radioText) {
+        Toast.makeText(getContext(), "Filter Applied", Toast.LENGTH_SHORT).show();
+
+        // Clear the filtered list
+        mFilteredUploads.clear();
+
+        // Perform filtering based on category and price
+        for (Upload upload : mUploads2) {
+            if (chipText.trim().isEmpty() || upload.getmCategory().equalsIgnoreCase(chipText)) {
+                // If category matches or no category is selected
+                switch (radioText) {
+                    case "0-100":
+                        // Filter items in the range 0-100
+                        if (upload.getPrice() >= 0 && upload.getPrice() <= 100) {
+                            mFilteredUploads.add(upload);
+                        }
+                        break;
+                    case "100-500":
+                        // Filter items in the range 100-500
+                        if (upload.getPrice() > 100 && upload.getPrice() <= 500) {
+                            mFilteredUploads.add(upload);
+                        }
+                        break;
+                    case "500-1000":
+                        // Filter items in the range 500-1000
+                        if (upload.getPrice() > 500 && upload.getPrice() <= 1000) {
+                            mFilteredUploads.add(upload);
+                        }
+                        break;
+                    case "1000-Above":
+                        // Filter items above 1000
+                        if (upload.getPrice() > 1000) {
+                            mFilteredUploads.add(upload);
+                        }
+                        break;
+                    default:
+                        // No filtering based on price
+                        mFilteredUploads.add(upload);
+                        break;
                 }
-            }, 2000); // Delayed for 2 seconds to simulate data loading
+            }
         }
 
-        private boolean isNetworkAvailable() {
-            ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
-            return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
-        }
+        // Notify adapter of changes
+        mAdapter.notifyDataSetChanged();
+    }
+
 
 }
-
