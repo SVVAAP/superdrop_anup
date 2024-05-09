@@ -43,28 +43,10 @@ public class OtpSendActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-                // Check if user is registered
-                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("rest_users").child(currentUser.getUid());
-                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            // User is registered, navigate to dashboard
                             startActivity(new Intent(OtpSendActivity.this, OwnersTabActivity.class));
                             finish();
-                        } else {
-                            // User is not registered, navigate to detail activity
-                            startActivity(new Intent(OtpSendActivity.this, Detail_Activity.class));
-                            finish();
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle error
                     }
-                });
-            }
         }
 
     @Override

@@ -13,8 +13,8 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Bun On Top Menu"
+        android:layout_marginTop="8dp"
+        android:text="ADD Menu"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -73,8 +73,8 @@
 
     <ImageView
         android:id="@+id/bun_item_img"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_width="270dp"
+        android:layout_height="173dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,7 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_margin="10dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/curved_shape"
         android:text="Upload"
@@ -115,18 +115,67 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.684"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bun_progressBar" />
+        app:layout_constraintTop_toBottomOf="@+id/bun_progressBar"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ProgressBar
         android:id="@+id/bun_progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup_food_type" />
+
+    <TextView
+        android:id="@+id/textView29"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Catogery:"
+        android:textAllCaps="false"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <Spinner
+        android:id="@+id/spinner_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup_food_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_category">
+
+        <RadioButton
+            android:id="@+id/radioButton_veg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:text="Veg" />
+
+        <RadioButton
+            android:id="@+id/radioButton_non_veg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:text="Non-Veg" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

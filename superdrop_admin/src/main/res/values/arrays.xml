@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="city_options">
+        <item>Shirva</item> <!--//set price 50-->
+        <item>Belman</item><!--//set price 100-->
+        <item>Nitte</item><!--//set price 150-->
+        <item>Kapu</item><!--//set price 150-->
+        <item>Moodubelle</item><!--//set price 75-->
+        <item>Mudarangadi</item><!--//set price 100-->
+    </string-array>
+
+
+    <string-array name="catogery_array">
+        <item>Select Category</item>
+        <item>Chines</item>
+        <item>South Indian</item>
+        <item>Meals</item>
+        <item>North Indtan</item>
+        <item>Side Dish</item>
+        <item>Drinks</item>
+        <item>Ice Creams</item>
+    </string-array>
+
+
+</resources>

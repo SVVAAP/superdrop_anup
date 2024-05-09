@@ -1,6 +1,8 @@
 package com.svvaap.superdrop_admin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,14 +17,14 @@ import android.view.ViewGroup;
 import com.example.superdrop_admin.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.svvaap.superdrop_admin.adapter.CartItem;
-import com.svvaap.superdrop_admin.adapter.Order;
-import com.svvaap.superdrop_admin.adapter.Owner_Adapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.svvaap.superdrop_admin.adapter.CartItem;
+import com.svvaap.superdrop_admin.adapter.Order;
+import com.svvaap.superdrop_admin.adapter.Owner_Adapter;
 import com.svvaap.superdrop_admin.adapter.User;
 
 import java.util.ArrayList;
@@ -34,8 +36,9 @@ public class NewOrders extends Fragment {
     private Owner_Adapter orderAdapter;
     private List<Order> orderList;
     private FirebaseAuth mAuth;
-    private String restId;
+    private String restId="blank";
     private BackgroundMusicService backgroundMusicService;
+    private SharedPreferences sharedPreferences;
 
     public NewOrders() {
         // Required empty public constructor
@@ -54,21 +57,38 @@ public class NewOrders extends Fragment {
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orderRecyclerView.setAdapter(orderAdapter);
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("rest_users").child(currentUser.getUid());
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user=snapshot.getValue(User.class);
-                assert user != null;
-                restId=user.getRestId();
-            }
+        sharedPreferences = getContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        restId = sharedPreferences.getString("restId", "blank");
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+
+        mAuth = FirebaseAuth.getInstance();
+        if(Objects.equals(restId, "blank")){
+        if(mAuth.getCurrentUser()!= null ) {
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("rest_users").child(currentUser.getUid());
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User user = snapshot.getValue(User.class);
+                    if (user != null) {
+                        restId = user.getRestId();
+                        // Now that restId is initialized, retrieve orders from Firebase
+                        retrieveOrdersFromFirebase();
+                    }
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+        }else{
+            retrieveOrdersFromFirebase();
+        }
         orderAdapter.setOnItemClickListener(new Owner_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(String stringToPass) {
@@ -118,15 +138,20 @@ public class NewOrders extends Fragment {
                 orderAdapter.notifyDataSetChanged();
 
                 // Check for the order status and start/stop the background music
+                boolean isOrdering = false;
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);
                     if (order != null && Objects.equals(order.getStatus(), "Ordering")) {
                         // Start the background music when status is "Ordering"
-                        backgroundMusicService.startMusic();
-                    } else {
-                        // Stop the background music when status changes
-                        backgroundMusicService.stopMusic();
+                        isOrdering = true;
+                        break;
                     }
+                }
+                if (isOrdering) {
+                    backgroundMusicService.startMusic();
+                } else {
+                    // Stop the background music when no ordering is in progress
+                    backgroundMusicService.stopMusic();
                 }
             }
 

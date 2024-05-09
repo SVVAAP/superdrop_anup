@@ -1,7 +1,9 @@
 package com.svvaap.superdrop_admin;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -131,6 +133,8 @@ public class Detail_Activity extends AppCompatActivity {
             long milliseconds = calendar.getTimeInMillis();
             String restId= "#"+restaurantName.replace(" ", "")+restaurantCity.replace(" ", "")+milliseconds;
 
+            saveRestIdInPrefs(restId);
+
             String restaurantType;
             int selectedRadioButtonId = restaurantTypeRadioGroup.getCheckedRadioButtonId();
             if (selectedRadioButtonId == vegRadioButton.getId()) {
@@ -191,5 +195,11 @@ public class Detail_Activity extends AppCompatActivity {
 
             }
         }
+    }
+    private void saveRestIdInPrefs(String restId) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("rest_id", restId);
+        editor.apply();
     }
 }

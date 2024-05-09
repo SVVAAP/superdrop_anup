@@ -1,6 +1,7 @@
 package com.svvaap.superdrop_admin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.superdrop_admin.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.svvaap.superdrop_admin.adapter.CartItem;
 import com.svvaap.superdrop_admin.adapter.Order;
 import com.svvaap.superdrop_admin.adapter.Owner_Adapter;
@@ -21,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.svvaap.superdrop_admin.adapter.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,9 @@ public class OldOrders extends Fragment {
     private RecyclerView orderRecyclerView;
     private Owner_Adapter orderAdapter;
     private List<Order> orderList;
+    private FirebaseAuth mAuth;
+    private String restId="blank";
+    private SharedPreferences sharedPreferences;
     public OldOrders() {
         // Required empty public constructor
     }
@@ -47,6 +54,34 @@ public class OldOrders extends Fragment {
         orderRecyclerView = view.findViewById(R.id.oldorder_recyclerview);
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         orderRecyclerView.setAdapter(orderAdapter);
+
+        mAuth = FirebaseAuth.getInstance();
+        if(Objects.equals(restId, "blank")){
+            if(mAuth.getCurrentUser()!= null ) {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("rest_users").child(currentUser.getUid());
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User user = snapshot.getValue(User.class);
+                        if (user != null) {
+                            restId = user.getRestId();
+                            // Now that restId is initialized, retrieve orders from Firebase
+                            retrieveOrdersFromFirebase();
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+        }else{
+            retrieveOrdersFromFirebase();
+        }
 
         orderAdapter.setOnItemClickListener(new Owner_Adapter.OnItemClickListener() {
             @Override
@@ -66,7 +101,7 @@ public class OldOrders extends Fragment {
         return view;
     }
     private void retrieveOrdersFromFirebase() {
-        DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
+        DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference(restId);
 
         orderDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override

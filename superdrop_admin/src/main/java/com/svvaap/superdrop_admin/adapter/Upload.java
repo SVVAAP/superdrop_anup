@@ -8,6 +8,8 @@ public class Upload {
     private String mItemId;
     private String mDiscount;
     private String mDiscountPrice;
+    private String mCatogery;
+    private String mFoodType;
 
     public Upload() {
         //empty constructor needed
@@ -22,7 +24,7 @@ public class Upload {
         mRestId=restId;
         mItemId=itemId;
     }
-    public Upload(String name, String imageUrl, Double price, String restId, String itemId, String discount, String discountPrice) {
+    public Upload(String name, String imageUrl, double price, String restId, String itemId, String discount, String discountPrice) {
         mName = name.trim().isEmpty() ? "No Name" : name;
         mImageUrl = imageUrl;
         mPrice = price;
@@ -30,6 +32,16 @@ public class Upload {
         mItemId = itemId;
         mDiscount = discount;
         mDiscountPrice = discountPrice;
+    }
+    public Upload(String name, double price, String imageUrl, String restId, String itemId, String catogery, String foodType) {
+        mName = name.trim().isEmpty() ? "No Name" : name;
+        mImageUrl = imageUrl;
+        mPrice = price;
+        mRestId = restId;
+        mItemId = itemId;
+        mCatogery=catogery;
+        mFoodType=foodType;
+
     }
     public Upload(String imageUrl,String itemId){
         mImageUrl = imageUrl;
@@ -92,5 +104,21 @@ public class Upload {
 
     public void setDiscountPrice(String discountPrice) {
         mDiscountPrice = discountPrice;
+    }
+
+    public String getmCatogery() {
+        return mCatogery;
+    }
+
+    public void setmCatogery(String mCatogery) {
+        this.mCatogery = mCatogery;
+    }
+
+    public String getmFoodType() {
+        return mFoodType;
+    }
+
+    public void setmFoodType(String mFoodType) {
+        this.mFoodType = mFoodType;
     }
 }

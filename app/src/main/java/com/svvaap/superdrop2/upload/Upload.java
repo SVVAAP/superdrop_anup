@@ -1,81 +1,44 @@
-package com.svvaap.superdrop2.upload;
+package com.svvaap.superdrop_admin.adapter;
 
 public class Upload {
-    private String mitemId; // New field for unique item ID
     private String mName;
     private String mImageUrl;
     private Double mPrice;
-    private  String mrestname;
-    private  String mdiscount;
-    private  String mdiscountPrice;
+    private String mRestId;
+    private String mItemId;
+    private String mDiscount;
+    private String mDiscountPrice;
+    private String mCatogery;
+    private String mFoodType;
 
     public Upload() {
         //empty constructor needed
     }
-    public Upload(String name, String imageUrl, double price) {
+    public Upload(String name, String imageUrl, double price,String restId,String itemId) {
         if (name.trim().equals("")) {
             name = "No Name";
         }
         mName = name;
         mImageUrl = imageUrl;
         mPrice = price; // Set the price
+        mRestId=restId;
+        mItemId=itemId;
     }
-    public Upload(String name, String imageUrl, double price,String restname,String itemId) {
-        if (name.trim().equals("")) {
-            name = "No Name";
-        }
-        mName = name;
+    public Upload(String name, String imageUrl, Double price, String restId, String itemId, String discount, String discountPrice) {
+        mName = name.trim().isEmpty() ? "No Name" : name;
         mImageUrl = imageUrl;
-        mPrice = price; // Set the price
-        mrestname=restname;
-        mitemId=itemId;
-    }
-    public Upload(String name, String imageUrl, double price,String restname,String itemId,String discount,String discountPrice) {
-        if (name.trim().equals("")) {
-            name = "No Name";
-        }
-        mName = name;
-        mImageUrl = imageUrl;
-        mPrice = price; // Set the price
-        mrestname=restname;
-        mitemId=itemId;
-        mdiscount=discount;
-        mdiscountPrice=discountPrice;
-    }
-    // Add the getters and setters for the price variable
-    public double getPrice() {
-        return mPrice;
-    }
-
-    public void setPrice(double price) {
         mPrice = price;
+        mRestId = restId;
+        mItemId = itemId;
+        mDiscount = discount;
+        mDiscountPrice = discountPrice;
     }
-    public String getDiscount(){return mdiscount;}
-    public void setDiscount(String discount){mdiscount=discount;}
-    public String getDiscountPrice(){return mdiscountPrice;}
-    public void setDiscountPrice(String discountPrice){mdiscountPrice=discountPrice;}
-
-    public Upload(String name, String imageUrl) {
-        if (name.trim().equals("")) {
-            name = "No Name";
-        }
-        mName = name;
+    public Upload(String imageUrl,String itemId){
         mImageUrl = imageUrl;
-    }
-    public String getItemId() {
-        return mitemId;
+        mItemId=itemId;
     }
 
-    public void setRestName(String restName) {
-        this.mrestname = restName;
-    }
-
-    public String getRestName() {
-        return mrestname;
-    }
-    public void setItemId(String itemId) {
-        this.mitemId = itemId;
-    }
+    // Add the getters and setters for the price variable
 
     public String getName() {
         return mName;
@@ -91,5 +54,61 @@ public class Upload {
 
     public void setImageUrl(String imageUrl) {
         mImageUrl = imageUrl;
+    }
+
+    public Double getPrice() {
+        return mPrice;
+    }
+
+    public void setPrice(Double price) {
+        mPrice = price;
+    }
+
+    public String getRestId() {
+        return mRestId;
+    }
+
+    public void setRestId(String restName) {
+        mRestId = restName;
+    }
+
+    public String getItemId() {
+        return mItemId;
+    }
+
+    public void setItemId(String itemId) {
+        mItemId = itemId;
+    }
+
+    public String getDiscount() {
+        return mDiscount;
+    }
+
+    public void setDiscount(String discount) {
+        mDiscount = discount;
+    }
+
+    public String getDiscountPrice() {
+        return mDiscountPrice;
+    }
+
+    public void setDiscountPrice(String discountPrice) {
+        mDiscountPrice = discountPrice;
+    }
+
+    public String getmCatogery() {
+        return mCatogery;
+    }
+
+    public void setmCatogery(String mCatogery) {
+        this.mCatogery = mCatogery;
+    }
+
+    public String getmFoodType() {
+        return mFoodType;
+    }
+
+    public void setmFoodType(String mFoodType) {
+        this.mFoodType = mFoodType;
     }
 }

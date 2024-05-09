@@ -8,10 +8,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,11 +63,18 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
     private StorageTask mUploadTask;
     private ActivityResultLauncher<Intent> mGetContentLauncher;
     private FirebaseAuth mAuth;
+    private Spinner spinnerCategory;
+    private RadioGroup radioGroupFoodType;
+    private String selectedCategory;
+    private String selectedFoodType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bun_on_top_add);
+
+        mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("rest_users").child(currentUser.getUid());
@@ -86,6 +98,8 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
         mImageView = findViewById(R.id.bun_item_img);
         mProgressBar = findViewById(R.id.bun_progressBar);
         mEditTextPrice=findViewById(R.id.bun_item_price);
+        spinnerCategory = findViewById(R.id.spinner_category);
+        radioGroupFoodType = findViewById(R.id.radioGroup_food_type);
 
         sStorageRef = FirebaseStorage.getInstance().getReference("menu");
         sDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
@@ -102,21 +116,36 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mUploadTask != null && mUploadTask.isInProgress()) {
                     Toast.makeText(BunOnTopAdd_Activity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-                } else {// Get the price from the EditText and convert it to double
-                    final double price = Double.parseDouble(mEditTextPrice.getText().toString().trim());
-
-                    uploadFile(price);
+                } else {
+                    if(areFieldsValid()) {
+                        uploadFile();
+                    }
                 }
             }
         });
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.catogery_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
 
-//        mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openImagesActivity();
-//            }
-//        });
+        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCategory = parent.getItemAtPosition(position).toString();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle nothing selected if needed
+            }
+        });
+        radioGroupFoodType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = findViewById(checkedId);
+                selectedFoodType = radioButton.getText().toString();
+            }
+        });
         // Initialize the ActivityResultLauncher here
         mGetContentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -146,11 +175,12 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void uploadFile(final double price) {
+    private void uploadFile() {
         if (mImageUri != null) {
             String uploadId = sDatabaseRef.push().getKey();
             assert uploadId != null;
             StorageReference fileReference = sStorageRef.child(uploadId);
+            double price = Double.parseDouble(mEditTextPrice.getText().toString().trim());
 
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -170,8 +200,12 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {// Generate a unique item ID
-                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price,restId,uploadId);
+                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price, restId, uploadId, selectedCategory, selectedFoodType);
                                     sDatabaseRef.child(uploadId).setValue(upload);
+
+                                    Intent intent = getIntent();
+                                    finish();
+                                    startActivity(intent);
                                 }
                             });
                         }
@@ -193,10 +227,49 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
+    private boolean areFieldsValid() {
+        String fileName = mEditTextFileName.getText().toString().trim();
+        String priceString = mEditTextPrice.getText().toString().trim();
 
+        // Check if file name is empty
+        if (fileName.isEmpty()) {
+            mEditTextFileName.setError("Please enter the item name.");
+            return false;
+        }
 
-    private void openImagesActivity() {
-      //  Intent intent = new Intent(this, NavActivity.class);
-      //  startActivity(intent);
+        // Check if price is empty
+        if (priceString.isEmpty()) {
+            mEditTextPrice.setError("Please enter the item price.");
+            return false;
+        }
+
+        // Check if image is selected
+        if (mImageUri == null) {
+            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Check if category is selected
+        if (selectedCategory == null || selectedCategory.isEmpty() || selectedCategory.equals("Select Category")) {
+            Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Check if food type is selected
+        if (selectedFoodType == null || selectedFoodType.isEmpty()) {
+            Toast.makeText(this, "Please select food type", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Check if price can be parsed to double
+        try {
+            double price = Double.parseDouble(priceString);
+        } catch (NumberFormatException e) {
+            mEditTextPrice.setError("Please enter a valid price.");
+            return false;
+        }
+
+        return true;
     }
+
 }
