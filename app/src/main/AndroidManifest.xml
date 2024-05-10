@@ -43,30 +43,15 @@
         <activity
             android:name=".OtpVerifyActivity"
             android:exported="false" />
-        <activity
-            android:name=".Admin_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".upload.BunOnTopAdd_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".upload.BowlExpressAdd_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".upload.StreetWokAdd_Activity"
-            android:exported="false" />
+
+
         <activity
             android:name=".Abtdev_Activity"
             android:exported="false" />
         <activity
             android:name=".Cart_Activity"
             android:exported="false" />
-        <activity
-            android:name=".upload.Offer_Add_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".upload.rest_add_Activity"
-            android:exported="false" />
+
         <activity
             android:name=".navigation.NavActivity"
             android:exported="false" />

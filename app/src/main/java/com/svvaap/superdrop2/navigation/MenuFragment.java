@@ -31,16 +31,15 @@ import com.svvaap.superdrop2.CatogeryFilter_Dailoge;
 import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.RestFilter_Dailoge;
 import com.svvaap.superdrop2.adapter.MyMenuAdapter;
+import com.svvaap.superdrop2.adapter.Upload;
 import com.svvaap.superdrop2.adapter.rest_Adapter;
 import com.svvaap.superdrop2.adapter.search_menu_adapter;
 import com.svvaap.superdrop2.methods.ezyMenuItem;
-import com.svvaap.superdrop2.upload.Upload;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -343,14 +342,13 @@ public class MenuFragment extends Fragment {
     }
 
     public void applyFilters(String chipText, String radioText) {
-        Toast.makeText(getContext(), "Filter Applied", Toast.LENGTH_SHORT).show();
 
         // Clear the filtered list
         mFilteredUploads.clear();
 
         // Perform filtering based on category and price
         for (Upload upload : mUploads2) {
-            if (chipText.trim().isEmpty() || upload.getmCategory().equalsIgnoreCase(chipText)) {
+            if (chipText.trim().isEmpty() || upload.getmCatogery().equalsIgnoreCase(chipText)) {
                 // If category matches or no category is selected
                 switch (radioText) {
                     case "0-100":

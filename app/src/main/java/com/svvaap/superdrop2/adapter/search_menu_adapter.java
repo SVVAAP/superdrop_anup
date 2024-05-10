@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.svvaap.superdrop2.R;
-import com.svvaap.superdrop2.upload.Upload;
+import com.svvaap.superdrop2.adapter.Upload;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -51,8 +51,8 @@ public class search_menu_adapter extends RecyclerView.Adapter<search_menu_adapte
         Picasso.get().load(uploadCurrent.getImageUrl()).fit().centerCrop().into(holder.imageView);
         String priceWithSymbol = "₹" + String.valueOf(uploadCurrent.getPrice()); // Add ₹ symbol
         holder.textViewPrice.setText(priceWithSymbol); // Display the price with ₹ symbol
-        String restname= "#" +String.valueOf(uploadCurrent.getRestName());
-        holder.textViewRest_name.setText(restname);
+//        String restname= "#" +String.valueOf(uploadCurrent.getRestName());
+     //   holder.textViewRest_name.setText(restname);
 
         // Set click listener for the item view
         holder.itemView.setOnClickListener(new View.OnClickListener() {

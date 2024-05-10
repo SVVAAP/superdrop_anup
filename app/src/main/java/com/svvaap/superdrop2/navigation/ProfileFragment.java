@@ -43,7 +43,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-import com.svvaap.superdrop2.Admin_Activity;
 import com.svvaap.superdrop2.OtpSendActivity;
 import com.svvaap.superdrop2.customers_Activity;
 import com.svvaap.superdrop2.methods.User;
@@ -86,13 +85,7 @@ public class ProfileFragment extends Fragment {
         // Set the ArrayAdapter to the Spinner
 
 
-        admin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Admin_Activity.class);
-                startActivity(intent);
-            }
-        });
+
 
         // Initialize UI elements
         editFullName = view.findViewById(R.id.edit_full_name);

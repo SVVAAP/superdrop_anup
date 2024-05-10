@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.svvaap.superdrop2.R;
-import com.svvaap.superdrop2.upload.Upload;
+import com.svvaap.superdrop2.adapter.Upload;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

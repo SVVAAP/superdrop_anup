@@ -1,4 +1,4 @@
-package com.svvaap.superdrop_admin.adapter;
+package com.svvaap.superdrop2.adapter;
 
 public class Upload {
     private String mName;

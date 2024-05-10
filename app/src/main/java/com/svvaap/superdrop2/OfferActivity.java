@@ -28,7 +28,7 @@ import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.svvaap.superdrop2.adapter.ImageAdapter;
 import com.svvaap.superdrop2.adapter.SliderAdapter;
-import com.svvaap.superdrop2.upload.Upload;
+import com.svvaap.superdrop2.adapter.Upload;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -34,6 +34,7 @@ public class CatogeryFilter_Dailoge extends DialogFragment {
     }
     private Button apply,cancle;
     private RadioButton selectedRadioButton;
+    private Chip selectedChip;
     private String selectedChipText, selectedRadioText;
     public CatogeryFilter_Dailoge() {
 
@@ -48,28 +49,31 @@ public class CatogeryFilter_Dailoge extends DialogFragment {
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
         ChipGroup chipGroup=view.findViewById(R.id.chipGroup);
 
+        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                selectedChip = view.findViewById(checkedId);
+                if (selectedChip != null) {
+                    selectedChipText = selectedChip.getText().toString();
+                }
+            }
+        });
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Check if both chip and radio button are selected
 
-                int checkedChipId = chipGroup.getCheckedChipId();
-                if (checkedChipId != View.NO_ID) {
-                    Chip selectedChip = chipGroup.findViewById(checkedChipId);
-                    selectedChipText = selectedChip.getText().toString();
-
-                    if (selectedRadioText != null) {
-                        // Pass the selected values to MenuFragment
-                        ((MenuFragment) getParentFragment()).applyFilters(selectedChipText, selectedRadioText);
-                        dismiss();
-                    } else {
-                        Toast.makeText(getContext(), "Please select a radio button", Toast.LENGTH_SHORT).show();
-                    }
+                // Check if either chip or radio button is selected
+                if (selectedChipText != null || selectedRadioText != null) {
+                    // Pass the selected values to MenuFragment
+                    ((MenuFragment) getParentFragment()).applyFilters(selectedChipText, selectedRadioText);
+                    dismiss();
                 } else {
-                    Toast.makeText(getContext(), "Please select a chip", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please select either a chip or a radio button", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         cancle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,19 +92,6 @@ public class CatogeryFilter_Dailoge extends DialogFragment {
                 }
             }
         });
-
-//        ChipGroup chipGroup = view.findViewById(R.id.chipGroup);
-//        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(ChipGroup group, int checkedId) {
-//                Chip chip = view.findViewById(checkedId);
-//                if (chip != null) {
-//                    selectedChipText = chip.getText().toString();
-//                }
-//            }
-//        });
-
-
         return view;
     }
 }

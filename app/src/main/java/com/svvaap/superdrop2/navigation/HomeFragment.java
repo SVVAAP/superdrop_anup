@@ -35,7 +35,7 @@ import com.svvaap.superdrop2.adapter.ImageAdapter;
 import com.svvaap.superdrop2.adapter.SliderAdapter;
 import com.svvaap.superdrop2.adapter.postview;
 import com.svvaap.superdrop2.adapter.rest_Adapter;
-import com.svvaap.superdrop2.upload.Upload;
+import com.svvaap.superdrop2.adapter.Upload;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

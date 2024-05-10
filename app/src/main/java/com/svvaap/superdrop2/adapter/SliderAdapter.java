@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.svvaap.superdrop2.R;
 import com.svvaap.superdrop2.navigation.HomeFragment;
-import com.svvaap.superdrop2.upload.Upload;
+import com.svvaap.superdrop2.adapter.Upload;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.List;
