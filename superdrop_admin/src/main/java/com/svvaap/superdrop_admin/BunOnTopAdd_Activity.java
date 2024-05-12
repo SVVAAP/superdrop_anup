@@ -200,7 +200,7 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {// Generate a unique item ID
-                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price, restId, uploadId, selectedCategory, selectedFoodType);
+                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), price, downloadUri.toString(), restId, uploadId, selectedCategory, selectedFoodType);
                                     sDatabaseRef.child(uploadId).setValue(upload);
 
                                     Intent intent = getIntent();

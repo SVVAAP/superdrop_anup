@@ -35,7 +35,7 @@ public class CatogeryFilter_Dailoge extends DialogFragment {
     private Button apply,cancle;
     private RadioButton selectedRadioButton;
     private Chip selectedChip;
-    private String selectedChipText, selectedRadioText;
+    private String selectedChipText="", selectedRadioText="";
     public CatogeryFilter_Dailoge() {
 
     }

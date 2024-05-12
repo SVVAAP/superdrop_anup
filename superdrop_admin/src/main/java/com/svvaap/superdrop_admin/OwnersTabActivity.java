@@ -1,6 +1,8 @@
 package com.svvaap.superdrop_admin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.AlertDialog;
@@ -20,14 +22,25 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.superdrop_admin.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.svvaap.superdrop_admin.adapter.TabAdapter;
 import com.google.android.material.tabs.TabLayout;
+import com.svvaap.superdrop_admin.adapter.User;
 
 public class OwnersTabActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private TabAdapter tabAdapter;
+    private DatabaseReference mDatabaseRef;
+    private ConstraintLayout constraintLayout;
+    private FirebaseAuth mAuth;
     private static final int DRAW_OVER_OTHER_APPS_PERMISSION_REQUEST = 123; // Replace with your request code
 
 
@@ -36,7 +49,37 @@ public class OwnersTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owners_tab);
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            // Check if user is registered
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("rest_users").child(currentUser.getUid());
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // User is registered, navigate to dashboard
+                        User user= snapshot.getValue(User.class);
+                        if(user.getDetailsPending()){
+                            startActivity(new Intent(OwnersTabActivity.this,Detail_Activity.class));
+                            finish();
+                        } else if (user.isRegistred().equals("Pending")) {
+                            constraintLayout.setVisibility(View.VISIBLE);
+                        } else if (user.isRegistred().equals("false")) {
+                            kickout();
+                        }
+                    }
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle error
+                }
+            });
+        }
+
+
+            constraintLayout= findViewById(R.id.registration_constraint);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             String channelId = "Default"; // Use the same channel ID you are trying to access
@@ -55,6 +98,8 @@ public class OwnersTabActivity extends AppCompatActivity {
             showNotificationPermissionDialog();
         }
         // ...
+
+
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager);
@@ -167,6 +212,30 @@ public class OwnersTabActivity extends AppCompatActivity {
 
     }
 
+    public void kickout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Invalid Details");
+        builder.setMessage("Your details are found not to be valid!");
 
-//    Intent(android.provider.Settings.ACTION_APPLICATION_SETTINGS);
+        // Set up the OK button
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Log out the user
+                FirebaseAuth.getInstance().signOut();
+
+                // Restart the app
+                Intent intent = new Intent(getApplicationContext(), OtpSendActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        // Create and display the alert dialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 }

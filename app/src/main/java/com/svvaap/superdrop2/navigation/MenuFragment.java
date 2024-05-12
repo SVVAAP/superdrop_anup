@@ -91,7 +91,7 @@ public class MenuFragment extends Fragment {
         if (args != null) {
             data1 = args.getString("data", "menu");
         }
-        item_view(data1);
+        item_view();
         List<ezyMenuItem> menuItems = new ArrayList<>();
         menuItems.add(new ezyMenuItem(R.drawable.hamburger, "Burger"));
         menuItems.add(new ezyMenuItem(R.drawable.fries, "Fries"));
@@ -226,7 +226,7 @@ public class MenuFragment extends Fragment {
     }
 
 
-    public void item_view(String rest_name) {
+    public void item_view() {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             // Inside the ValueEventListener in HomeFragment
@@ -275,7 +275,7 @@ public class MenuFragment extends Fragment {
                     mUploads.add(upload);
                     mUploads2.add(upload);
                 }
-                mAdapter2.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
 //                mAdapter = new rest_Adapter(getActivity(), mUploads);
 //                recyclerview.setAdapter(mAdapter);
             }
@@ -299,14 +299,14 @@ public class MenuFragment extends Fragment {
         bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
     }
     private void filterItems(String query) {
-        mFilteredUploads.clear();
+        mUploads.clear();
 
         if (query.isEmpty()) {
-            mFilteredUploads.addAll(mUploads2); // Show all items when query is empty
+            mUploads.addAll(mUploads2); // Show all items when query is empty
         } else {
             for (Upload upload : mUploads2) {
                 if (upload.getName().toLowerCase().contains(query.toLowerCase())) {
-                    mFilteredUploads.add(upload);
+                    mUploads.add(upload);
                 }
             }
         }
@@ -319,7 +319,7 @@ public class MenuFragment extends Fragment {
             return;
         }
         // For example, you can re-fetch your data from Firebase
-        item_view(data1);
+        item_view();
         if (!isNetworkAvailable()) {
             // No internet connection, display a toast message
             no_internet.setVisibility(View.VISIBLE);
@@ -342,9 +342,8 @@ public class MenuFragment extends Fragment {
     }
 
     public void applyFilters(String chipText, String radioText) {
-
         // Clear the filtered list
-        mFilteredUploads.clear();
+        mUploads.clear();
 
         // Perform filtering based on category and price
         for (Upload upload : mUploads2) {
@@ -354,30 +353,30 @@ public class MenuFragment extends Fragment {
                     case "0-100":
                         // Filter items in the range 0-100
                         if (upload.getPrice() >= 0 && upload.getPrice() <= 100) {
-                            mFilteredUploads.add(upload);
+                            mUploads.add(upload);
                         }
                         break;
                     case "100-500":
                         // Filter items in the range 100-500
                         if (upload.getPrice() > 100 && upload.getPrice() <= 500) {
-                            mFilteredUploads.add(upload);
+                            mUploads.add(upload);
                         }
                         break;
                     case "500-1000":
                         // Filter items in the range 500-1000
                         if (upload.getPrice() > 500 && upload.getPrice() <= 1000) {
-                            mFilteredUploads.add(upload);
+                            mUploads.add(upload);
                         }
                         break;
                     case "1000-Above":
                         // Filter items above 1000
                         if (upload.getPrice() > 1000) {
-                            mFilteredUploads.add(upload);
+                            mUploads.add(upload);
                         }
                         break;
                     default:
                         // No filtering based on price
-                        mFilteredUploads.add(upload);
+                        mUploads.add(upload);
                         break;
                 }
             }

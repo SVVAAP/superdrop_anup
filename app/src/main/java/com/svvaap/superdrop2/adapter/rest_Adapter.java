@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,12 +49,14 @@ public class rest_Adapter extends RecyclerView.Adapter<rest_Adapter.RestImageVHo
 
     @Override
     public void onBindViewHolder(@NonNull rest_Adapter.RestImageVHolder holder, int position) {
+        Animation animation= AnimationUtils.loadAnimation(holder.itemView.getContext(), android.R.anim.slide_in_left);
+
         Upload uploadCurrent = mitems.get(position);
         holder.textViewName.setText(uploadCurrent.getName());
         Picasso.get().load(uploadCurrent.getImageUrl()).fit().centerCrop().into(holder.imageView);
         String priceWithSymbol = "₹" + String.valueOf(uploadCurrent.getPrice()); // Add ₹ symbol
         holder.textViewPrice.setText(priceWithSymbol); // Display the price with ₹ symbol
-
+        holder.itemView.startAnimation(animation);
         // Set click listener for the item view
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

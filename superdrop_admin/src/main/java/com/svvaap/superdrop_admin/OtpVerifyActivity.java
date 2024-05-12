@@ -139,7 +139,7 @@ public class OtpVerifyActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             String userId = user.getUid();
                             DatabaseReference userRef = mDatabase.getReference("rest_users").child(userId);
-                            User userState=new User(false);
+                            User userState=new User(true);
                             userRef.setValue(userState);
                             Intent intent = new Intent(OtpVerifyActivity.this,Detail_Activity.class);
                             intent.putExtra("phoneNumber", phoneNumber1);

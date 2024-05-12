@@ -184,11 +184,6 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // Set the ArrayAdapter to the Spinner
         citySpinner.setAdapter(ctadapter);
-
-//        paymentMethodsRadioGroup = findViewById(R.id.payment_methods_radio_group);
-//        gpayUPIRadioButton = findViewById(R.id.gpay_upi);
-//        cashOnDeliveryRadioButton = findViewById(R.id.cash_on_delivery);
-
         back_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -215,28 +210,8 @@ public class CheckoutActivity extends AppCompatActivity {
                     Toast.makeText(CheckoutActivity.this, "Invalid Data..... :|", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
-                    builder.setTitle("Place Order");
-                    builder.setMessage("Press ok to confirm order!!!");
-                    builder.setIcon(R.drawable.pizza_icon);
 
-                    // Add OK button
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            // User clicked OK, perform logout
-                           placeOrder();
-                        }
-                    });
-
-                    // Add Cancel button
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            // User clicked Cancel, do nothing
-                            dialogInterface.dismiss();
-                        }
-                    });
+                    AlertDialog.Builder builder = getBuilder();
 
                     // Create and show the AlertDialog
                     AlertDialog alertDialog = builder.create();
@@ -278,6 +253,34 @@ public class CheckoutActivity extends AppCompatActivity {
         });
 
     }
+
+    @NonNull
+    private AlertDialog.Builder getBuilder() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);
+        builder.setTitle("Place Order");
+        builder.setMessage("Press ok to confirm order!!!");
+        builder.setIcon(R.drawable.pizza_icon);
+
+        // Add OK button
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // User clicked OK, perform logout
+               placeOrder();
+            }
+        });
+
+        // Add Cancel button
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // User clicked Cancel, do nothing
+                dialogInterface.dismiss();
+            }
+        });
+        return builder;
+    }
+
     private void changedeliverycharge(){
         String selecteditem = citySpinner.getSelectedItem().toString();
         switch (selecteditem) {
@@ -296,9 +299,11 @@ public class CheckoutActivity extends AppCompatActivity {
                 intdeliveryCharge = 75;
                 break;
         }
-        deliveryCharge.setText("₹" + new DecimalFormat("0.00").format(intdeliveryCharge));
+        String dcharges="₹" + new DecimalFormat("0.00").format(intdeliveryCharge);
+        deliveryCharge.setText(dcharges);
         total = ctotal + intdeliveryCharge;
-        totalPriceTextView.setText("₹" + new DecimalFormat("0.00").format(total));
+        String Tcharges="₹" + new DecimalFormat("0.00").format(total);
+        totalPriceTextView.setText(Tcharges);
     }
     private void setEditMode(boolean editMode) {
         isEditMode = editMode;
@@ -325,19 +330,7 @@ public class CheckoutActivity extends AppCompatActivity {
         String newstatus = "Ordering";
 
         String paymentMethod = "COD";
-//        int selectedRadioButtonId = paymentMethodsRadioGroup.getCheckedRadioButtonId();
-//        if (selectedRadioButtonId == R.id.gpay_upi) {
-//            paymentMethod = "GPay UPI";
-//            // Proceed to GPay page for payment
-//            String totalAmount = calculateTotalAmount(); // Get the total amount from Firebase
-//            openGPayPayment(totalAmount);
-//        } else if (selectedRadioButtonId == R.id.cash_on_delivery) {
-//            paymentMethod = "Cash on Delivery";
-//            // Proceed with order placement
-//            placeOrderInFirebase(shippingName, shippingAddress, shippingCity, contactInstructions, note, paymentMethod);
-//            redirectToOrderPlacedPage();
-//        }
-// Check if the cToken is empty and generate it if needed
+
         if (TextUtils.isEmpty(cToken)||cToken==null) {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
@@ -400,21 +393,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
 
-    private void openGPayPayment(String amount) {
-        Uri uri = Uri.parse("upi://pay").buildUpon()
-                .appendQueryParameter("pa", "8660630502@okbizaxis") // Replace with your Google Pay UPI ID
-                .appendQueryParameter("pn", "svvaap")
-                .appendQueryParameter("mc", "")
-                .appendQueryParameter("tn", "Order Payment")
-                .appendQueryParameter("am", amount)
-                .appendQueryParameter("cu", "INR")
-                .build();
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(uri);
-        intent.setPackage("com.google.android.apps.nbu.paisa.user");
-        startActivity(intent);
-    }
+ 
 
     public void showNotification(Context context, String title, String message, Intent intent) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

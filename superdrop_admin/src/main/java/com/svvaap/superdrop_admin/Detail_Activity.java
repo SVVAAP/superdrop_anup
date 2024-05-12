@@ -48,6 +48,7 @@ public class Detail_Activity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private ImageView mImageView;
     private Uri mImageUri;
+
     private ActivityResultLauncher<Intent> mGetContentLauncher;
     private StorageReference mStorageRef;
     private StorageTask mUploadTask;
@@ -132,6 +133,7 @@ public class Detail_Activity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             long milliseconds = calendar.getTimeInMillis();
             String restId= "#"+restaurantName.replace(" ", "")+restaurantCity.replace(" ", "")+milliseconds;
+            String registred="Pending";
 
             saveRestIdInPrefs(restId);
 
@@ -171,7 +173,8 @@ public class Detail_Activity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri downloadUri) {
                                         // Create a User object and set the details
-                                        User userDetails = new User(name, phoneNumberget, phone_optnl, userAddress,restaurantName,restaurantCity,restaurantType,downloadUri.toString(),restId,ownerToken);
+                                        User userDetails = new User(name, phoneNumberget, phone_optnl, userAddress,restaurantName,restaurantCity,restaurantType,downloadUri.toString(),restId,ownerToken,registred);
+                                        userDetails.setDetailsPending(false);
 
                                         // Push the user details to the database
                                         userRef.setValue(userDetails)

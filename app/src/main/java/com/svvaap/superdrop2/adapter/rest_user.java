@@ -1,25 +1,23 @@
-package com.svvaap.superdrop_admin.adapter;
+package com.svvaap.superdrop2.adapter;
 
-public class User {
+public class rest_user {
     private String fullName;
     private String phone;
-    private String  registred;
+    private boolean registred;
     private String streetAddress;
     private String restName;
     private String restCity;
-    private String token,restId;
+private String token,restId;
     private String city;
     private String type;
     private String emergencyContact;
-
-    private Boolean detailsPending;
     private String restProfileImageUrl; // New attribute to store image URL
 
-    public User() {
+    public rest_user() {
         // Default constructor required for Firebase
     }
 
-    public User(String fullName, String phoneNumber, String phoneNumberoptl, String address,String restName,String restCity,String type,String restProfileImageUrl,String restId , String token,String registred) {
+    public rest_user(String fullName, String phoneNumber, String phoneNumberoptl, String address, String restName, String restCity, String type, String restProfileImageUrl, String restId , String token) {
         this.fullName = fullName;
         this.phone=phoneNumber;
         this.emergencyContact = phoneNumberoptl;
@@ -27,15 +25,13 @@ public class User {
         this.restName=restName;
         this.restCity=restCity;
         this.restProfileImageUrl=restProfileImageUrl;
-        this.type=type;
         this.restId=restId;
         this.token=token;
+    }
+    public rest_user(Boolean registred){
         this.registred=registred;
     }
-    public User(boolean detailsPending){
-        this.detailsPending=detailsPending;
-    }
-    public User(String restId,String token){
+    public rest_user(String restId, String token){
         this.restId=restId;
         this.token=token;
 
@@ -103,11 +99,11 @@ public class User {
     public void setEmergencyContact(String emergencyContact) {
         this.emergencyContact = emergencyContact;
     }
-    public void setRegistred(String registred) {
+    public void setRegistred(boolean registred) {
         this.registred = registred;
     }
 
-    public String isRegistred() {
+    public boolean isRegistred() {
         return registred;
     }
     public String getRestName() {
@@ -133,10 +129,6 @@ public class User {
     public void setRestProfileImageUrl(String restProfileImageUrl) {
         this.restProfileImageUrl = restProfileImageUrl;
     }
-    public Boolean getDetailsPending() {
-        return detailsPending;
-    }
-    public void setDetailsPending(Boolean detailsPending) {
-        this.detailsPending = detailsPending;
-    }
+
+
 }
