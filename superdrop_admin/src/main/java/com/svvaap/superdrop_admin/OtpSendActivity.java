@@ -1,6 +1,8 @@
 package com.svvaap.superdrop_admin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebResourceRequest;
@@ -43,10 +45,16 @@ public class OtpSendActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-                            startActivity(new Intent(OtpSendActivity.this, OwnersTabActivity.class));
-                            finish();
-
-                    }
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            String pending = sharedPreferences.getString("detailsPending", "true");
+            if(pending.equals("true")){
+            startActivity(new Intent(OtpSendActivity.this, Detail_Activity.class));
+            finish();}
+            else{
+                startActivity(new Intent(OtpSendActivity.this, OwnersTabActivity.class));
+                finish();
+            }
+        }
         }
 
     @Override
@@ -77,7 +85,15 @@ public class OtpSendActivity extends AppCompatActivity {
 
             sendOTP(fullPhoneNumber);
         });
+
     }
+    @Override
+    public void onBackPressed() {
+        // Close the application when back button is pressed
+        super.onBackPressed();
+        finishAffinity();
+    }
+
 
     private void sendOTP(String phoneNumber) {
         // Disable UI elements

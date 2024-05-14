@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -55,6 +56,7 @@ public class Detail_Activity extends AppCompatActivity {
     private String phoneNumberget,ownerToken;
     private RadioGroup restaurantTypeRadioGroup;
     private RadioButton vegRadioButton, nonVegRadioButton;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class Detail_Activity extends AppCompatActivity {
         vegRadioButton = findViewById(R.id.rb_veg);
         nonVegRadioButton = findViewById(R.id.rb_nonveg);
         mImageView = findViewById(R.id.rest_profile);
+        progressBar =findViewById(R.id.detail_progressBar);
 
         // Retrieve the device token
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
@@ -114,6 +117,12 @@ public class Detail_Activity extends AppCompatActivity {
                     }
                 });
     }
+    @Override
+    public void onBackPressed() {
+        // Close the application when back button is pressed
+        super.onBackPressed();
+        finishAffinity();
+    }
 
     private void openFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -122,6 +131,7 @@ public class Detail_Activity extends AppCompatActivity {
     }
 
     private void uploadDetails() {
+        progressBar.setVisibility(View.VISIBLE);
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             String userId = user.getUid();
@@ -132,7 +142,7 @@ public class Detail_Activity extends AppCompatActivity {
             String restaurantCity = rest_city.getText().toString();
             Calendar calendar = Calendar.getInstance();
             long milliseconds = calendar.getTimeInMillis();
-            String restId= "#"+restaurantName.replace(" ", "")+restaurantCity.replace(" ", "")+milliseconds;
+            String restId= restaurantName.replace(" ", "")+restaurantCity.replace(" ", "")+milliseconds;
             String registred="Pending";
 
             saveRestIdInPrefs(restId);
@@ -174,12 +184,18 @@ public class Detail_Activity extends AppCompatActivity {
                                     public void onSuccess(Uri downloadUri) {
                                         // Create a User object and set the details
                                         User userDetails = new User(name, phoneNumberget, phone_optnl, userAddress,restaurantName,restaurantCity,restaurantType,downloadUri.toString(),restId,ownerToken,registred);
-                                        userDetails.setDetailsPending(false);
+
 
                                         // Push the user details to the database
                                         userRef.setValue(userDetails)
                                                 .addOnSuccessListener(aVoid -> {
+                                                    SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                    editor.putString("detailsPending","false");
+                                                    editor.apply();
+
                                                     Toast.makeText(Detail_Activity.this, "Details uploaded successfully!", Toast.LENGTH_SHORT).show();
+                                                    progressBar.setVisibility(View.GONE);
                                                     startActivity(new Intent(Detail_Activity.this, OwnersTabActivity.class));
                                                     finish();
 

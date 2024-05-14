@@ -41,6 +41,7 @@ public class OwnersTabActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private ConstraintLayout constraintLayout;
     private FirebaseAuth mAuth;
+    private boolean pending=false ;
     private static final int DRAW_OVER_OTHER_APPS_PERMISSION_REQUEST = 123; // Replace with your request code
 
 
@@ -58,16 +59,16 @@ public class OwnersTabActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-                        // User is registered, navigate to dashboard
                         User user= snapshot.getValue(User.class);
-                        if(user.getDetailsPending()){
-                            startActivity(new Intent(OwnersTabActivity.this,Detail_Activity.class));
-                            finish();
-                        } else if (user.isRegistred().equals("Pending")) {
+                       if (user.getRegistred().equals("Pending")) {
                             constraintLayout.setVisibility(View.VISIBLE);
-                        } else if (user.isRegistred().equals("false")) {
+                            pending=true;
+                        } else if (user.getRegistred().equals("false")) {
                             kickout();
                         }
+                    }else{
+                        startActivity(new Intent(OwnersTabActivity.this,Detail_Activity.class));
+                        finish();
                     }
                 }
 
@@ -127,8 +128,12 @@ public class OwnersTabActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Open Admin_Activity when ImageView is clicked
-                Intent intent = new Intent(OwnersTabActivity.this, Admin_Activity.class);
-                startActivity(intent);
+                if(pending){
+                    Toast.makeText(OwnersTabActivity.this, "Registration Pending....", Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent intent = new Intent(OwnersTabActivity.this, Admin_Activity.class);
+                    startActivity(intent);
+                }
             }
         });
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

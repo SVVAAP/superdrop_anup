@@ -1,6 +1,8 @@
 package com.svvaap.superdrop_admin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,6 +43,13 @@ public class OtpVerifyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verify);
+
+
+        // Initialize FirebaseAuth instance
+        mAuth = FirebaseAuth.getInstance();
+
+        // Initialize FirebaseDatabase instance
+        mDatabase = FirebaseDatabase.getInstance();
 
         etCodeArray[0] = findViewById(R.id.etC1);
         etCodeArray[1] = findViewById(R.id.etC2);
@@ -134,13 +143,12 @@ public class OtpVerifyActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("detailsPending","true");
+                            editor.apply();
                             // OTP verification successful, proceed to the next activity
                             // For example, you can redirect to the user's profile or dashboard
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            String userId = user.getUid();
-                            DatabaseReference userRef = mDatabase.getReference("rest_users").child(userId);
-                            User userState=new User(true);
-                            userRef.setValue(userState);
                             Intent intent = new Intent(OtpVerifyActivity.this,Detail_Activity.class);
                             intent.putExtra("phoneNumber", phoneNumber1);
                             startActivity(intent);
