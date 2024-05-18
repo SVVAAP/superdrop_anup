@@ -112,7 +112,7 @@
         android:layout_margin="10dp"
         android:background="@color/colorPrimary"
         android:padding="5dp"
-        android:text="Bun on top"
+        android:text="Add"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"

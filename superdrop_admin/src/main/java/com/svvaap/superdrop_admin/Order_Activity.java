@@ -1,5 +1,7 @@
 package com.svvaap.superdrop_admin;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
@@ -59,12 +62,17 @@ private Order order;
 private String OrderID,cToken,currentStatus,userid,newStatus;
 private foodItemAdapter fooditemadapter;
 private ProgressBar progressBar;
+private String restId="blank";
+private SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
         OrderID = getIntent().getStringExtra("STRING_KEY");
+
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        restId = sharedPreferences.getString("restId", "blank");
 
         name = findViewById(R.id.order_Name);
         phone = findViewById(R.id.order_phone);
@@ -153,13 +161,14 @@ private ProgressBar progressBar;
     }
 
     private void retrieveOrdersFromFirebase() {
-        DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
+        // Define the order reference for the restaurant
+        DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("restaurant_orders").child(restId);
 
         orderDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
-                    order = orderSnapshot.getValue(Order.class);
+                    Order order = orderSnapshot.getValue(Order.class);
                     if (order != null && !Objects.equals(order.getOrderStatus(), "Pending")) {
                         // Retrieve the items associated with the order from the "items" node
                         List<CartItem> cartItems = new ArrayList<>();
@@ -168,33 +177,32 @@ private ProgressBar progressBar;
                             CartItem cartItem = itemSnapshot.getValue(CartItem.class);
                             if (cartItem != null) {
                                 cartItems.add(cartItem);
-                                // Notify about the new item using a notification
-                                String itemName = cartItem.getItemName(); // Replace with the actual property that holds the item name
                             }
                         }
                         // Set the retrieved cart items to the order
                         order.setItems(cartItems);
-                    }
-                    assert order != null;
-                    if (Objects.equals(order.getOrderId(), OrderID)) {
-                        name.setText(order.getShippingName());
-                        phone.setText(order.getContactInstructions());
-                        optionalphone.setText(order.getPhone_optnl());
-                        city.setText(order.getShippingCity() != null ? order.getShippingCity() : "N/A");
-                        address.setText(order.getShippingAddress() != null ? order.getShippingAddress() : "N/A");
-                        paymentmethord.setText(order.getPaymentMethod() != null ? order.getPaymentMethod() : "N/A");
-                        note.setText(order.getNote() != null ? order.getNote() : "N/A");
-                        landmark.setText(order.getLandmark());
-                        status.setText(order.getStatus());
-                        fooditemadapter = new foodItemAdapter(order.getItems(), Order_Activity.this);
-                        recyclerView.setAdapter(fooditemadapter);
-                        String gtotal = "₹" + order.getGrandTotal();
-                        total.setText(gtotal);
-                        cToken = order.getToken();
-                        currentStatus = order.getStatus();
-                        userid = order.getUserId();
-                        changeAppearance();
 
+                        // Check if this is the order we are looking for
+                        if (Objects.equals(order.getOrderId(), OrderID)) {
+                            // Populate the UI with the order details
+                            name.setText(order.getShippingName());
+                            phone.setText(order.getContactInstructions());
+                            optionalphone.setText(order.getPhone_optnl());
+                            city.setText(order.getShippingCity() != null ? order.getShippingCity() : "N/A");
+                            address.setText(order.getShippingAddress() != null ? order.getShippingAddress() : "N/A");
+                            paymentmethord.setText(order.getPaymentMethod() != null ? order.getPaymentMethod() : "N/A");
+                            note.setText(order.getNote() != null ? order.getNote() : "N/A");
+                            landmark.setText(order.getLandmark());
+                            status.setText(order.getStatus());
+                            fooditemadapter = new foodItemAdapter(order.getItems(), Order_Activity.this);
+                            recyclerView.setAdapter(fooditemadapter);
+                            String gtotal = "₹" + order.getGrandTotal();
+                            total.setText(gtotal);
+                            cToken = order.getToken();
+                            currentStatus = order.getStatus();
+                            userid = order.getUserId();
+                            changeAppearance();
+                        }
                     }
                 }
             }
@@ -202,9 +210,9 @@ private ProgressBar progressBar;
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle database read error
+                Log.e("Firebase", "Failed to read orders", error.toException());
             }
         });
-
     }
     private void updateStatus(String newStatus, String orderId) {
         try {

@@ -101,7 +101,7 @@ public class OldOrders extends Fragment {
         return view;
     }
     private void retrieveOrdersFromFirebase() {
-        DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference(restId);
+        DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("restaurant_orders").child(restId);
 
         orderDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override

@@ -53,7 +53,7 @@ public class Detail_Activity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> mGetContentLauncher;
     private StorageReference mStorageRef;
     private StorageTask mUploadTask;
-    private String phoneNumberget,ownerToken;
+    private String phoneNumberget,ownerToken,restId;
     private RadioGroup restaurantTypeRadioGroup;
     private RadioButton vegRadioButton, nonVegRadioButton;
     private ProgressBar progressBar;
@@ -142,7 +142,7 @@ public class Detail_Activity extends AppCompatActivity {
             String restaurantCity = rest_city.getText().toString();
             Calendar calendar = Calendar.getInstance();
             long milliseconds = calendar.getTimeInMillis();
-            String restId= restaurantName.replace(" ", "")+restaurantCity.replace(" ", "")+milliseconds;
+            restId= restaurantName.replace(" ", "")+restaurantCity.replace(" ", "")+milliseconds;
             String registred="Pending";
 
             saveRestIdInPrefs(restId);
@@ -185,7 +185,7 @@ public class Detail_Activity extends AppCompatActivity {
                                         // Create a User object and set the details
                                         User userDetails = new User(name, phoneNumberget, phone_optnl, userAddress,restaurantName,restaurantCity,restaurantType,downloadUri.toString(),restId,ownerToken,registred);
 
-
+                                        saveTokenInDatabase(ownerToken);
                                         // Push the user details to the database
                                         userRef.setValue(userDetails)
                                                 .addOnSuccessListener(aVoid -> {
@@ -220,5 +220,9 @@ public class Detail_Activity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("rest_id", restId);
         editor.apply();
+    }
+    private void saveTokenInDatabase(String token) {
+        DatabaseReference tokensRef = mDatabase.getReference("tokens").child(restId);
+        tokensRef.setValue(token);
     }
 }

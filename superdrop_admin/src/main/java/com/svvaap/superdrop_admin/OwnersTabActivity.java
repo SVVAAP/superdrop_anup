@@ -63,7 +63,7 @@ public class OwnersTabActivity extends AppCompatActivity {
                        if (user.getRegistred().equals("Pending")) {
                             constraintLayout.setVisibility(View.VISIBLE);
                             pending=true;
-                        } else if (user.getRegistred().equals("false")) {
+                        } else if (user.getRegistred().equals("False")) {
                             kickout();
                         }
                     }else{

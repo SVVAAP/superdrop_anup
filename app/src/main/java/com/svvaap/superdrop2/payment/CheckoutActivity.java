@@ -52,6 +52,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -88,7 +89,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private DatabaseReference userCartRef, databaseReference;
     private StorageReference storageReference;
     double total = 0.0;
-    private DatabaseReference orderDatabaseReference, corderDatabaseReference;
+    private DatabaseReference orderDatabaseReference, corderDatabaseReference,dorderDatabaseReference;
     private String userId, orderID, cToken;
     int intdeliveryCharge, ctotal;
     private ImageView back_img;
@@ -173,8 +174,9 @@ public class CheckoutActivity extends AppCompatActivity {
         });
 
         // Initialize Firebase references
-        orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
+        orderDatabaseReference = FirebaseDatabase.getInstance().getReference("restaurant_orders");
         corderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userId);
+        dorderDatabaseReference = FirebaseDatabase.getInstance().getReference("delivery_orders");
         // Initialize views
 
         ArrayAdapter ctadapter = ArrayAdapter.createFromResource(this, R.array.city_options, android.R.layout.simple_spinner_item);
@@ -322,7 +324,7 @@ public class CheckoutActivity extends AppCompatActivity {
         String contactInstructions = contactInstructionsEditText.getText().toString();
         String note = noteEditText.getText().toString();
         String landmark = shippinglandmark.getText().toString();
-        String phone_optnl=ContactOptialEditText.getText().toString();
+        String phone_optnl = ContactOptialEditText.getText().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String currentDate = dateFormat.format(Calendar.getInstance().getTime());
@@ -331,70 +333,124 @@ public class CheckoutActivity extends AppCompatActivity {
 
         String paymentMethod = "COD";
 
-        if (TextUtils.isEmpty(cToken)||cToken==null) {
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        String iToken = task.getResult();
-                        // Store the token in Firebase Firestore
-                       cToken = iToken;
-                    }
-                });
+        if (TextUtils.isEmpty(cToken) || cToken == null) {
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            String iToken = task.getResult();
+                            cToken = iToken;
+                        }
+                    });
         }
-        // You can handle more payment methods here
         changedeliverycharge();
         String gtotal = totalPriceTextView.getText().toString().replace("₹", "");
         String orderStatus = "Pending";
 
-        // Store order details in Firebase
+        for (CartItem cartItem : cartItemList) {
+            String restaurantId = cartItem.getRestId();
+
+            Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
+                    contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark);
+            order.setItems(Collections.singletonList(cartItem));
+            order.setUserId(userId);
+            order.setDate(currentDate);
+            order.setTime(currentTime);
+            order.setToken(cToken);
+
+            orderDatabaseReference.child(restaurantId).push().setValue(order);
+
+            // Also push the order to the customer's node
+            corderDatabaseReference.push().setValue(order);
+
+            notifyRestaurantOwner(restaurantId, orderID, cartItem.getItemId());
+        }
+
         Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
                 contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark);
-        order.setItems(cartItemList);
-        order.setUserId(userId);
-        order.setDate(currentDate); // Set the current date
-        order.setTime(currentTime); // Set the current time
-        order.setToken(cToken);
 
-        corderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-//                Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
-            }
-        });
-        orderDatabaseReference.push().setValue(order).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
-
-                // Get the owner's device token from your database
-                String ownerToken = "OWNER_DEVICE_TOKEN"; // Replace with actual owner's device token
-                sendNotificationToAllOwners();
-                Intent intent = new Intent(CheckoutActivity.this, OrderPlacedActivity.class);
-                showNotification(CheckoutActivity.this, "New Order", "Order Id:" + orderID, intent);
-                redirectToOrderPlacedPage();
-            }
+        dorderDatabaseReference.push().setValue(order).addOnSuccessListener(unused -> {
+            Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(CheckoutActivity.this, OrderPlacedActivity.class);
+            showNotification(CheckoutActivity.this, "New Order", "Order Id:" + orderID, intent);
+            redirectToOrderPlacedPage();
         });
     }
 
-    private String generateOrderID() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault());
-        String timestamp = dateFormat.format(new Date());
+    private void notifyRestaurantOwner(String restaurantId, String orderId, String itemId) {
+        DatabaseReference restaurantRef = FirebaseDatabase.getInstance().getReference("tokens").child(restaurantId);
+        restaurantRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot tokenSnapshot : snapshot.getChildren()) {
+                    String ownerToken = tokenSnapshot.getValue(String.class);
+                    if (ownerToken != null) {
+                        String title = "New Order Received";
+                        String message = "You have received a new order with ID " + orderId + " and Item ID " + itemId + ". Please check your orders.";
+                        sendNotification(title, message, ownerToken);
+                    }
+                }
+            }
 
-        Random random = new Random();
-        int randomDigits = random.nextInt(900000) + 100000; // Generate a 6-digit random number
-
-        return timestamp + randomDigits;
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error if necessary
+            }
+        });
     }
 
-    private String calculateTotalAmount() {
-        double totalAmount = total + intdeliveryCharge; // Add the delivery charge to the total
-        return new DecimalFormat("0.00").format(totalAmount); // Convert the total to a string
+    private void sendNotification(String title, String message, String token) {
+        new Thread(new SendNotificationTask(token, title, message)).start();
     }
 
+    private static class SendNotificationTask implements Runnable {
+        private String token;
+        private String title;
+        private String message;
 
+        public SendNotificationTask(String token, String title, String message) {
+            this.token = token;
+            this.title = title;
+            this.message = message;
+        }
 
- 
+        @Override
+        public void run() {
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/json");
 
+            JSONObject notification = new JSONObject();
+            JSONObject body = new JSONObject();
+
+            try {
+                notification.put("title", title);
+                notification.put("body", message);
+                body.put("to", token);
+                body.put("notification", notification);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d("Error", e.toString());
+            }
+
+            RequestBody requestBody = RequestBody.create(mediaType, body.toString());
+            Request request = new Request.Builder()
+                    .url("https://fcm.googleapis.com/fcm/send")
+                    .post(requestBody)
+                    .addHeader("Authorization", "key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL")
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    Log.d("Notification", "Notification sent successfully");
+                } else {
+                    Log.d("Notification", "Notification sending failed");
+                }
+            } catch (IOException e) {
+                Log.d("Error", e.toString());
+            }
+        }
+    }
     public void showNotification(Context context, String title, String message, Intent intent) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationid = 1;
@@ -415,87 +471,23 @@ public class CheckoutActivity extends AppCompatActivity {
         mbuilder.setContentIntent(intent1);
         notificationManager.notify(notificationid, mbuilder.build());
     }
+    private String generateOrderID() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault());
+        String timestamp = dateFormat.format(new Date());
 
-    private void sendNotificationToAllOwners() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference tokensRef = database.getReference("tokens");
+        Random random = new Random();
+        int randomDigits = random.nextInt(900000) + 100000; // Generate a 6-digit random number
 
-        tokensRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> tokens = new ArrayList<>();
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    String token = userSnapshot.getValue(String.class);
-                    if (token != null) {
-                        tokens.add(token);
-                        Log.d("Token", token);
-                    }
-                }
-                // Now you have all the tokens, send notifications using FCM
-                sendNotification(tokens);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(CheckoutActivity.this, "Token error", Toast.LENGTH_SHORT).show();
-            }
-        });
+        return timestamp + randomDigits;
     }
 
-    private void sendNotification(List<String> tokens) {
-        SendNotificationTask task = new SendNotificationTask(tokens);
-        new Thread(task).start();
+    private String calculateTotalAmount() {
+        double totalAmount = total + intdeliveryCharge; // Add the delivery charge to the total
+        return new DecimalFormat("0.00").format(totalAmount); // Convert the total to a string
     }
 
-    private class SendNotificationTask implements Runnable {
-        private List<String> tokens;
 
-        public SendNotificationTask(List<String> tokens) {
-            this.tokens = tokens;
-        }
 
-        @Override
-        public void run() {
-            OkHttpClient client = new OkHttpClient();
-            MediaType mediaType = MediaType.parse("application/json");
-
-            for (String token : tokens) {
-                JSONObject notification = new JSONObject();
-                JSONObject body = new JSONObject();
-
-                try {
-                    notification.put("title", "New Order");
-                    notification.put("body", "Order Id:" + orderID);
-                    body.put("to", token);
-                    body.put("notification", notification);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("Error", e.toString());
-                }
-
-                RequestBody requestBody = RequestBody.create(mediaType, body.toString());
-                Request request = new Request.Builder()
-                        .url("https://fcm.googleapis.com/fcm/send")
-                        .post(requestBody)
-                        .addHeader("Authorization", "key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL") // Replace with your server key
-                        .addHeader("Content-Type", "application/json")
-                        .build();
-
-                try {
-                    Response response = client.newCall(request).execute();
-                    if (response.isSuccessful()) {
-                        // Notification sent successfully
-                        Log.d("Notification", "Notification sent successfully");
-                    } else {
-                        // Notification sending failed
-                        Log.d("Notification", "Notification sending failed");
-                    }
-                } catch (IOException e) {
-                    Log.d("error", e.toString());
-                }
-            }
-        }
-    }
 
     // Inside your CheckoutActivity.java
 

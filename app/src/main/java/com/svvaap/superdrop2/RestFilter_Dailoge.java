@@ -20,14 +20,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.svvaap.superdrop2.adapter.Upload;
-import com.svvaap.superdrop2.adapter.rest_user;
+import com.svvaap.superdrop2.methods.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class RestFilter_Dailoge extends DialogFragment{
+public class RestFilter_Dailoge extends DialogFragment {
 
     private RecyclerView recyclerView;
     private DatabaseReference mDatabaseRef;
@@ -40,50 +39,52 @@ public class RestFilter_Dailoge extends DialogFragment{
             Objects.requireNonNull(getDialog().getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         }
     }
-    public RestFilter_Dailoge(){
 
+    public RestFilter_Dailoge() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rest_filter_dailoge, container, false);
-        List<rest_user> user =new ArrayList<>();
-        restaurent_adapter adapter=new restaurent_adapter(getContext(),user);
+        List<User> user = new ArrayList<>();
+        restaurent_adapter adapter = new restaurent_adapter(getContext(), user);
 
-        recyclerView=view.findViewById(R.id.rest_recyclerview);
+        recyclerView = view.findViewById(R.id.rest_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("rest_users");
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
-            // Inside the ValueEventListener in HomeFragment
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    rest_user upload = postSnapshot.getValue(rest_user.class);
-                    user.add(upload);
+
+                        User upload = postSnapshot.getValue(User.class);
+                        user.add(upload);
                 }
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle possible errors
             }
         });
 
-    return view;
+        return view;
     }
-    public class restaurent_adapter extends RecyclerView.Adapter<restaurent_adapter.viewHolder>{
-private Context context;
-private List<rest_user> rusers;
 
-public restaurent_adapter(Context context,List<rest_user> rusers){
-    this.context=context;
-    this.rusers=rusers;
-}
+    public class restaurent_adapter extends RecyclerView.Adapter<restaurent_adapter.viewHolder> {
+        private Context context;
+        private List<User> rusers;
+
+        public restaurent_adapter(Context context, List<User> rusers) {
+            this.context = context;
+            this.rusers = rusers;
+        }
+
         @NonNull
         @Override
         public restaurent_adapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -93,10 +94,9 @@ public restaurent_adapter(Context context,List<rest_user> rusers){
 
         @Override
         public void onBindViewHolder(@NonNull restaurent_adapter.viewHolder holder, int position) {
-            rest_user current_user=rusers.get(position);
+            User current_user = rusers.get(position);
             holder.restName.setText(current_user.getRestName());
             Picasso.get().load(current_user.getRestProfileImageUrl()).fit().centerCrop().into(holder.restImg);
-
         }
 
         @Override
@@ -105,15 +105,15 @@ public restaurent_adapter(Context context,List<rest_user> rusers){
         }
 
         public class viewHolder extends RecyclerView.ViewHolder {
-    private TextView restName;
-    private ImageView restImg;
+            private TextView restName;
+            private ImageView restImg;
 
             public viewHolder(@NonNull View itemView) {
                 super(itemView);
 
-                restImg=itemView.findViewById(R.id.rest_img_h);
-                restName=itemView.findViewById(R.id.rest_name_h);
+                restImg = itemView.findViewById(R.id.rest_img_h);
+                restName = itemView.findViewById(R.id.rest_name_h);
             }
         }
     }
-    }
+}

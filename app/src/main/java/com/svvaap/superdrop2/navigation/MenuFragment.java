@@ -295,6 +295,7 @@ public class MenuFragment extends Fragment {
         args.putString("name", item.getName());
         args.putString("imageUrl", item.getImageUrl());
         args.putDouble("price", item.getPrice());
+        args.putString("restId",item.getRestId());
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
     }

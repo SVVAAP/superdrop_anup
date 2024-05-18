@@ -10,8 +10,12 @@ public class User {
     private String city,landmark;
     private String emergencyContact;
     private float rating;
+    private String restId,type;
     private String profileImageUrl; // New attribute to store image URL
-
+    private String registred;
+    private String restName;
+    private String restCity;
+    private String restProfileImageUrl;
     public User() {
         // Default constructor required for Firebase
     }
@@ -107,6 +111,21 @@ public class User {
         this.profileImageUrl = profileImageUrl;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getRestId() {
+        return restId;
+    }
+
+    public void setRestId(String restId) {
+        this.restId = restId;
+    }
 
     public String getLandmark() {
         return landmark;
@@ -114,5 +133,35 @@ public class User {
 
     public void setLandmark(String landmark) {
         this.landmark = landmark;
+    }
+    public void setRegistred(String registred) {
+        this.registred = registred;
+    }
+
+    public String getRegistred() {
+        return registred;
+    }
+
+    public String getRestName() {
+        return restName;
+    }
+
+    public void setRestName(String restName) {
+        this.restName = restName;
+    }
+    public String getRestCity() {
+        return restCity;
+    }
+
+    public void setRestCity(String restCity) {
+        this.restCity = restCity;
+    }
+
+    public String getRestProfileImageUrl() {
+        return restProfileImageUrl;
+    }
+
+    public void setRestProfileImageUrl(String restProfileImageUrl) {
+        this.restProfileImageUrl = restProfileImageUrl;
     }
 }

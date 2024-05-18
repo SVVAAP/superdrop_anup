@@ -41,7 +41,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private MediaPlayer mediaPlayer;
     int i = 1,newItemCount=0;
     double price;
-    String priceWithSymbol, imageUrl,itemId;
+    String priceWithSymbol, imageUrl,itemId,restId;
     private Button bt_cart,bt_order;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
@@ -96,6 +96,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
             String name = args.getString("name", "Default Name");
             imageUrl = args.getString("imageUrl");
             price = args.getDouble("price", 0.0);
+            restId= args.getString("restId","");
+
 
             // Display item details in the bottom sheet
             item_name.setText(name);
@@ -193,7 +195,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 } else {
                     // Item does not exist, add it to the cart
                     String itemId = userCartRef.push().getKey();
-                    CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalPrice, imageUrl);
+                    CartItem cartItem = new CartItem(itemName, itemPrice, quantity, totalPrice, imageUrl,restId);
                     cartItem.setItemId(itemIdm);
                     userCartRef.child(itemId).setValue(cartItem)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
