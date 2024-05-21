@@ -2,7 +2,9 @@ package com.svvaap.superdrop_admin;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,7 +58,6 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
     private ImageView mImageView;
     private ProgressBar mProgressBar;
     private Uri mImageUri;
-     private String restId;
     private StorageReference sStorageRef;
     private DatabaseReference sDatabaseRef;
 
@@ -67,6 +68,8 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
     private RadioGroup radioGroupFoodType;
     private String selectedCategory;
     private String selectedFoodType;
+    private String restId = "blank";
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -179,6 +182,8 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
         if (mImageUri != null) {
             String uploadId = sDatabaseRef.push().getKey();
             assert uploadId != null;
+            sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            String restname= sharedPreferences.getString("rest_name", "blank");
             StorageReference fileReference = sStorageRef.child(uploadId);
             double price = Double.parseDouble(mEditTextPrice.getText().toString().trim());
 
@@ -200,7 +205,7 @@ public class BunOnTopAdd_Activity extends AppCompatActivity {
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {// Generate a unique item ID
-                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), price, downloadUri.toString(), restId, uploadId, selectedCategory, selectedFoodType);
+                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), price, downloadUri.toString(), restId, uploadId, selectedCategory, selectedFoodType,restname);
                                     sDatabaseRef.child(uploadId).setValue(upload);
 
                                     Intent intent = getIntent();

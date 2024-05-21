@@ -10,10 +10,13 @@ public class Upload {
     private String mDiscountPrice;
     private String mCatogery;
     private String mFoodType;
+    private String mRestName;
 
     public Upload() {
         //empty constructor needed
     }
+
+
     public Upload(String name, String imageUrl, double price,String restId,String itemId) {
         if (name.trim().equals("")) {
             name = "No Name";

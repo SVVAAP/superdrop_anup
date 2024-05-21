@@ -151,7 +151,10 @@ public class Order_Activity extends AppCompatActivity {
 
                     // Execute the updateStatus in the ExecutorService
                     updateStatus(newStatus, OrderID);
-                    sendNotification(cToken, newStatus, OrderID);
+                    String title="Your Order :"+OrderID;
+                    String message="your order is been "+newStatus;
+                    sendNotification(title,message,cToken);
+                    Log.d("tokem",cToken);
                     changeAppearance();
                     acceptButton.setEnabled(true);
                 }
@@ -203,7 +206,7 @@ public class Order_Activity extends AppCompatActivity {
                             recyclerView.setAdapter(fooditemadapter);
                             String gtotal = "₹" + order.getGrandTotal();
                             total.setText(gtotal);
-                            cToken = order.getToken();
+                            cToken = order.getCtoken();
                             currentStatus = order.getStatus();
                             userid = order.getUserId();
                             changeAppearance();
@@ -299,52 +302,57 @@ public class Order_Activity extends AppCompatActivity {
         anim.start();
     }
 
-    private void sendNotification(String tokens, String status, String id) {
-        SendNotificationTask task = new SendNotificationTask(tokens, status, id);
-        new Thread(task).start();
+    private void sendNotification(String title, String message, String token) {
+        new Thread(new SendNotificationTask(token, title, message)).start();
+
     }
 
     private static class SendNotificationTask implements Runnable {
-        private final String tokens;
-        private final String status;
-        private final String id;
+        private String token;
+        private String title;
+        private String message;
 
-        public SendNotificationTask(String tokens, String status, String id) {
-            this.tokens = tokens;
-            this.status = status;
-            this.id = id;
+        public SendNotificationTask(String token, String title, String message) {
+            this.token = token;
+            this.title = title;
+            this.message = message;
         }
 
         @Override
         public void run() {
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/json");
+
+            JSONObject notification = new JSONObject();
+            JSONObject body = new JSONObject();
+
             try {
-                OkHttpClient client = new OkHttpClient();
-                MediaType mediaType = MediaType.parse("application/json");
-
-                JSONObject notification = new JSONObject();
-                JSONObject body = new JSONObject();
-
-                notification.put("title", "Your Order: " + id);
-                notification.put("body", "Your order status is: " + status);
-                body.put("to", tokens);
+                notification.put("title", title);
+                notification.put("body", message);
+                body.put("to", token);
                 body.put("notification", notification);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d("Error", e.toString());
+            }
 
-                RequestBody requestBody = RequestBody.create(mediaType, body.toString());
-                Request request = new Request.Builder()
-                        .url("https://fcm.googleapis.com/fcm/send")
-                        .post(requestBody)
-                        .addHeader("Authorization", "key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL") // Replace with your server key
-                        .addHeader("Content-Type", "application/json")
-                        .build();
+            RequestBody requestBody = RequestBody.create(mediaType, body.toString());
+            Request request = new Request.Builder()
+                    .url("https://fcm.googleapis.com/fcm/send")
+                    .post(requestBody)
+                    .addHeader("Authorization", "key=AAAAiMxksdE:APA91bFlTJqkD8AVZ36SbzIKPjILBIJOPLYTqgnnXFj4F7xAaO-Qi9ddV7OYxY-Me3zzMDvZC9UXrSfNi54OMfBELA_0RFcHGchf9egUoDjQFQspRCGA-ornfL_mNsXQ7W3QvViIgMtL")
+                    .addHeader("Content-Type", "application/json")
+                    .build();
 
+            try {
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {
                     Log.d("Notification", "Notification sent successfully");
                 } else {
-                    Log.e("Notification", "Notification sending failed: " + response.body().string());
+                    Log.d("Notification", "Notification sending failed");
                 }
-            } catch (IOException | JSONException e) {
-                Log.e("Notification", "Error sending notification: " + e.getMessage(), e);
+            } catch (IOException e) {
+                Log.d("Error", e.toString());
             }
         }
     }

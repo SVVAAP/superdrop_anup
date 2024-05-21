@@ -145,7 +145,7 @@ public class Detail_Activity extends AppCompatActivity {
             restId= restaurantName.replace(" ", "")+restaurantCity.replace(" ", "")+milliseconds;
             String registred="Pending";
 
-            saveRestIdInPrefs(restId);
+
 
             String restaurantType;
             int selectedRadioButtonId = restaurantTypeRadioGroup.getCheckedRadioButtonId();
@@ -185,7 +185,7 @@ public class Detail_Activity extends AppCompatActivity {
                                         // Create a User object and set the details
                                         User userDetails = new User(name, phoneNumberget, phone_optnl, userAddress,restaurantName,restaurantCity,restaurantType,downloadUri.toString(),restId,ownerToken,registred);
 
-                                        saveTokenInDatabase(ownerToken);
+
                                         // Push the user details to the database
                                         userRef.setValue(userDetails)
                                                 .addOnSuccessListener(aVoid -> {
@@ -193,10 +193,11 @@ public class Detail_Activity extends AppCompatActivity {
                                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                                     editor.putString("detailsPending","false");
                                                     editor.apply();
-
+                                                    saveRestIdInPrefs(restId,restaurantName);
                                                     Toast.makeText(Detail_Activity.this, "Details uploaded successfully!", Toast.LENGTH_SHORT).show();
                                                     progressBar.setVisibility(View.GONE);
                                                     startActivity(new Intent(Detail_Activity.this, OwnersTabActivity.class));
+                                                    saveTokenInDatabase(ownerToken);
                                                     finish();
 
                                                 })
@@ -215,10 +216,11 @@ public class Detail_Activity extends AppCompatActivity {
             }
         }
     }
-    private void saveRestIdInPrefs(String restId) {
+    private void saveRestIdInPrefs(String restId,String restname) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("rest_id", restId);
+        editor.putString("rest_name",restname);
         editor.apply();
     }
     private void saveTokenInDatabase(String token) {

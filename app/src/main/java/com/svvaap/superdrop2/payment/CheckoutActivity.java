@@ -332,16 +332,23 @@ public class CheckoutActivity extends AppCompatActivity {
         String newstatus = "Ordering";
 
         String paymentMethod = "COD";
-
-        if (TextUtils.isEmpty(cToken) || cToken == null) {
+        if (TextUtils.isEmpty(cToken)) {
             FirebaseMessaging.getInstance().getToken()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
-                            String iToken = task.getResult();
-                            cToken = iToken;
+                            cToken = task.getResult(); // Update token in Firebase
+                            processOrder(shippingName, shippingAddress, shippingCity, contactInstructions, note, landmark, phone_optnl, currentDate, currentTime, newstatus, paymentMethod);
+                        } else {
+                            // Handle error if token retrieval fails
+                            Toast.makeText(CheckoutActivity.this, "Failed to retrieve token.", Toast.LENGTH_SHORT).show();
                         }
                     });
+        } else {
+            processOrder(shippingName, shippingAddress, shippingCity, contactInstructions, note, landmark, phone_optnl, currentDate, currentTime, newstatus, paymentMethod);
         }
+    }
+
+    private void processOrder(String shippingName, String shippingAddress, String shippingCity, String contactInstructions, String note, String landmark, String phone_optnl, String currentDate, String currentTime, String newstatus, String paymentMethod) {
         changedeliverycharge();
         String gtotal = totalPriceTextView.getText().toString().replace("₹", "");
         String orderStatus = "Pending";
@@ -349,7 +356,7 @@ public class CheckoutActivity extends AppCompatActivity {
         for (CartItem cartItem : cartItemList) {
             String restaurantId = cartItem.getRestId();
             Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
-                    contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark,cToken);
+                    contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark, cToken);
             order.setItems(Collections.singletonList(cartItem));
             order.setUserId(userId);
             order.setDate(currentDate);
@@ -364,7 +371,7 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
         Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
-                contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark,cToken);
+                contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark, cToken);
 
         dorderDatabaseReference.push().setValue(order).addOnSuccessListener(unused -> {
             Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
@@ -384,7 +391,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     String ownerToken= user.getToken();
                    if (ownerToken != null) {
                         String title = "New Order Received";
-                        String message = "You have received a new order with ID " + orderId + " and Item ID " + itemId + ". Please check your orders.";
+                        String message = "You have received a new order with ID " + orderId +". Please check your orders.";
                         sendNotification(title, message, ownerToken);
                     }
                 }

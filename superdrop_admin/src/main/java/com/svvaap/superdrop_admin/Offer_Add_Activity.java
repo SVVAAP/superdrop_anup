@@ -37,14 +37,14 @@ public class Offer_Add_Activity extends AppCompatActivity {
     private Button oButtonChooseImage;
     private Button oButtonUpload;
     private ImageView oImageView;
-
-    private StorageTask oUploadTask;
-
     private ProgressBar oProgressBar;
     private StorageReference oStorageRef;
     private DatabaseReference oDatabaseRef;
     private ActivityResultLauncher<Intent> mGetContentLauncher;
     private Uri oImageUri;
+    private StorageTask oUploadTask;
+
+    private String restaurantId = "exampleRestaurantId"; // Set your restaurant ID here
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,6 @@ public class Offer_Add_Activity extends AppCompatActivity {
             }
         });
 
-
         mGetContentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -79,29 +78,32 @@ public class Offer_Add_Activity extends AppCompatActivity {
                         }
                     }
                 });
+
         oButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (oUploadTask != null && oUploadTask.isInProgress()) {
                     Toast.makeText(Offer_Add_Activity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
-                    uploadFile();
+                    uploadFile(restaurantId); // Pass restaurantId here
                 }
             }
         });
-
     }
+
     private void openFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         mGetContentLauncher.launch(intent);
     }
+
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
-    private void uploadFile() {
+
+    private void uploadFile(String restaurantId) {
         if (oImageUri != null) {
             String uploadId = oDatabaseRef.push().getKey();
             StorageReference fileReference = oStorageRef.child(uploadId);
@@ -120,12 +122,10 @@ public class Offer_Add_Activity extends AppCompatActivity {
 
                             Toast.makeText(Offer_Add_Activity.this, "Upload successful", Toast.LENGTH_LONG).show();
 
-                            // Retrieve the download URL and set it as the image URL in the Upload object
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
-
-                                    Upload upload=new Upload(downloadUri.toString(),uploadId);
+                                    Upload upload = new Upload(downloadUri.toString(), uploadId, restaurantId);
                                     oDatabaseRef.child(uploadId).setValue(upload);
                                 }
                             });

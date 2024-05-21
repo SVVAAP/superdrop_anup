@@ -41,19 +41,13 @@ public class Order {
         this.orderStatus=oredrStatus;
         this.landmark=landmark;
         this.phone_optnl=phone_optnl;
-        ctoken=token;
+        this.ctoken=token;
     }
     public String getOrderStatus(){
         return orderStatus;
     }
     public void setOrderStatus(String orderStatus){
         this.orderStatus=orderStatus;
-    }
-    public String getCtoken() {
-        return ctoken;
-    }
-    public void setCtoken(String Token) {
-        this.ctoken = Token;
     }
     public String getDate() {
         return date;
@@ -146,4 +140,11 @@ public class Order {
         this.phone_optnl = phone_optnl;
     }
     // Add getter and setter methods as needed
+    public String getCtoken() {
+        return ctoken;
+    }
+
+    public void setCtoken(String ctoken) {
+        this.ctoken = ctoken;
+    }
 }

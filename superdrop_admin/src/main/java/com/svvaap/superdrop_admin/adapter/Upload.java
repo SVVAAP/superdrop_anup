@@ -1,5 +1,8 @@
 package com.svvaap.superdrop_admin.adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 public class Upload {
     private String mName;
     private String mImageUrl;
@@ -10,10 +13,15 @@ public class Upload {
     private String mDiscountPrice;
     private String mCatogery;
     private String mFoodType;
+    private String mRestName;
+    private SharedPreferences sharedPreferences;
+
 
     public Upload() {
         //empty constructor needed
     }
+
+
     public Upload(String name, String imageUrl, double price,String restId,String itemId) {
         if (name.trim().equals("")) {
             name = "No Name";
@@ -24,7 +32,7 @@ public class Upload {
         mRestId=restId;
         mItemId=itemId;
     }
-    public Upload(String name, String imageUrl, double price, String restId, String itemId, String discount, String discountPrice) {
+    public Upload(String name, String imageUrl, double price, String restId, String itemId, String discount, String discountPrice,String mRestName) {
         mName = name.trim().isEmpty() ? "No Name" : name;
         mImageUrl = imageUrl;
         mPrice = price;
@@ -33,7 +41,7 @@ public class Upload {
         mDiscount = discount;
         mDiscountPrice = discountPrice;
     }
-    public Upload(String name, double price, String imageUrl, String restId, String itemId, String catogery, String foodType) {
+    public Upload(String name, double price, String imageUrl, String restId, String itemId, String catogery, String foodType,String mRestName) {
         mName = name.trim().isEmpty() ? "No Name" : name;
         mImageUrl = imageUrl;
         mPrice = price;
@@ -43,9 +51,10 @@ public class Upload {
         mFoodType=foodType;
 
     }
-    public Upload(String imageUrl,String itemId){
+    public Upload(String imageUrl,String itemId,String mRestId){
         mImageUrl = imageUrl;
         mItemId=itemId;
+        this.mRestId=mRestId;
     }
 
     // Add the getters and setters for the price variable

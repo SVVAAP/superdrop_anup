@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,6 +54,8 @@ public class Offer_item_addActivity extends AppCompatActivity {
 
     private StorageTask mUploadTask;
     private ActivityResultLauncher<Intent> mGetContentLauncher;
+    private String restId = "blank";
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,10 @@ public class Offer_item_addActivity extends AppCompatActivity {
         mEditTextPrice = findViewById(R.id.offer_item_price);
         mEditTextDiscount=findViewById(R.id.offer_item_discount);
         mEditTextDiscountPrice=findViewById(R.id.offer_item_discountprice);
+
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        restId = sharedPreferences.getString("rest_id", "blank");
+
 
         mStorageRef = FirebaseStorage.getInstance().getReference("Offer_item");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Offer_item");
@@ -132,7 +140,8 @@ public class Offer_item_addActivity extends AppCompatActivity {
         if (mImageUri != null) {
             String uploadId = mDatabaseRef.push().getKey();
             StorageReference fileReference = mStorageRef.child(uploadId);
-            String restname="BowlRxpress";
+            sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            String restname= sharedPreferences.getString("rest_name", "blank");
             String discount=mEditTextDiscount.getText().toString().trim();
             String discountprice=mEditTextDiscountPrice.getText().toString().trim();
             mUploadTask = fileReference.putFile(mImageUri)
@@ -154,7 +163,7 @@ public class Offer_item_addActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
                                     // Generate a unique item ID
-                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price,restname,uploadId,discount,discountprice);
+                                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUri.toString(), price,restId,uploadId,discount,discountprice,restname);
                                    // Set the unique item ID
                                     mDatabaseRef.child(uploadId).setValue(upload);
                                 }

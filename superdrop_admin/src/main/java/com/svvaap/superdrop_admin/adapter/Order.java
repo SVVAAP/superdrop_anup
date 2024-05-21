@@ -1,11 +1,12 @@
 package com.svvaap.superdrop_admin.adapter;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    private String shippingName,Token;
+    private String shippingName,ctoken;
     private String shippingAddress;
     private String shippingCity,landmark,phone_optnl;
     private String contactInstructions;
@@ -24,7 +25,7 @@ public class Order {
     }
 
     public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
-                 String contactInstructions, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark,String Token) {
+                 String contactInstructions, String phone_optnl, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark,String token) {
         this.orderid=orderid;
         this.shippingName = shippingName;
         this.shippingAddress = shippingAddress;
@@ -38,19 +39,14 @@ public class Order {
         // No need to add a dummy item her
         this.orderStatus=oredrStatus;
         this.landmark=landmark;
-        this.Token=Token;
+        this.phone_optnl=phone_optnl;
+        this.ctoken=token;
     }
     public String getOrderStatus(){
         return orderStatus;
     }
     public void setOrderStatus(String orderStatus){
         this.orderStatus=orderStatus;
-    }
-    public String getToken() {
-        return Token;
-    }
-    public void setToken(String Token) {
-        this.Token = Token;
     }
     public String getDate() {
         return date;
@@ -143,5 +139,11 @@ public class Order {
         this.phone_optnl = phone_optnl;
     }
     // Add getter and setter methods as needed
-}
+    public String getCtoken() {
+        return ctoken;
+    }
 
+    public void setCtoken(String ctoken) {
+        this.ctoken = ctoken;
+    }
+}
