@@ -24,7 +24,7 @@ public class Order {
     }
 
     public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
-                 String contactInstructions, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark) {
+                 String contactInstructions, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark,String Token) {
         this.orderid=orderid;
         this.shippingName = shippingName;
         this.shippingAddress = shippingAddress;
@@ -38,6 +38,7 @@ public class Order {
         // No need to add a dummy item her
         this.orderStatus=oredrStatus;
         this.landmark=landmark;
+        this.Token=Token;
     }
     public String getOrderStatus(){
         return orderStatus;

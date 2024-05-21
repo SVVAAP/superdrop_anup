@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    private String shippingName,Token;
+    private String shippingName,ctoken;
     private String shippingAddress;
     private String shippingCity,landmark,phone_optnl;
     private String contactInstructions;
@@ -26,7 +26,7 @@ public class Order {
     }
 
     public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
-                 String contactInstructions, String phone_optnl, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark) {
+                 String contactInstructions, String phone_optnl, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark,String token) {
         this.orderid=orderid;
         this.shippingName = shippingName;
         this.shippingAddress = shippingAddress;
@@ -41,6 +41,7 @@ public class Order {
         this.orderStatus=oredrStatus;
         this.landmark=landmark;
         this.phone_optnl=phone_optnl;
+        ctoken=token;
     }
     public String getOrderStatus(){
         return orderStatus;
@@ -48,11 +49,11 @@ public class Order {
     public void setOrderStatus(String orderStatus){
         this.orderStatus=orderStatus;
     }
-    public String getToken() {
-        return Token;
+    public String getCtoken() {
+        return ctoken;
     }
-    public void setToken(String Token) {
-        this.Token = Token;
+    public void setCtoken(String Token) {
+        this.ctoken = Token;
     }
     public String getDate() {
         return date;

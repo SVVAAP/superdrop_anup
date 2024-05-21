@@ -61,6 +61,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
         holder.status.setText(currentStatus);
         holder.time_txt.setText(order.getTime());
         holder.date_txt.setText(order.getDate());
+        holder.adderss.setText(order.getShippingAddress());
         // Check if the status is "processing"
 //        if ("processing".equalsIgnoreCase(currentStatus)) {
 //            // Start playing music if it's not already playing
@@ -137,7 +138,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         private foodItemAdapter fooditemadapter;
-        private TextView name, phone, orderid, total, status,date_txt,time_txt;
+        private TextView name, phone, orderid, total, status,date_txt,time_txt,adderss;
         private ImageView location, call, ringButton;
         public WebView mapWebView;  // Store the WebView as a member variable
 
@@ -153,6 +154,7 @@ public class Owner_Adapter extends RecyclerView.Adapter<Owner_Adapter.ViewHolder
             call = itemView.findViewById(R.id.call);
             date_txt = itemView.findViewById(R.id.date);
             time_txt = itemView.findViewById(R.id.time);
+            adderss=itemView.findViewById(R.id.oshippingAddressTextView);
             //  mapWebView = itemView.findViewById(R.id.map_web);
             status = itemView.findViewById(R.id.ostatus_text);
             // Initialize mapWebView here

@@ -163,7 +163,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                     }
                 }
-            }
+    }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -189,9 +189,9 @@ public class CheckoutActivity extends AppCompatActivity {
         back_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CheckoutActivity.this, Cart_Activity.class);
-                startActivity(intent);
-            }
+        Intent intent = new Intent(CheckoutActivity.this, Cart_Activity.class);
+        startActivity(intent);
+    }
         });
 
         placeOrderButton = findViewById(R.id.place_order_button);
@@ -203,14 +203,14 @@ public class CheckoutActivity extends AppCompatActivity {
         placeOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isNetworkAvailable()) {
+        if (!isNetworkAvailable()) {
                     // No internet connection, display a toast message
-                    Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.. :(", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.. :(", Toast.LENGTH_SHORT).show();
                 }else if(isEditMode){
-                    Toast.makeText(CheckoutActivity.this, "Save the Address changes First.... :|", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckoutActivity.this, "Save the Address changes First.... :|", Toast.LENGTH_SHORT).show();
                 }else   if (!areFieldsValid()) {
-                    Toast.makeText(CheckoutActivity.this, "Invalid Data..... :|", Toast.LENGTH_SHORT).show();
-                }
+            Toast.makeText(CheckoutActivity.this, "Invalid Data..... :|", Toast.LENGTH_SHORT).show();
+        }
                 else {
 
                     AlertDialog.Builder builder = getBuilder();
@@ -218,26 +218,26 @@ public class CheckoutActivity extends AppCompatActivity {
                     // Create and show the AlertDialog
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                }
-            }
+    }
+    }
         });
 
         changeAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isNetworkAvailable()) {
+        if (!isNetworkAvailable()) {
                     // No internet connection, display a toast message
-                    Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckoutActivity.this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (isEditMode && areFieldsValid()) {
+        if (isEditMode && areFieldsValid()) {
                         uploaduserdetails();
                         changedeliverycharge();
-                        changeAddress.setText("Change Address");
-                    } else {
-                        setEditMode(true);
-                        changeAddress.setText("Save Changes");
-                    }
-                }
+            changeAddress.setText("Change Address");
+        } else {
+            setEditMode(true);
+            changeAddress.setText("Save Changes");
+        }
+    }
             }
         });
         // delivery charge
@@ -348,14 +348,12 @@ public class CheckoutActivity extends AppCompatActivity {
 
         for (CartItem cartItem : cartItemList) {
             String restaurantId = cartItem.getRestId();
-
             Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
-                    contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark);
+                    contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark,cToken);
             order.setItems(Collections.singletonList(cartItem));
             order.setUserId(userId);
             order.setDate(currentDate);
             order.setTime(currentTime);
-            order.setToken(cToken);
 
             orderDatabaseReference.child(restaurantId).push().setValue(order);
 
@@ -366,7 +364,7 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
         Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
-                contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark);
+                contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark,cToken);
 
         dorderDatabaseReference.push().setValue(order).addOnSuccessListener(unused -> {
             Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
@@ -382,8 +380,9 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot tokenSnapshot : snapshot.getChildren()) {
-                    String ownerToken = tokenSnapshot.getValue(String.class);
-                    if (ownerToken != null) {
+                    User user = tokenSnapshot.getValue(User.class);
+                    String ownerToken= user.getToken();
+                   if (ownerToken != null) {
                         String title = "New Order Received";
                         String message = "You have received a new order with ID " + orderId + " and Item ID " + itemId + ". Please check your orders.";
                         sendNotification(title, message, ownerToken);
@@ -535,7 +534,7 @@ public class CheckoutActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             String userId = user.getUid();
-            String name = shippingNameEditText.getText().toString();
+        String name = shippingNameEditText.getText().toString();
             String phone = contactInstructionsEditText.getText().toString();
             String phone_optnl=ContactOptialEditText.getText().toString();
             String userAddress = shippingAddressEditText.getText().toString();
@@ -593,12 +592,12 @@ public class CheckoutActivity extends AppCompatActivity {
         if (userAddr.isEmpty()) {
             shippingAddressEditText.setError("Please enter your address.");
             isValid = false;
-        }
+    }
 
         if (landmarkAddr.isEmpty()) {
             shippinglandmark.setError("Please enter a landmark address.");
             isValid = false;
-        }
+    }
 
         if (isValid) {
             setEditMode(false); // Only set to false when fields are valid

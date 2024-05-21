@@ -223,6 +223,9 @@ public class Detail_Activity extends AppCompatActivity {
     }
     private void saveTokenInDatabase(String token) {
         DatabaseReference tokensRef = mDatabase.getReference("tokens").child(restId);
-        tokensRef.setValue(token);
+        User user =new User();
+        user.setToken(token);
+        user.setRestId(restId);
+        tokensRef.push().setValue(user);
     }
 }

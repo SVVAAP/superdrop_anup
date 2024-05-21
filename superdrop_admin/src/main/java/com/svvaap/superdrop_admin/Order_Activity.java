@@ -55,15 +55,16 @@ import android.widget.TextView;
 
 
 public class Order_Activity extends AppCompatActivity {
-private TextView name,phone,optionalphone,address,city,paymentmethord,landmark,note,total,orderid,status;
-private Button acceptButton,cancelButton;
-private RecyclerView recyclerView;
-private Order order;
-private String OrderID,cToken,currentStatus,userid,newStatus;
-private foodItemAdapter fooditemadapter;
-private ProgressBar progressBar;
-private String restId="blank";
-private SharedPreferences sharedPreferences;
+    private TextView name, phone, optionalphone, address, city, paymentmethord, landmark, note, total, orderid, status;
+    private Button acceptButton, cancelButton;
+    private RecyclerView recyclerView;
+    private Order order;
+    private String OrderID, cToken, currentStatus, userid, newStatus;
+    private foodItemAdapter fooditemadapter;
+    private ProgressBar progressBar;
+    private String restId = "blank";
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +73,8 @@ private SharedPreferences sharedPreferences;
         OrderID = getIntent().getStringExtra("STRING_KEY");
 
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        restId = sharedPreferences.getString("restId", "blank");
+        restId = sharedPreferences.getString("rest_id", "blank");
+
 
         name = findViewById(R.id.order_Name);
         phone = findViewById(R.id.order_phone);
@@ -87,11 +89,12 @@ private SharedPreferences sharedPreferences;
         cancelButton = findViewById(R.id.order_cancelButton);
         orderid = findViewById(R.id.order_id);
         orderid.setText(OrderID);
-        status=findViewById(R.id.order_status);
+        status = findViewById(R.id.order_status);
         progressBar = findViewById(R.id.order_progressBar);
         recyclerView = findViewById(R.id.order_foodItemsRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        name.setText(restId);
 
         fooditemadapter = new foodItemAdapter(new ArrayList<>(), this); // Initialize cartAdapter with an empty list
         recyclerView.setAdapter(fooditemadapter);
@@ -169,7 +172,8 @@ private SharedPreferences sharedPreferences;
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);
-                    if (order != null && !Objects.equals(order.getOrderStatus(), "Pending")) {
+                    if (order != null) {
+                        Log.d("Firebase", "Order found: " + order.getOrderId());
                         // Retrieve the items associated with the order from the "items" node
                         List<CartItem> cartItems = new ArrayList<>();
                         DataSnapshot itemsSnapshot = orderSnapshot.child("items");
@@ -184,6 +188,7 @@ private SharedPreferences sharedPreferences;
 
                         // Check if this is the order we are looking for
                         if (Objects.equals(order.getOrderId(), OrderID)) {
+                            Log.d("Firebase", "Matching order found: " + order.getOrderId());
                             // Populate the UI with the order details
                             name.setText(order.getShippingName());
                             phone.setText(order.getContactInstructions());
@@ -214,10 +219,11 @@ private SharedPreferences sharedPreferences;
             }
         });
     }
+
     private void updateStatus(String newStatus, String orderId) {
         try {
             // Perform your database updates here
-            DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("orders");
+            DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference("restaurant_orders").child(restId);
             DatabaseReference custOrderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userid);
             orderDatabaseReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -271,6 +277,7 @@ private SharedPreferences sharedPreferences;
             e.printStackTrace();
         }
     }
+
     private void updateButtonAppearance(Button abutton) {
         // Set the width of the accept button to match the parent's width
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -298,9 +305,9 @@ private SharedPreferences sharedPreferences;
     }
 
     private static class SendNotificationTask implements Runnable {
-        private String tokens;
-        private String status;
-        private String id;
+        private final String tokens;
+        private final String status;
+        private final String id;
 
         public SendNotificationTask(String tokens, String status, String id) {
             this.tokens = tokens;
@@ -317,15 +324,10 @@ private SharedPreferences sharedPreferences;
                 JSONObject notification = new JSONObject();
                 JSONObject body = new JSONObject();
 
-                try {
-                    notification.put("title", "Your Order:" + id);
-                    notification.put("body", "Your order is being " + status);
-                    body.put("to", tokens);
-                    body.put("notification", notification);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("Error", e.toString());
-                }
+                notification.put("title", "Your Order: " + id);
+                notification.put("body", "Your order status is: " + status);
+                body.put("to", tokens);
+                body.put("notification", notification);
 
                 RequestBody requestBody = RequestBody.create(mediaType, body.toString());
                 Request request = new Request.Builder()
@@ -335,23 +337,18 @@ private SharedPreferences sharedPreferences;
                         .addHeader("Content-Type", "application/json")
                         .build();
 
-                try {
-                    Response response = client.newCall(request).execute();
-                    if (response.isSuccessful()) {
-                        // Notification sent successfully
-                        Log.d("Notification", "Notification sent successfully");
-                    } else {
-                        // Notification sending failed
-                        Log.e("Notification", "Notification sending failed: " + response.body().string());
-                    }
-                } catch (IOException e) {
-                    Log.e("Notification", "Error sending notification: " + e.toString());
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    Log.d("Notification", "Notification sent successfully");
+                } else {
+                    Log.e("Notification", "Notification sending failed: " + response.body().string());
                 }
-            } catch (Exception e) {
-                Log.e("Notification", "Error sending notification: " + e.toString());
+            } catch (IOException | JSONException e) {
+                Log.e("Notification", "Error sending notification: " + e.getMessage(), e);
             }
         }
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());

@@ -10,15 +10,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.superdrop_admin.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -58,8 +61,9 @@ public class NewOrders extends Fragment {
         orderRecyclerView.setAdapter(orderAdapter);
 
         sharedPreferences = getContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        restId = sharedPreferences.getString("restId", "blank");
+        restId = sharedPreferences.getString("rest_id", "blank");
 
+        Toast.makeText(getActivity(), restId, Toast.LENGTH_SHORT).show();
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -74,7 +78,12 @@ public class NewOrders extends Fragment {
                     if (user != null) {
                         restId = user.getRestId();
                         // Now that restId is initialized, retrieve orders from Firebase
+                        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("rest_id", restId);
                         retrieveOrdersFromFirebase();
+
+                        Toast.makeText(getActivity(), restId, Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -118,21 +127,26 @@ public class NewOrders extends Fragment {
                 orderList.clear();
 
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
-                    Order order = orderSnapshot.getValue(Order.class);
-                    if (order != null && Objects.equals(order.getOrderStatus(), "Pending")) {
-                        // Retrieve the items associated with the order from the "items" node
-                        List<CartItem> cartItems = new ArrayList<>();
-                        DataSnapshot itemsSnapshot = orderSnapshot.child("items");
-                        for (DataSnapshot itemSnapshot : itemsSnapshot.getChildren()) {
-                            CartItem cartItem = itemSnapshot.getValue(CartItem.class);
-                            if (cartItem != null) {
-                                cartItems.add(cartItem);
-                                // Notify about the new item using a notification
+                    try {
+                        Order order = orderSnapshot.getValue(Order.class);
+                        if (order != null && Objects.equals(order.getOrderStatus(), "Pending")) {
+                            // Retrieve the items associated with the order from the "items" node
+                            List<CartItem> cartItems = new ArrayList<>();
+                            DataSnapshot itemsSnapshot = orderSnapshot.child("items");
+                            for (DataSnapshot itemSnapshot : itemsSnapshot.getChildren()) {
+                                CartItem cartItem = itemSnapshot.getValue(CartItem.class);
+                                if (cartItem != null) {
+                                    cartItems.add(cartItem);
+                                }
                             }
+                            // Set the retrieved cart items to the order
+                            order.setItems(cartItems);
+                            orderList.add(0, order);
                         }
-                        // Set the retrieved cart items to the order
-                        order.setItems(cartItems);
-                        orderList.add(0, order);
+                    } catch (DatabaseException e) {
+                        // Log the problematic data
+                        Log.e("Firebase", "Error converting data", e);
+                        Log.e("Firebase", "Problematic data: " + orderSnapshot.toString());
                     }
                 }
                 orderAdapter.notifyDataSetChanged();
@@ -158,9 +172,11 @@ public class NewOrders extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle database read error
+                Log.e("Firebase", "Failed to read orders", error.toException());
             }
         });
     }
+
 
     @Override
     public void onDestroy() {

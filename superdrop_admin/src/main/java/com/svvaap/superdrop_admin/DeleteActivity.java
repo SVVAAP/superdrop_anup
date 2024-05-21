@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeleteActivity extends AppCompatActivity {
-    private String data1, data = "bunontop"; //default data
     private RecyclerView recyclerview;
     private delet_Adapter mAdapter;
     private ProgressBar mProgressCircle;
@@ -46,7 +45,6 @@ public class DeleteActivity extends AppCompatActivity {
     private ImageAdapter imageAdapter;
     private List<Upload> mUploads;
     private Button  button_search,delete;
-    private CardView card_bunontop, card_streetwok, card_bowlexpress,card_vadapavexpress,card_kfc,card_offer,card_offer_Item;
     private FrameLayout container_search;
     private Boolean isEditMode=false;
     ImageView imageView;
@@ -60,13 +58,6 @@ public class DeleteActivity extends AppCompatActivity {
 
         // Retrieve the data passed from HomeFragment
         delete = findViewById(R.id.delet_bt);
-        card_bunontop = findViewById(R.id.bunontop_card);
-        card_streetwok = findViewById(R.id.streetwok_card);
-        card_bowlexpress =findViewById(R.id.bowlexpress_card);
-        card_vadapavexpress=findViewById(R.id.mvadapavexpress_card);
-        card_kfc= findViewById(R.id.mkfc_card);
-        card_offer= findViewById(R.id.offer_card);
-        card_offer_Item=findViewById(R.id.offer_item_card);
         container_search=findViewById(R.id.search_container);
         imageView =findViewById(R.id.imageView7);
 
@@ -79,73 +70,11 @@ public class DeleteActivity extends AppCompatActivity {
         ft.replace(R.id.search_container, searchFragment); // Use replace instead of add
         ft.addToBackStack(null); // Add to back stack to allow navigation back
         ft.commit();
-item_view(data);
-        card_bunontop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "bunontop";
-                data=name;
-                item_view(name);
-            }
-        });
-
-        card_streetwok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "streetwok";
-                data=name;
-                item_view(name);
-            }
-        });
-
-        card_bowlexpress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "bowlexpress";
-                data=name;
-                item_view(name);
-            }
-        });
-        card_vadapavexpress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "vadapavexpress";
-                data=name;
-                item_view(name);
-
-            }
-        });
-
-        card_kfc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "KFC";
-                data=name;
-                item_view(name);
-            }
-        });
-
-        card_offer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = "Offers";
-                data=name;
-                item_view(name);
-            }
-        });
-        card_offer_Item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = "Offer_item";
-                data=name;
-                item_view(name);
-            }
-        });
-
 
         mAdapter = new delet_Adapter(DeleteActivity.this, mUploads);
         recyclerview.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
+        item_view();
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,8 +85,8 @@ item_view(data);
 
                 // Get reference to the Firebase database for "menu" and "bunontop" nodes
                 DatabaseReference menuRef = FirebaseDatabase.getInstance().getReference("menu");
-                DatabaseReference currentFolderRef = FirebaseDatabase.getInstance().getReference(data);
-                StorageReference storageReference= FirebaseStorage.getInstance().getReference(data);
+                DatabaseReference currentFolderRef = FirebaseDatabase.getInstance().getReference("menu");
+                StorageReference storageReference= FirebaseStorage.getInstance().getReference("menu");
 
                 // Loop through selected items and delete them from both "menu" and "bunontop"
                 for (Upload selectedItem : selectedItems) {
@@ -178,42 +107,20 @@ item_view(data);
         });
 
     }
-    private String getCurrentFolderName() {
-        if (data.equals("bunontop")) {
-            return "bunontop";
-        } else if (data.equals("streetwok")) {
-            return "streetwok";
-        } else {
-            return "bowlexpress";
-        }
-    }
+
     public void show(Boolean editMode){
         if (container_search != null) { // Add this null check
             container_search.setVisibility(editMode ? View.GONE : View.VISIBLE);
             recyclerview.setVisibility(editMode ? View.VISIBLE : View.GONE);
-            card_bowlexpress.setVisibility(editMode ? View.VISIBLE : View.GONE);
-            card_bunontop.setVisibility(editMode ? View.VISIBLE : View.GONE);
-            card_streetwok.setVisibility(editMode ? View.VISIBLE : View.GONE);
+
         }
     }
 
 
-//    public void openSearchActivity() {
-//        Intent intent = new Intent(DeleteActivity.this, SearchActivity.class);
-//        startActivity(intent);
-//
-//        // Apply slide-right animation
-//        DeleteActivity.this.overridePendingTransition(R.anim.slide_right, R.anim.fade_out);
-//
-//    }
 
+    public void item_view() {
+            mDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
 
-    public void item_view(String rest_name) {
-        if (rest_name != null) {
-            mDatabaseRef = FirebaseDatabase.getInstance().getReference(rest_name);
-        } else {
-            mDatabaseRef = FirebaseDatabase.getInstance().getReference("bunontop");
-        }
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             // Inside the ValueEventListener in HomeFragment
@@ -244,25 +151,6 @@ item_view(data);
         });
     }
 
-    public void openMenuFragment(String itemName) {
-        Bundle args = new Bundle();
-        args.putString("itemName", itemName);
 
-        SearchFragment searchFragment = new SearchFragment();
-        searchFragment.setArguments(args);
-        show(false);
-        isEditMode = true;
-        ViewGroup.LayoutParams params = button_search.getLayoutParams();
-        params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        button_search.setLayoutParams(params);
-        button_search.setText("X");
-//        ConstraintSet constraintSet = new ConstraintSet();
-//        constraintSet.clone((ConstraintLayout) view.getParent());
-//        constraintSet.connect(R.id.button2, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-//        constraintSet.clear(R.id.button2, ConstraintSet.START);
-//        constraintSet.applyTo((ConstraintLayout) view.getParent());
-        imageView.setVisibility(View.GONE);
-
-    }
 
 }
