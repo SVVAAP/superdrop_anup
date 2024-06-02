@@ -36,11 +36,10 @@ import java.util.List;
 public class OfferActivity extends AppCompatActivity {
 private RecyclerView  offerRecyclerView;
     private DatabaseReference mDatabaseRef;
-    private List<Upload> mUploads;
+    private List<Upload> mUploads,imageURLs = new ArrayList<>();
     private ImageAdapter imageAdapter;
     private ProgressBar mProgressCircle;
     private SliderView sliderView;
-    private List<String> imageURLs = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +111,8 @@ private RecyclerView  offerRecyclerView;
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                imageURLs.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    imageURLs.add(postSnapshot.child("imageUrl").getValue(String.class));
+                    Upload upload=postSnapshot.getValue(Upload.class);
+                    imageURLs.add(upload);
                 }
                 SliderAdapter slideadapter = new SliderAdapter(imageURLs);
                 sliderView.setSliderAdapter(slideadapter);

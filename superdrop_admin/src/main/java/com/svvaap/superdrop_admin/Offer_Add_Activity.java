@@ -2,7 +2,9 @@ package com.svvaap.superdrop_admin;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,8 +45,8 @@ public class Offer_Add_Activity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> mGetContentLauncher;
     private Uri oImageUri;
     private StorageTask oUploadTask;
+    private SharedPreferences sharedPreferences;
 
-    private String restaurantId = "exampleRestaurantId"; // Set your restaurant ID here
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,7 @@ public class Offer_Add_Activity extends AppCompatActivity {
                 if (oUploadTask != null && oUploadTask.isInProgress()) {
                     Toast.makeText(Offer_Add_Activity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
-                    uploadFile(restaurantId); // Pass restaurantId here
+                    uploadFile(); // Pass restaurantId here
                 }
             }
         });
@@ -103,10 +105,13 @@ public class Offer_Add_Activity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void uploadFile(String restaurantId) {
+    private void uploadFile() {
         if (oImageUri != null) {
             String uploadId = oDatabaseRef.push().getKey();
             StorageReference fileReference = oStorageRef.child(uploadId);
+            sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            String restname= sharedPreferences.getString("rest_name", "blank");
+            String restaurantId = sharedPreferences.getString("rest_id", "blank");
 
             oUploadTask = fileReference.putFile(oImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -125,7 +130,7 @@ public class Offer_Add_Activity extends AppCompatActivity {
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
-                                    Upload upload = new Upload(downloadUri.toString(), uploadId, restaurantId);
+                                    Upload upload = new Upload(downloadUri.toString(), uploadId, restaurantId,restname);
                                     oDatabaseRef.child(uploadId).setValue(upload);
                                 }
                             });

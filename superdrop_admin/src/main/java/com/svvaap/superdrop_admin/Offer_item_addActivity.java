@@ -146,6 +146,7 @@ public class Offer_item_addActivity extends AppCompatActivity {
             String discountprice=mEditTextDiscountPrice.getText().toString().trim();
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Handler handler = new Handler();

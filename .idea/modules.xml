@@ -7,6 +7,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SUPER_DROP2.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SUPER_DROP2.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SUPER_DROP2.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SUPER_DROP2.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SUPER_DROP2.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SUPER_DROP2.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main_admin/SUPER_DROP2.main_admin.iml" filepath="$PROJECT_DIR$/.idea/modules/main_admin/SUPER_DROP2.main_admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main_admin/SUPER_DROP2.main_admin.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/main_admin/SUPER_DROP2.main_admin.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main_admin/SUPER_DROP2.main_admin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/main_admin/SUPER_DROP2.main_admin.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main_admin/SUPER_DROP2.main_admin.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/main_admin/SUPER_DROP2.main_admin.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superdrop_admin/SUPER_DROP2.superdrop_admin.iml" filepath="$PROJECT_DIR$/.idea/modules/superdrop_admin/SUPER_DROP2.superdrop_admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superdrop_admin/SUPER_DROP2.superdrop_admin.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/superdrop_admin/SUPER_DROP2.superdrop_admin.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superdrop_admin/SUPER_DROP2.superdrop_admin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/superdrop_admin/SUPER_DROP2.superdrop_admin.main.iml" />

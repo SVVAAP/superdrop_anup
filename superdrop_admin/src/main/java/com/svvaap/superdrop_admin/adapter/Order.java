@@ -1,6 +1,6 @@
 package com.svvaap.superdrop_admin.adapter;
 
-
+import com.svvaap.superdrop_admin.adapter.CartItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,8 @@ public class Order {
     private String userid;
     private String status,date,time;
     private String orderStatus;
+    private String restId;
+    private String itemId;
 
 
     public Order() {
@@ -25,7 +27,29 @@ public class Order {
     }
 
     public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
-                 String contactInstructions, String phone_optnl, String note, String paymentMethod,String status,String grandtotal,String oredrStatus,String landmark,String token) {
+                 String contactInstructions, String phone_optnl, String note, String paymentMethod,String status
+            ,String grandtotal,String oredrStatus,String landmark,String token,String restId,String itemId) {
+        this.orderid=orderid;
+        this.shippingName = shippingName;
+        this.shippingAddress = shippingAddress;
+        this.shippingCity = shippingCity;
+        this.contactInstructions = contactInstructions;
+        this.note = note;
+        this.paymentMethod = paymentMethod;
+        this.status=status;
+        this.grandtotal=grandtotal;
+        this.items = new ArrayList<>(); // Initialize the items list
+        // No need to add a dummy item her
+        this.orderStatus=oredrStatus;
+        this.landmark=landmark;
+        this.phone_optnl=phone_optnl;
+        this.ctoken=token;
+        this.restId=restId;
+        this.itemId=itemId;
+    }
+    public Order(String orderid,String shippingName, String shippingAddress, String shippingCity,
+                 String contactInstructions, String phone_optnl, String note, String paymentMethod,
+                 String status,String grandtotal,String oredrStatus,String landmark,String token) {
         this.orderid=orderid;
         this.shippingName = shippingName;
         this.shippingAddress = shippingAddress;
@@ -145,5 +169,21 @@ public class Order {
 
     public void setCtoken(String ctoken) {
         this.ctoken = ctoken;
+    }
+
+    public String getRestId() {
+        return restId;
+    }
+
+    public void setRestId(String restId) {
+        this.restId = restId;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 }

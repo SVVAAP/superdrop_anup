@@ -1,6 +1,5 @@
 package com.svvaap.superdrop_admin;
 
-import static com.google.common.io.Files.getFileExtension;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

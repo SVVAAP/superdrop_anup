@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,23 +46,22 @@ import java.util.List;
 
 
 public class MenuFragment extends Fragment {
-    private String data1 = "bunontop"; //default data
-    private RecyclerView recyclerview,mRecyclerView;
+    private String data = "blank"; //default data
+    private RecyclerView recyclerview, mRecyclerView;
     private MyMenuAdapter myMenuAdapter;
     private rest_Adapter mAdapter;
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
-    private List<Upload> mUploads,mUploads2,mFilteredUploads; // List to hold filtered items
-    private search_menu_adapter mFilteredAdapter,mAdapter2; ;
-    private Button  button_search,filter_bt,rest_bt;
+    private List<Upload> mUploads, mUploads2; // List to hold filtered items
+    private Button button_search, filter_bt, rest_bt;
     private FrameLayout container_search;
-    private Boolean isEditMode=false;
-    private ImageView imageView,no_internet;
+    private Boolean isEditMode = false;
+    private ImageView imageView, no_internet;
     private SearchView mSearchView;
     private LinearLayout selectedLinearLayout = null;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
-    private  SwipeRefreshLayout swipeRefreshLayout;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ConstraintLayout constraintLayout;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -73,25 +73,26 @@ public class MenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
         mUploads = new ArrayList<>();
         mUploads2 = new ArrayList<>();
-        mFilteredUploads = new ArrayList<>();
 
-        container_search=view.findViewById(R.id.search_container);
         mSearchView = view.findViewById(R.id.menu_searchView);
         recyclerview = view.findViewById(R.id.fooditems_rv);
         recyclerview.setHasFixedSize(true);
-        filter_bt=view.findViewById(R.id.filter_sheet_bt);
-        rest_bt=view.findViewById(R.id.rest_sheet_bt);
+        filter_bt = view.findViewById(R.id.filter_sheet_bt);
+        rest_bt = view.findViewById(R.id.rest_sheet_bt);
+        constraintLayout= view.findViewById(R.id.constraintLayout_rest);
         recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        item_view_search();
-        mAdapter2=new search_menu_adapter(getContext(),mUploads);
-        mFilteredAdapter=new search_menu_adapter(getContext(),mFilteredUploads);
-        recyclerview.setAdapter(mAdapter);
+
+        mAdapter = new rest_Adapter(getActivity(), mUploads); // Initialize mAdapter with mUploads
+        recyclerview.setAdapter(mAdapter); // Set initial adapter
+
         // Retrieve the data passed from HomeFragment
         Bundle args = getArguments();
         if (args != null) {
-            data1 = args.getString("data", "menu");
+            data = args.getString("data", "blank");
         }
+
         item_view();
+
         List<ezyMenuItem> menuItems = new ArrayList<>();
         menuItems.add(new ezyMenuItem(R.drawable.hamburger, "Burger"));
         menuItems.add(new ezyMenuItem(R.drawable.fries, "Fries"));
@@ -105,10 +106,11 @@ public class MenuFragment extends Fragment {
 
         // Add more menu items as needed
         mRecyclerView = view.findViewById(R.id.ezy_menu_rv);
-        myMenuAdapter = new MyMenuAdapter(menuItems,this,mSearchView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        myMenuAdapter = new MyMenuAdapter(menuItems, this, mSearchView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         mRecyclerView.setAdapter(myMenuAdapter);
-        no_internet=view.findViewById(R.id.mno_internet_layout);
+
+        no_internet = view.findViewById(R.id.mno_internet_layout);
 
         //no internet check
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -117,6 +119,7 @@ public class MenuFragment extends Fragment {
         if (networkCapabilities == null || !networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
             no_internet.setVisibility(View.VISIBLE);
         }
+
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -125,10 +128,11 @@ public class MenuFragment extends Fragment {
                 refreshData();
             }
         });
+
         myMenuAdapter.setOnItemClickListener(new MyMenuAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String item) {
-                mSearchView.setQuery(item,true);
+                mSearchView.setQuery(item, true);
             }
         });
 
@@ -140,21 +144,24 @@ public class MenuFragment extends Fragment {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(mSearchView, InputMethodManager.SHOW_IMPLICIT);
                 mRecyclerView.setVisibility(View.VISIBLE);
-
+                constraintLayout.setVisibility(View.GONE);
 
                 // Set the adapter to show all menu items when the search view is clicked
-                recyclerview.setAdapter(mAdapter2);
+                recyclerview.setAdapter(mAdapter);
             }
         });
+
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 // Restore the default menu and make the constraint visible again
                 mRecyclerView.setVisibility(View.GONE);
                 recyclerview.setAdapter(mAdapter);
+                constraintLayout.setVisibility(View.VISIBLE);
                 return false;
             }
         });
+
         no_internet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,27 +169,13 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        mAdapter = new rest_Adapter(getActivity(), mUploads);
-        recyclerview.setAdapter(mAdapter);
-
         mAdapter.setOnItemClickListener(new rest_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(Upload item) {
                 showBottomSheetForItem(item);
             }
         });
-        mFilteredAdapter.setOnItemClickListener(new rest_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Upload item) {
-                showBottomSheetForItem(item);
-            }
-        });
-        mAdapter2.setOnItemClickListener(new rest_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Upload item) {
-                showBottomSheetForItem(item);
-            }
-        });
+
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -194,72 +187,33 @@ public class MenuFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 // Filter the items based on the user's search input
-                if (newText == null || newText.isEmpty()) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                }
-                else {
-                    mRecyclerView.setVisibility(View.GONE);
-                }
                 filterItems(newText);
-                recyclerview.setAdapter(mFilteredAdapter);
                 return true;
             }
         });
+
         filter_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CatogeryFilter_Dailoge filterBottomSheet=new CatogeryFilter_Dailoge();
+                CatogeryFilter_Dailoge filterBottomSheet = new CatogeryFilter_Dailoge();
                 filterBottomSheet.show(getChildFragmentManager(), filterBottomSheet.getTag());
-
             }
-         });
+        });
+
         rest_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RestFilter_Dailoge filterBottomSheet=new RestFilter_Dailoge();
+                RestFilter_Dailoge filterBottomSheet = new RestFilter_Dailoge();
                 filterBottomSheet.show(getChildFragmentManager(), filterBottomSheet.getTag());
-
             }
         });
 
         return view;
     }
 
-
     public void item_view() {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
-            // Inside the ValueEventListener in HomeFragment
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUploads.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Upload upload = postSnapshot.getValue(Upload.class);
-                    // Get the download URL from Firebase Storage and set it in the Upload object
-                    upload.setImageUrl(postSnapshot.child("imageUrl").getValue(String.class));
-                    // Retrieve the price from Firebase and set it in the Upload object
-                    Double priceValue = postSnapshot.child("price").getValue(Double.class);
-                    if (priceValue != null) {
-                        upload.setPrice(priceValue);
-                    }
-                    mUploads.add(upload);
-                }
-                mAdapter.notifyDataSetChanged();
-//                mAdapter = new rest_Adapter(getActivity(), mUploads);
-//                recyclerview.setAdapter(mAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    public void item_view_search() {
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
-
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
-            // Inside the ValueEventListener in HomeFragment
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUploads.clear();
@@ -276,8 +230,10 @@ public class MenuFragment extends Fragment {
                     mUploads2.add(upload);
                 }
                 mAdapter.notifyDataSetChanged();
-//                mAdapter = new rest_Adapter(getActivity(), mUploads);
-//                recyclerview.setAdapter(mAdapter);
+
+                if (!data.equals("blank")) {
+                    restFilters(data);
+                }
             }
 
             @Override
@@ -287,7 +243,6 @@ public class MenuFragment extends Fragment {
         });
     }
 
-
     private void showBottomSheetForItem(Upload item) {
         BottomSheet bottomSheetFragment = new BottomSheet();
         Bundle args = new Bundle();
@@ -295,10 +250,11 @@ public class MenuFragment extends Fragment {
         args.putString("name", item.getName());
         args.putString("imageUrl", item.getImageUrl());
         args.putDouble("price", item.getPrice());
-        args.putString("restId",item.getRestId());
+        args.putString("restId", item.getRestId());
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
     }
+
     private void filterItems(String query) {
         mUploads.clear();
 
@@ -312,8 +268,10 @@ public class MenuFragment extends Fragment {
             }
         }
 
-        mFilteredAdapter.notifyDataSetChanged();
+        // Notify adapter of changes
+        mAdapter.notifyDataSetChanged();
     }
+
     private void refreshData() {
         // Implement your data refresh logic here
         if (getView() == null) {
@@ -388,4 +346,16 @@ public class MenuFragment extends Fragment {
     }
 
 
+    public void restFilters(String restId) {
+        mUploads.clear();
+
+        // Perform filtering based on category and price
+        for (Upload upload : mUploads2) {
+            if(upload.getRestId().equals(restId)){
+                mUploads.add(upload);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
 }
+

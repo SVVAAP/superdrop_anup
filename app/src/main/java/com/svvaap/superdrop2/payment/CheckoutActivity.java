@@ -89,7 +89,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private DatabaseReference userCartRef, databaseReference;
     private StorageReference storageReference;
     double total = 0.0;
-    private DatabaseReference orderDatabaseReference, corderDatabaseReference,dorderDatabaseReference;
+    private DatabaseReference orderDatabaseReference, corderDatabaseReference,dorderDatabaseReference,udorderDatabaseReference;
     private String userId, orderID, cToken;
     int intdeliveryCharge, ctotal;
     private ImageView back_img;
@@ -177,6 +177,7 @@ public class CheckoutActivity extends AppCompatActivity {
         orderDatabaseReference = FirebaseDatabase.getInstance().getReference("restaurant_orders");
         corderDatabaseReference = FirebaseDatabase.getInstance().getReference("cust_orders").child(userId);
         dorderDatabaseReference = FirebaseDatabase.getInstance().getReference("delivery_orders");
+        udorderDatabaseReference = FirebaseDatabase.getInstance().getReference("cdelivery_orders").child(userId);
         // Initialize views
 
         ArrayAdapter ctadapter = ArrayAdapter.createFromResource(this, R.array.city_options, android.R.layout.simple_spinner_item);
@@ -355,8 +356,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
         for (CartItem cartItem : cartItemList) {
             String restaurantId = cartItem.getRestId();
+            String itemId=generateOrderID();
             Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
-                    contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark, cToken);
+                    contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark, cToken,restaurantId,itemId);
             order.setItems(Collections.singletonList(cartItem));
             order.setUserId(userId);
             order.setDate(currentDate);
@@ -372,7 +374,10 @@ public class CheckoutActivity extends AppCompatActivity {
 
         Order order = new Order(orderID, shippingName, shippingAddress, shippingCity,
                 contactInstructions, phone_optnl, note, paymentMethod, newstatus, gtotal, orderStatus, landmark, cToken);
-
+        order.setItems(cartItemList);
+        order.setUserId(userId);
+        order.setDate(currentDate);
+        order.setTime(currentTime);udorderDatabaseReference.push().setValue(order);
         dorderDatabaseReference.push().setValue(order).addOnSuccessListener(unused -> {
             Toast.makeText(CheckoutActivity.this, "Success", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(CheckoutActivity.this, OrderPlacedActivity.class);

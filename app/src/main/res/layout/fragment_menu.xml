@@ -69,19 +69,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/menu_searchView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <FrameLayout
-            android:id="@+id/search_container"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/border"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
-        </FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout_rest"
@@ -111,9 +99,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="50dp"
             android:text="Restaurents"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/filter_sheet_bt"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/filter_sheet_bt"
             app:layout_constraintVertical_bias="0.727" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

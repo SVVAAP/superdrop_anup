@@ -2,6 +2,10 @@ package com.svvaap.superdrop2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -146,5 +150,5 @@ public class OtpVerifyActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
+    } 
 }

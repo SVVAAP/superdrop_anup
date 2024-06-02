@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SUPERDROP2">
         <activity
+            android:name="com.svvaap.superdrop_admin.BillsActivity"
+            android:exported="false" />
+        <activity
             android:name="com.svvaap.superdrop_admin.Alert_Dialog"
             android:exported="true" />
 
@@ -34,8 +37,6 @@
         <activity
             android:name="com.svvaap.superdrop_admin.Order_Activity"
             android:exported="false" />
-
-
         <activity
             android:name="com.svvaap.superdrop_admin.Offer_item_addActivity"
             android:exported="false" />
@@ -70,9 +71,7 @@
         <receiver
             android:name="com.svvaap.superdrop_admin.adapter.AlarmStopReceiver"
             android:enabled="true"
-            android:exported="true" />
-        <!--            android:name="com.svvaap.superdrop_admin.MainActivity"-->
-
+            android:exported="true" /> <!-- android:name="com.svvaap.superdrop_admin.MainActivity" -->
         <activity
             android:name="com.svvaap.superdrop_admin.MainActivity"
             android:exported="true">

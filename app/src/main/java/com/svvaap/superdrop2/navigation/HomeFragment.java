@@ -31,6 +31,7 @@ import com.svvaap.superdrop2.AboutRestaurentActivity;
 import com.svvaap.superdrop2.BottomSheet;
 import com.svvaap.superdrop2.OfferActivity;
 import com.svvaap.superdrop2.R;
+import com.svvaap.superdrop2.RestFilter_Dailoge;
 import com.svvaap.superdrop2.adapter.ImageAdapter;
 import com.svvaap.superdrop2.adapter.SliderAdapter;
 import com.svvaap.superdrop2.adapter.postview;
@@ -51,6 +52,7 @@ import com.google.firebase.storage.StorageReference;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
+import com.svvaap.superdrop2.methods.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +64,7 @@ public class  HomeFragment extends Fragment {
     private ProgressBar mProgressCircle;
     private List<Upload> mUploads;
     private SliderView sliderView;
-    private List<String> imageURLs = new ArrayList<>();
+    private List<Upload> imageURLs = new ArrayList<>();
     private View rootView;
     private Animation fadeInAnimation;
     private Animation slideUpAnimation;
@@ -73,6 +75,8 @@ public class  HomeFragment extends Fragment {
     List<postview> postviewlist;
     private ImageAdapter imageAdapter;
     private DatabaseReference mdatabaseref, mDatabaseRef;
+    private RecyclerView recyclerView;
+    private DatabaseReference rDatabaseRef;
 
 
     public HomeFragment() {
@@ -129,36 +133,6 @@ public class  HomeFragment extends Fragment {
             }
         });
 
-        CardView cardBunontop = view.findViewById(R.id.bowlexpress_card);
-        cardBunontop.setOnClickListener(v -> {
-            String bunontopData = "bowlexpress";
-            openMenuFragment(bunontopData);
-        });
-
-        CardView cardStreetwok = view.findViewById(R.id.streetwok_card);
-        cardStreetwok.setOnClickListener(v -> {
-            String streetwokData = "streetwok";
-            openMenuFragment(streetwokData);
-        });
-
-        CardView cardBowlexpress = view.findViewById(R.id.bunontop_card);
-        cardBowlexpress.setOnClickListener(v -> {
-            String bowlexpressData = "bunontop";
-            openMenuFragment(bowlexpressData);
-        });
-
-        CardView cardVadaPavexpress = view.findViewById(R.id.vadpavexpress_card);
-        cardVadaPavexpress.setOnClickListener(v -> {
-            String vadapavData = "vadapavexpress";
-            openMenuFragment(vadapavData);
-        });
-
-        CardView cardKFC = view.findViewById(R.id.kfc_card);
-        cardKFC.setOnClickListener(v -> {
-            String kfcData = "KFC";
-            openMenuFragment(kfcData);
-        });
-
         // Initialize animations
         fadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         slideUpAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
@@ -188,13 +162,42 @@ public class  HomeFragment extends Fragment {
             }
         });
 
+        List<User> user = new ArrayList<>();
+        RestFilter_Dailoge.restaurent_adapter radapter = new RestFilter_Dailoge.restaurent_adapter(getContext(), user);
+
+        recyclerView = view.findViewById(R.id.allrestview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(radapter);
+
+        rDatabaseRef = FirebaseDatabase.getInstance().getReference("rest_users");
+        rDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                user.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                    User upload = postSnapshot.getValue(User.class);
+                    user.add(upload);
+                }
+                radapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors
+            }
+        });
+        radapter.setOnItemClickListener(restId -> {
+            openMenuFragment(restId);
+        });
+
         // Initialize RecyclerView for offers
         return view;
     }
 
-    private void openMenuFragment(String data) {
+    private void openMenuFragment(String restId) {
         NavActivity navActivity = (NavActivity) requireActivity();
-        navActivity.loadMenuFragment(data);
+        navActivity.loadMenuFragment(restId);
     }
     private void fetchImageURLs() {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Offers");
@@ -204,7 +207,8 @@ public class  HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 imageURLs.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    imageURLs.add(postSnapshot.child("imageUrl").getValue(String.class));
+                    Upload upload=postSnapshot.getValue(Upload.class);
+                    imageURLs.add(upload);
                 }
                 SliderAdapter slideadapter = new SliderAdapter(imageURLs);
                 sliderView.setSliderAdapter(slideadapter);
@@ -301,6 +305,7 @@ public class  HomeFragment extends Fragment {
         bottomSheetFragment.setArguments(args);
         bottomSheetFragment.show(getChildFragmentManager(), bottomSheetFragment.getTag());
     }
+
 
 }
 

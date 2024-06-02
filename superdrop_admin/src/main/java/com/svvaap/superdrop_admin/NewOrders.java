@@ -63,7 +63,7 @@ public class NewOrders extends Fragment {
         sharedPreferences = getContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         restId = sharedPreferences.getString("rest_id", "blank");
 
-        Toast.makeText(getActivity(), restId, Toast.LENGTH_SHORT).show();
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -82,8 +82,6 @@ public class NewOrders extends Fragment {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("rest_id", restId);
                         retrieveOrdersFromFirebase();
-
-                        Toast.makeText(getActivity(), restId, Toast.LENGTH_SHORT).show();
                     }
                 }
 

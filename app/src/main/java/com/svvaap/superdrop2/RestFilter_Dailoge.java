@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.svvaap.superdrop2.methods.User;
+import com.svvaap.superdrop2.navigation.MenuFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,13 @@ public class RestFilter_Dailoge extends DialogFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(restId -> {
+            if (getParentFragment() instanceof MenuFragment) {
+                ((MenuFragment) getParentFragment()).restFilters(restId);
+                dismiss();
+            }
+        });
+
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("rest_users");
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -61,8 +70,8 @@ public class RestFilter_Dailoge extends DialogFragment {
                 user.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
-                        User upload = postSnapshot.getValue(User.class);
-                        user.add(upload);
+                    User upload = postSnapshot.getValue(User.class);
+                    user.add(upload);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -76,13 +85,22 @@ public class RestFilter_Dailoge extends DialogFragment {
         return view;
     }
 
-    public class restaurent_adapter extends RecyclerView.Adapter<restaurent_adapter.viewHolder> {
+    public static class restaurent_adapter extends RecyclerView.Adapter<restaurent_adapter.viewHolder> {
         private Context context;
         private List<User> rusers;
+        private OnItemClickListener listener;
 
         public restaurent_adapter(Context context, List<User> rusers) {
             this.context = context;
             this.rusers = rusers;
+        }
+
+        public interface OnItemClickListener {
+            void onItemClick(String restId);
+        }
+
+        public void setOnItemClickListener(OnItemClickListener listener) {
+            this.listener = listener;
         }
 
         @NonNull
@@ -97,6 +115,27 @@ public class RestFilter_Dailoge extends DialogFragment {
             User current_user = rusers.get(position);
             holder.restName.setText(current_user.getRestName());
             Picasso.get().load(current_user.getRestProfileImageUrl()).fit().centerCrop().into(holder.restImg);
+
+            holder.itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClick(current_user.getRestId()); // Assuming User class has a method getRestId
+                }
+            });
+            holder.restImg.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClick(current_user.getRestId()); // Assuming User class has a method getRestId
+                }
+            });
+            holder.restName.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClick(current_user.getRestId()); // Assuming User class has a method getRestId
+                }
+            });
+            holder.cardView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClick(current_user.getRestId()); // Assuming User class has a method getRestId
+                }
+            });
         }
 
         @Override
@@ -107,12 +146,14 @@ public class RestFilter_Dailoge extends DialogFragment {
         public class viewHolder extends RecyclerView.ViewHolder {
             private TextView restName;
             private ImageView restImg;
+            private CardView cardView;
 
             public viewHolder(@NonNull View itemView) {
                 super(itemView);
 
                 restImg = itemView.findViewById(R.id.rest_img_h);
                 restName = itemView.findViewById(R.id.rest_name_h);
+                cardView=itemView.findViewById(R.id.card);
             }
         }
     }

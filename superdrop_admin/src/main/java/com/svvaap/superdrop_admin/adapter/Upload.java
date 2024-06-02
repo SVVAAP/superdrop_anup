@@ -40,6 +40,7 @@ public class Upload {
         mItemId = itemId;
         mDiscount = discount;
         mDiscountPrice = discountPrice;
+        this.mRestName=mRestName;
     }
     public Upload(String name, double price, String imageUrl, String restId, String itemId, String catogery, String foodType,String mRestName) {
         mName = name.trim().isEmpty() ? "No Name" : name;
@@ -49,12 +50,14 @@ public class Upload {
         mItemId = itemId;
         mCatogery=catogery;
         mFoodType=foodType;
+        this.mRestName=mRestName;
 
     }
-    public Upload(String imageUrl,String itemId,String mRestId){
+    public Upload(String imageUrl,String itemId,String mRestId,String mRestName){
         mImageUrl = imageUrl;
         mItemId=itemId;
         this.mRestId=mRestId;
+        this.mRestName=mRestName;
     }
 
     // Add the getters and setters for the price variable
@@ -129,5 +132,13 @@ public class Upload {
 
     public void setmFoodType(String mFoodType) {
         this.mFoodType = mFoodType;
+    }
+
+    public String getmRestName() {
+        return mRestName;
+    }
+
+    public void setmRestName(String mRestName) {
+        this.mRestName = mRestName;
     }
 }

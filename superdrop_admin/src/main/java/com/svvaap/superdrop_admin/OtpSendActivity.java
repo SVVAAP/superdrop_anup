@@ -1,34 +1,36 @@
 package com.svvaap.superdrop_admin;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.superdrop_admin.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,25 +39,19 @@ public class OtpSendActivity extends AppCompatActivity {
     private EditText etPhone;
     private Button btnSend;
     private ProgressBar progressBar;
-    private CountryCodePicker countryCodePicker;
+    private EditText countryCodePicker;
     private FirebaseAuth mAuth;
-//    private WebViewCompat webViewCompat;
+    private GoogleSignInClient mGoogleSignInClient;
+
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-            String pending = sharedPreferences.getString("detailsPending", "true");
-            if(pending.equals("true")){
-            startActivity(new Intent(OtpSendActivity.this, Detail_Activity.class));
-            finish();}
-            else{
-                startActivity(new Intent(OtpSendActivity.this, OwnersTabActivity.class));
-                finish();
-            }
+            startActivity(new Intent(OtpSendActivity.this, OwnersTabActivity.class));
+            finish();
         }
-        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,47 +62,52 @@ public class OtpSendActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         progressBar = findViewById(R.id.progressBar);
         countryCodePicker = findViewById(R.id.ccp);
-        WebView webView = findViewById(R.id.webView);
+        countryCodePicker.setEnabled(false);
         mAuth = FirebaseAuth.getInstance();
 
-        webView.setWebViewClient(new WebViewClient() {
+        // Configure Google Sign-In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                // Intercept the URL and load it in the WebView
-                view.loadUrl(request.getUrl().toString());
-                return true;
+            public void onClick(View view) {
+                String countryCode = countryCodePicker.getText().toString();
+                String phoneNumber = etPhone.getText().toString();
+                String fullPhoneNumber = countryCode + phoneNumber;
+
+                sendOTP(fullPhoneNumber);
             }
         });
 
-        btnSend.setOnClickListener(view -> {
-            String countryCode = countryCodePicker.getSelectedCountryCode();
-            String phoneNumber = etPhone.getText().toString();
-            String fullPhoneNumber = "+" + countryCode + phoneNumber;
-
-            sendOTP(fullPhoneNumber);
+        // Initialize Google Sign-In Button
+        SignInButton googleSignInButton = findViewById(R.id.googleSignInButton);
+        googleSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = mGoogleSignInClient.getSignInIntent();
+                // Start activity for result
+                startActivityForResult(intent, 100);
+            }
         });
-
     }
-    @Override
-    public void onBackPressed() {
-        // Close the application when back button is pressed
-        super.onBackPressed();
-        finishAffinity();
-    }
-
 
     private void sendOTP(String phoneNumber) {
         // Disable UI elements
         etPhone.setEnabled(false);
         btnSend.setEnabled(false);
         countryCodePicker.setEnabled(false);
-       // FirebaseUser firebase.auth().settings.appVerificationDisabledForTesting = true;
+
         // Show progress bar
         progressBar.setVisibility(View.VISIBLE);
+
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
-                    public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                    public void onVerificationCompleted(PhoneAuthCredential credential) {
                         // Auto-retrieval or instant verification is successful.
                         // Proceed with verifying the credential directly
                     }
@@ -119,11 +120,12 @@ public class OtpSendActivity extends AppCompatActivity {
 
                         // Hide progress bar
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(OtpSendActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        Log.e("send verify", e.toString());
+                        Toast.makeText(OtpSendActivity.this, "Error..Try again later.. :(", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                    public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
                         // Save the verification ID and token for later use
                         // Call the OTP verification activity
                         Intent intent = new Intent(OtpSendActivity.this, OtpVerifyActivity.class);
@@ -142,5 +144,50 @@ public class OtpSendActivity extends AppCompatActivity {
                         .build();
 
         PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Check condition
+        if (requestCode == 100) {
+            // When request code is equal to 100 initialize task
+            Task<GoogleSignInAccount> signInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data);
+            // check condition
+            if (signInAccountTask.isSuccessful()) {
+                // When google sign in successful initialize string
+                String s = "Google sign in successful";
+                // Initialize sign in account
+                try {
+                    // Initialize sign in account
+                    GoogleSignInAccount googleSignInAccount = signInAccountTask.getResult(ApiException.class);
+                    // Check condition
+                    if (googleSignInAccount != null) {
+                        // When sign in account is not equal to null initialize auth credential
+                        AuthCredential authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
+                        // Check credential
+                        mAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                // Check condition
+                                if (task.isSuccessful()) {
+                                    // When task is successful redirect to profile activity display Toast
+                                    startActivity(new Intent(OtpSendActivity.this, Detail_Activity.class));
+                                    Toast.makeText(OtpSendActivity.this, "Successfull", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // When task is unsuccessful display Toast
+                                    Toast.makeText(OtpSendActivity.this, "Faild", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

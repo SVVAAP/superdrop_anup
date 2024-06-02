@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.svvaap.superdrop2.FeedbackActivity;
 import com.svvaap.superdrop2.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,7 +52,7 @@ public class ProfileFragment extends Fragment {
 
     private EditText editFullName, editPhone, editStreetAddress, editCity, editEmergencyContact, editlandmark;
     private RatingBar ratingBar;
-    private Button submitButton, editProfileButton, admin, owner, track;
+    private Button submitButton, editProfileButton, admin, owner, track,feedback;
     private ImageView profileImage, logout;
     private Spinner citySpinner;
     private DatabaseReference databaseReference;
@@ -77,6 +78,7 @@ public class ProfileFragment extends Fragment {
         admin = view.findViewById(R.id.adminbt);
         citySpinner = view.findViewById(R.id.pcity_spinner);
         progressBar=view.findViewById(R.id.progressBar_pro);
+        feedback=view.findViewById(R.id.feedback_bt);
         ArrayAdapter ctadapter = ArrayAdapter.createFromResource(getContext(), R.array.city_options, android.R.layout.simple_spinner_item);
 
         // Set the dropdown layout style
@@ -259,6 +261,14 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                 });
+
+        feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), FeedbackActivity.class));
+
+            }
+        });
 
         return view;
     }
